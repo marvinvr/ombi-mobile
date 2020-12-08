@@ -39,7 +39,7 @@ export class ApiService {
       'Accept': 'application/json',
       'Authorization': `Bearer ${this.credentialsService.token}`
     });
-    Object.keys(headers).forEach(key => httpHeaders.append(key, headers[key]));
+    Object.keys(headers).forEach((key) => httpHeaders.append(key, headers[key]));
     return httpHeaders;
   }
 }
