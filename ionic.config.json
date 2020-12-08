@@ -1,0 +1,7 @@
+{
+  "name": "ombi-mobile",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
