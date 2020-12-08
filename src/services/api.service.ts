@@ -16,7 +16,7 @@ export class ApiService {
 
   public getRequest(path: string, headers: Headers, parameters: RequestParameters) {
     return this.http.get(
-      this.credentialsService.baseUrl + path + '?' + Object.keys(parameters).map( p => [p, parameters[p]].join('=')).join('&'), 
+      this.credentialsService.baseUrl + path + '?' + Object.keys(parameters).map((p) => [p, parameters[p]].join('=')).join('&'), 
       {headers: this.formatHeaders(headers)}
     );
   }
