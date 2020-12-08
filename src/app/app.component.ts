@@ -4,6 +4,7 @@ import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AuthService } from 'src/services/auth.service';
+import { CredentialsService } from 'src/services/credentials.service';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +16,8 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private authService: AuthService
+    private authService: AuthService,
+    private credentialsService: CredentialsService
   ) {
     this.initializeApp();
   }
@@ -27,7 +29,7 @@ export class AppComponent {
     });
     this.authService.fetchToken()
       .subscribe((t) =>{
-        localStorage.setItem('token', t)
+        this.credentialsService.token = t?.access_token;
       })
   }
 }
