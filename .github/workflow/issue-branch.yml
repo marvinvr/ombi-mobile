@@ -1,0 +1,32 @@
+on:
+    issues:
+        types: [assigned]
+    issue_comment:
+        types: [created]
+    pull_request:
+        types: [closed]
+
+jobs:
+    create-issue-branch-job:
+        runs-on: ubuntu-latest
+        steps:
+        - name: Create Issue Branch
+          uses: robvanderleek/create-issue-branch@master
+          env:
+            mode: chatops
+            silent: true
+            gitSafeReplacementChar: '-'
+            branchName: '${issue.number}'
+            branches:
+            - label: enhancement
+              prefix: feature/
+              name: develop
+            - label: bug
+              prefix: bugfix/
+              name: develop
+            - label: documentation
+              prefix: docs/
+              name: develop
+            - label: '*'
+              skip: true
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
