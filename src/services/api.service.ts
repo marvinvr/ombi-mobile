@@ -37,7 +37,7 @@ export class ApiService {
     let httpHeaders = new HttpHeaders({
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'Authorization': `Bearer ${this.credentialsService.token}` 
+      'Authorization': `Bearer ${this.credentialsService.token}`
     });
     Object.keys(headers).forEach(key => httpHeaders.append(key, headers[key]));
     return httpHeaders;
