@@ -18,7 +18,7 @@ jobs:
             gitSafeReplacementChar: '-'
             branchName: '${issue.number}'
             branches:
-            - label: enhancement
+            - label: feature
               prefix: feature/
               name: develop
             - label: bug
