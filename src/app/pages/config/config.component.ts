@@ -31,7 +31,7 @@ export class ConfigComponent implements OnInit {
     this.credentials.username = this.model.username;
     this.credentials.password = this.model.password;
     this.auth.fetchToken()
-      .subscribe( t => this.credentials.token = t?.access_token)
+      .subscribe((t) => this.credentials.token = t?.access_token)
   }
 
   public get inputType(): typeof InputType {
