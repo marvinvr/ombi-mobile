@@ -1,3 +1,26 @@
-<p>
-  config works!
-</p>
+<app-header
+  title="Config"
+  ></app-header>
+
+<ion-content>  
+  <div class="form">
+    <app-input
+      label="URL"
+      placeholder="Ombi Server URL"
+      [type]="inputType.URL"
+      [(value)]="model.ombiUrl" 
+    ></app-input>
+    <app-input
+      label="Username"
+      placeholder="Username"
+      [(value)]="model.username" 
+    ></app-input>
+    <app-input
+      label="Password"
+      [type]="inputType.PASSWORD"
+      placeholder="Password"
+      [(value)]="model.password" 
+    ></app-input>
+    <app-button label="Submit" (action)="submit()"></app-button>
+  </div>
+</ion-content>
