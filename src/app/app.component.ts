@@ -28,7 +28,7 @@ export class AppComponent {
       this.splashScreen.hide();
     });
     this.authService.fetchToken()
-      .subscribe((t) =>{
+      .then((t) =>{
         this.credentialsService.token = t?.access_token;
       })
   }

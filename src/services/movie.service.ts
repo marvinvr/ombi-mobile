@@ -14,17 +14,15 @@ export class MovieService {
 
   public list(type: MovieSearchType = MovieSearchType.POPULAR): Promise<Array<Item>> {
     return this.api.getRequest(`/search/Movie/${type}`, {}, {})
-      .toPromise()
       .then(this.toItems)
   }
 
   public search(term: string): Promise<Array<Item>> {
     return this.api.postRequest('/search/Movie/', {}, {
-      searchTerm: term,
-      languageCode: 'en'
-    })
-    .toPromise()
-    .then(this.toItems)
+        searchTerm: term,
+        languageCode: 'en'
+      })
+      .then(this.toItems)
   }
 
   private toItems(results: Array<any>): Array<Item> {
