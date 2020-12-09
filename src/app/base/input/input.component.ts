@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { InputAutocomplete, InputType } from 'src/models/input';
 
 @Component({
   selector: 'app-input',
@@ -7,9 +8,11 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class InputComponent implements OnInit {
   @Input() label: string = '';
-  @Input() autocomplete: string = '';
-
-  @Output() changed = new EventEmitter<string>();
+  @Input() autocomplete: InputAutocomplete = InputAutocomplete.OFF;
+  @Input() type: InputType = InputType.TEXT;
+  @Input() required: boolean = false;
+  @Input() value: string = '';
+  @Input() disabled: boolean = false;
 
   constructor() { }
 
