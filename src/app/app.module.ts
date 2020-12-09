@@ -18,6 +18,8 @@ import { MoviesComponent } from './pages/movies/movies.component';
 import { TvComponent } from './pages/tv/tv.component';
 import { ConfigComponent } from './pages/config/config.component';
 import { RequestsComponent } from './pages/requests/requests.component';
+import { HeaderComponent } from './base/header/header.component';
+import { ButtonComponent } from './base/button/button.component';
 
 
 @NgModule({
@@ -28,7 +30,9 @@ import { RequestsComponent } from './pages/requests/requests.component';
     MoviesComponent,
     ConfigComponent,
     TvComponent,
-    RequestsComponent
+    RequestsComponent,
+    HeaderComponent,
+    ButtonComponent
   ],
   entryComponents: [ ],
   imports: [BrowserModule, CommonModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule],
