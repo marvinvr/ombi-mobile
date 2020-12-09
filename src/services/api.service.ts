@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { RequestParameters, Headers } from 'src/models/http';
 import { CredentialsService } from './credentials.service';
 
+const API_EXTENSION = '/api/v1';
 
 @Injectable({
   providedIn: 'root'
@@ -16,21 +17,21 @@ export class ApiService {
 
   public getRequest(path: string, headers: Headers, parameters: RequestParameters): Promise<any> {
     return this.http.get(
-      this.credentialsService.baseUrl + path + '?' + Object.keys(parameters).map((p) => [p, parameters[p]].join('=')).join('&'),
+      this.credentialsService.baseUrl + API_EXTENSION + path + '?' + Object.keys(parameters).map((p) => [p, parameters[p]].join('=')).join('&'),
       {headers: this.formatHeaders(headers)}
     ).toPromise();
   }
 
   public postRequest(path: string, headers: Headers, parameters: RequestParameters): Promise<any> {
-    return this.http.post(this.credentialsService.baseUrl + path, parameters, {headers: this.formatHeaders(headers)}).toPromise();
+    return this.http.post(this.credentialsService.baseUrl + API_EXTENSION + path, parameters, {headers: this.formatHeaders(headers)}).toPromise();
   }
 
   public putRequest(path: string, headers: Headers, parameters: RequestParameters): Promise<any> {
-    return this.http.put(this.credentialsService.baseUrl + path, parameters, {headers: this.formatHeaders(headers)}).toPromise();
+    return this.http.put(this.credentialsService.baseUrl + API_EXTENSION + path, parameters, {headers: this.formatHeaders(headers)}).toPromise();
   }
 
   public deleteRequest(path: string, headers: Headers): Promise<any> {
-    return this.http.delete(this.credentialsService.baseUrl + path, {headers: this.formatHeaders(headers)}).toPromise();
+    return this.http.delete(this.credentialsService.baseUrl + API_EXTENSION + path, {headers: this.formatHeaders(headers)}).toPromise();
   }
 
   private formatHeaders(headers: Headers): HttpHeaders {

@@ -9,7 +9,7 @@ export class CredentialsService {
   constructor() { }
 
   public get token(): string {
-    return localStorage.getItem(CredentialsNames.TOKEN);
+    return localStorage.getItem(CredentialsNames.TOKEN) || '';
   }
 
   public set token(token: string) {
@@ -17,7 +17,7 @@ export class CredentialsService {
   }
 
   public get baseUrl(): string {
-    return localStorage.getItem(CredentialsNames.BASE_URL);
+    return localStorage.getItem(CredentialsNames.BASE_URL) || '';
   }
 
   public set baseUrl(baseUrl: string) {
@@ -25,7 +25,7 @@ export class CredentialsService {
   }
 
   public get password(): string {
-    return localStorage.getItem(CredentialsNames.PASSWORD);
+    return localStorage.getItem(CredentialsNames.PASSWORD) || '';
   }
 
   public set password(password: string) {
@@ -33,7 +33,7 @@ export class CredentialsService {
   }
 
   public get username(): string {
-    return localStorage.getItem(CredentialsNames.USERNAME);
+    return localStorage.getItem(CredentialsNames.USERNAME) || '';
   }
 
   public set username(username: string) {

@@ -6,6 +6,7 @@
     required='{{required}}'
     disabled='{{disabled}}'
     placeholder='{{placeholder}}'
-    [(value)]='value'
+    [value]='value'
+    (ionChange)='updateValue($event.detail.value)'
   ></ion-input>
 </ion-item>

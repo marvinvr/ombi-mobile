@@ -11,12 +11,19 @@ export class InputComponent implements OnInit {
   @Input() autocomplete: InputAutocomplete = InputAutocomplete.OFF;
   @Input() type: InputType = InputType.TEXT;
   @Input() required: boolean = false;
-  @Input() value: string = '';
   @Input() disabled: boolean = false;
   @Input() placeholder: string = '';
+
+  @Input() value: string = '';
+  @Output() valueChange: EventEmitter<string> = new EventEmitter<string>();
 
   constructor() { }
 
   ngOnInit() {}
+  
+  updateValue(value){
+    this.value = value;
+    this.valueChange.emit(value);
+  }
 
 }

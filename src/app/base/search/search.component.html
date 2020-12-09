@@ -1,1 +1,5 @@
-<ion-searchbar [placeholder]="placeholder" [(value)]="value"></ion-searchbar>
+<ion-searchbar 
+    [placeholder]="placeholder" 
+    [(value)]="value"
+    (ionChange)='updateValue($event.detail.value)' 
+    ></ion-searchbar>

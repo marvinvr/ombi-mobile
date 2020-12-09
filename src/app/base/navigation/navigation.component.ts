@@ -12,22 +12,22 @@ export class NavigationComponent implements OnInit {
     {
       id: 'movies',
       label: 'Movies',
-      icon: 'triangle'
+      icon: 'videocam-outline'
     },
     {
       id: 'tv',
       label: 'TV Shows',
-      icon: 'triangle'
+      icon: 'tv-outline'
     },
     {
       id: 'requests',
       label: 'Requests',
-      icon: 'triangle'
+      icon: 'git-pull-request-outline'
     },
     {
       id: 'config',
       label: 'Config',
-      icon: 'triangle'
+      icon: 'cog-outline'
     },
   ]
 
