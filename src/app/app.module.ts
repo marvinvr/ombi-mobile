@@ -18,6 +18,7 @@ import { MoviesComponent } from './pages/movies/movies.component';
 import { TvComponent } from './pages/tv/tv.component';
 import { ConfigComponent } from './pages/config/config.component';
 import { RequestsComponent } from './pages/requests/requests.component';
+import { SearchComponent } from './base/search/search.component';
 
 
 @NgModule({
@@ -28,7 +29,8 @@ import { RequestsComponent } from './pages/requests/requests.component';
     MoviesComponent,
     ConfigComponent,
     TvComponent,
-    RequestsComponent
+    RequestsComponent,
+    SearchComponent
   ],
   entryComponents: [ ],
   imports: [BrowserModule, CommonModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule],
