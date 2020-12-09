@@ -19,6 +19,8 @@ import { TvComponent } from './pages/tv/tv.component';
 import { ConfigComponent } from './pages/config/config.component';
 import { RequestsComponent } from './pages/requests/requests.component';
 import { SearchComponent } from './base/search/search.component';
+import { HeaderComponent } from './base/header/header.component';
+import { ButtonComponent } from './base/button/button.component';
 
 
 @NgModule({
@@ -30,7 +32,9 @@ import { SearchComponent } from './base/search/search.component';
     ConfigComponent,
     TvComponent,
     RequestsComponent,
-    SearchComponent
+    SearchComponent,
+    HeaderComponent,
+    ButtonComponent
   ],
   entryComponents: [ ],
   imports: [BrowserModule, CommonModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule],
