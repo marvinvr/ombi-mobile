@@ -12,14 +12,17 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { NavigationComponent } from './base/navigation/navigation.component';
+import { InputComponent } from './base/input/input.component';
+
 
 @NgModule({
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule],
   declarations: [
     AppComponent,
-    NavigationComponent
+    NavigationComponent,
+    InputComponent,
   ],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule],
   providers: [
     StatusBar,
     SplashScreen,
