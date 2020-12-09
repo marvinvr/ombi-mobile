@@ -12,14 +12,26 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { NavigationComponent } from './base/navigation/navigation.component';
+import { InputComponent } from './base/input/input.component';
+import { CommonModule } from '@angular/common';
+import { MoviesComponent } from './pages/movies/movies.component';
+import { TvComponent } from './pages/tv/tv.component';
+import { ConfigComponent } from './pages/config/config.component';
+import { RequestsComponent } from './pages/requests/requests.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    NavigationComponent
+    NavigationComponent,
+    InputComponent,
+    MoviesComponent,
+    ConfigComponent,
+    TvComponent,
+    RequestsComponent
   ],
-  entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule],
+  entryComponents: [ ],
+  imports: [BrowserModule, CommonModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule],
   providers: [
     StatusBar,
     SplashScreen,
