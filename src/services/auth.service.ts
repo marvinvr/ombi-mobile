@@ -13,15 +13,15 @@ export class AuthService {
     private credentialsService: CredentialsService
   ) { }
 
-  public fetchToken(): Observable<any> {
+  public fetchToken(): Promise<any> {
     return this.apiService.postRequest(
       '/token',
       {},
       {
         'username': this.credentialsService.username,
         'password': this.credentialsService.password,
-        "rememberMe": true,
-        "usePlexOAuth": false,
+        'rememberMe': true,
+        'usePlexOAuth': false,
       }
     )
   }
