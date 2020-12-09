@@ -19,4 +19,12 @@ export class TvService {
   search(term: string): Observable<Object> {
     return this.api.getRequest(`/search/Tv/${term}`, {}, {});
   }
+
+  getImage(id: string): Observable<Object> {
+    return this.api.getRequest(`/Images/tv/${id}`, {}, {});
+  }
+
+  getInfo(id: string): Observable<Object> {
+    return this.api.getRequest(`/search/Tv/info/${id}`, {}, {});
+  }
 }
