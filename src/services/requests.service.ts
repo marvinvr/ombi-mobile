@@ -19,6 +19,13 @@ export class RequestsService {
     return this.api.getRequest(`/Request/${type}/${count}/${position}/2/0/0`, {}, {});
   }
 
+  public search(
+    type: RequestType = RequestType.MOVIE,
+    term: string
+    ) {
+      return this.api.getRequest(`/Request/${type}/search/${term}`, {}, {});
+  }
+
   public deny(type: RequestActionType, id: number = 0) {
     this.performAction(RequestAction.DENY, type, id);
   }
