@@ -3,5 +3,5 @@ export interface Headers {
 }
 
 export interface RequestParameters {
-    [key: string]: string | boolean
+    [key: string]: string | boolean | number
 }

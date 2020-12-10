@@ -30,8 +30,7 @@ export class ConfigComponent implements OnInit {
     this.credentials.baseUrl = this.model.ombiUrl;
     this.credentials.username = this.model.username;
     this.credentials.password = this.model.password;
-    this.auth.fetchToken()
-      .then((t) => this.credentials.token = t?.access_token)
+    this.auth.fetchToken();
   }
 
   public get inputType(): typeof InputType {

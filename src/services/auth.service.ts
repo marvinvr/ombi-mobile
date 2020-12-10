@@ -9,7 +9,7 @@ export class AuthService {
 
   constructor(
     private apiService: ApiService,
-    private credentialsService: CredentialsService
+    private credentials: CredentialsService
   ) { }
 
   public fetchToken(): Promise<any> {
@@ -17,11 +17,11 @@ export class AuthService {
       '/token',
       {},
       {
-        'username': this.credentialsService.username,
-        'password': this.credentialsService.password,
+        'username': this.credentials.username,
+        'password': this.credentials.password,
         'rememberMe': true,
         'usePlexOAuth': false,
       }
-    )
+    ).then(t => this.credentials.token = t?.access_token);
   }
 }
