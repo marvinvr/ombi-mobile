@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { RequestAction, RequestActionType, RequestType } from 'src/models/requests';
+import { RequestAction, RequestActionType, RequestAvailability, RequestSort, RequestStatus, RequestType } from 'src/models/requests';
 import { ApiService } from './api.service';
 
 @Injectable({
@@ -14,9 +14,12 @@ export class RequestsService {
   public list(
     type: RequestType = RequestType.MOVIE,
     count: number = 10, 
-    position: number = 0 
+    position: number = 0,
+    sort: RequestSort = RequestSort.REQUEST_DATE_DESC,
+    status: RequestStatus = RequestStatus.NO_FILTER,
+    availability: RequestAvailability = RequestAvailability.NO_FILTER
     ) {
-    return this.api.getRequest(`/Request/${type}/${count}/${position}/2/0/0`, {}, {});
+    return this.api.getRequest(`/Request/${type}/${count}/${position}/${sort}/${status}/${availability}`, {}, {});
   }
 
   public search(
