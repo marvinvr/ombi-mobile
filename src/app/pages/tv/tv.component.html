@@ -1,3 +1,5 @@
-<p>
-  tv works!
-</p>
+<ion-content>
+  <ion-list lines="full">
+    <app-tv-show-content-row *ngFor="let show of shows" [tvShow]="show"></app-tv-show-content-row>
+  </ion-list>
+</ion-content>

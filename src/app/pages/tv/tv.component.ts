@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { TvShow } from 'src/models/content';
+import { TvService } from 'src/services/tv.service';
 
 @Component({
   selector: 'app-tv',
@@ -7,8 +9,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TvComponent implements OnInit {
 
-  constructor() { }
+  public shows: Array<TvShow> = [];
 
-  ngOnInit() {}
+  constructor(
+    private tv: TvService
+  ) {}
+
+  ngOnInit() {
+    this.tv.list().then((shows) => this.shows = shows);
+  }
 
 }

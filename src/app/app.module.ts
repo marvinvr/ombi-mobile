@@ -21,11 +21,17 @@ import { RequestsComponent } from './pages/requests/requests.component';
 import { SearchComponent } from './base/search/search.component';
 import { HeaderComponent } from './base/header/header.component';
 import { ButtonComponent } from './base/button/button.component';
+import { ContentRowComponent } from './base/content-row/content-row.component';
+import { TvShowContentRowComponent } from './base/content-row/tv-show-content-row/tv-show-content-row.component';
+import { MovieContentRowComponent } from './base/content-row/movie-content-row/movie-content-row.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    ContentRowComponent,
+    TvShowContentRowComponent,
+    MovieContentRowComponent,
     NavigationComponent,
     InputComponent,
     MoviesComponent,

@@ -1,0 +1,40 @@
+.content-row {
+    display: flex;
+    flex-direction: column;
+
+    .content-top {
+        display: flex;
+        height: 190px;
+
+        .poster {
+            flex: 0 0 auto;
+            margin: 20px 0 15px 0;
+            padding-right: 10px;
+            height: 160px;
+            img {
+                max-height: 100%;
+            }
+        }
+
+        .info {
+            text-align: initial;
+
+            h2 {
+                margin-bottom: 5px;
+            }
+
+            p {
+                margin-top: 0.5em;
+                word-wrap: break-word;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                height: 125px;
+            }
+        }
+    }
+
+    .content-bottom {
+        display: flex;
+        margin: 0 0 8px -3px;
+    }
+}
