@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Content } from 'src/models/content';
-import { MovieSearchType } from 'src/models/movie';
+import { Content, Tag } from 'src/models/content';
+import { TvShow } from 'src/models/content';
 
 @Component({
   selector: 'app-content-row',
@@ -9,7 +9,10 @@ import { MovieSearchType } from 'src/models/movie';
 })
 export class ContentRowComponent implements OnInit {
 
-  @Input() item: Content = null;
+  @Input() title: string = '';
+  @Input() posterUrl: string = '';
+  @Input() tags: Array<Tag> = [];
+  @Input() description: string = '';
 
   constructor() { }
 

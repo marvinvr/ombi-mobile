@@ -50,3 +50,8 @@ export interface TvShow extends Content {
     available: boolean,
     partlyAvailable: boolean
 }
+
+export interface Tag {
+    color: 'primary' | 'secondary' | 'tertiary' | 'success' | 'warning' | 'danger',
+    text: string
+}
