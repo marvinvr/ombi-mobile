@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Movie } from 'src/models/item';
+import { Movie } from 'src/models/content';
 import { MovieSearchType } from 'src/models/movie';
 import { ApiService } from './api.service';
 

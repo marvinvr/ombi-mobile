@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { TvShow } from 'src/models/item';
+import { TvShow } from 'src/models/content';
 import { TvSearchType } from 'src/models/tv';
 import { ApiService } from './api.service';
 
