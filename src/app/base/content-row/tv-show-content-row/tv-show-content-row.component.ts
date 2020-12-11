@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Tag, TvShow } from 'src/models/content';
 import { TvService } from 'src/services/tv.service';
 
@@ -10,6 +10,8 @@ import { TvService } from 'src/services/tv.service';
 export class TvShowContentRowComponent implements OnInit {
 
   @Input() tvShow!: TvShow;
+  
+  @Output() click: EventEmitter<void> = new EventEmitter<void>();
 
   public posterUrl: string = '';
 
@@ -33,9 +35,34 @@ export class TvShowContentRowComponent implements OnInit {
   get tags(): Array<Tag> {
     return [
       {
+        color: this.available ? 'success' : this.requested ? 'warning' : this.partlyAvailable ? 'warning' : 'danger',
+        text: this.available ? 'Available' : this.requested ? 'Requested' : this.partlyAvailable ? 'Partly Available' : 'Not Requested'
+      },
+      {
         color: 'primary',
-        text: 'Test'
+        text: new Date(this.tvShow.aired).toLocaleDateString()
+      },
+      {
+        color: 'tertiary',
+        text: this.tvShow.network
       }
     ]
+  }
+
+  public emitClick(event) {
+    event?.stopPropagation();
+    this.click.emit();
+  }
+
+  private get available(): boolean {
+    return this.tvShow.available;
+  }
+
+  private get partlyAvailable(): boolean {
+    return this.tvShow.partlyAvailable;
+  }
+
+  private get requested(): boolean {
+    return this.tvShow.request.requested;
   }
 }

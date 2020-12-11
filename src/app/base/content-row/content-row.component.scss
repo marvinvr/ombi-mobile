@@ -4,19 +4,20 @@
 
     .content-top {
         display: flex;
-        // width: 100%;
+        height: 190px;
 
         .poster {
             flex: 0 0 auto;
-            margin: 20px 0;
+            margin: 20px 0 15px 0;
             padding-right: 10px;
-            width: 30%;
+            height: 160px;
+            img {
+                max-height: 100%;
+            }
         }
 
         .info {
-            flex: 0 0 auto;
-            width: 70%;
-            text-align: justify;
+            text-align: initial;
 
             h2 {
                 margin-bottom: 5px;
@@ -24,11 +25,16 @@
 
             p {
                 margin-top: 0.5em;
+                word-wrap: break-word;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                height: 125px;
             }
         }
     }
 
     .content-bottom {
         display: flex;
+        margin: 0 0 8px -3px;
     }
 }

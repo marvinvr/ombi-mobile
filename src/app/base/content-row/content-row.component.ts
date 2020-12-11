@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Content, Tag } from 'src/models/content';
 import { TvShow } from 'src/models/content';
 
@@ -14,7 +14,14 @@ export class ContentRowComponent implements OnInit {
   @Input() tags: Array<Tag> = [];
   @Input() description: string = '';
 
+  @Output() click: EventEmitter<void> = new EventEmitter<void>();
+
   constructor() { }
 
   ngOnInit() {}
+
+  public emitClick(event) {
+    event?.stopPropagation();
+    this.click.emit();
+  }
 }

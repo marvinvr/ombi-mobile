@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Movie, Tag } from 'src/models/content';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Movie, Tag } from '../../../../models/content';
 
 @Component({
   selector: 'app-movie-content-row',
@@ -9,6 +9,8 @@ import { Movie, Tag } from 'src/models/content';
 export class MovieContentRowComponent implements OnInit {
 
   @Input() movie!: Movie;
+
+  @Output() click: EventEmitter<void> = new EventEmitter<void>();
 
   constructor() { }
 
@@ -29,10 +31,27 @@ export class MovieContentRowComponent implements OnInit {
   get tags(): Array<Tag> {
     return [
       {
+        color: this.available ? 'success' : this.requested ? 'warning' : 'danger',
+        text: this.available ? 'Available' : this.requested ? 'Requested' : 'Not Requested'
+      },
+      {
         color: 'primary',
-        text: 'Test'
+        text: new Date(this.movie.releaseDate).toLocaleDateString()
       }
     ]
+  }
+
+  public emitClick(event) {
+    event?.stopPropagation();
+    this.click.emit();
+  }
+
+  private get available(): boolean {
+    return this.movie.available;
+  }
+
+  private get requested(): boolean {
+    return this.movie.request.requested;
   }
 
 }
