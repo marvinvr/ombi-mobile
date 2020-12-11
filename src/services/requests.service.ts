@@ -21,7 +21,7 @@ export class RequestsService {
     sort: RequestSort = RequestSort.REQUEST_DATE_DESC,
     status: RequestStatus = RequestStatus.NO_FILTER,
     availability: RequestAvailability = RequestAvailability.NO_FILTER
-    ) {
+  ) {
     return this.api.get(`/Request/${type}/${count}/${position}/${sort}/${status}/${availability}`, {}, {});
   }
 
