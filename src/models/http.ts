@@ -3,5 +3,12 @@ export interface Headers {
 }
 
 export interface RequestParameters {
-    [key: string]: string | boolean
+    [key: string]: string | boolean | number
+}
+
+export enum HttpRequestType {
+    POST = 'post',
+    GET = 'get',
+    PUT = 'put',
+    DELETE = 'delete'
 }
