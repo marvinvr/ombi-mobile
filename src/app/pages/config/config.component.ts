@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { ToastType } from 'src/models/toast';
 import { AuthService } from 'src/services/auth.service';
 import { CredentialsService } from 'src/services/credentials.service';
+import { ToastService } from 'src/services/toast.service';
 import { InputType } from '../../../models/input';
 
 @Component({
@@ -17,7 +19,8 @@ export class ConfigComponent implements OnInit {
 
   constructor(
     private credentials: CredentialsService,
-    private auth: AuthService
+    private auth: AuthService,
+    private toast: ToastService
   ) { }
 
   ngOnInit() {
@@ -31,7 +34,7 @@ export class ConfigComponent implements OnInit {
     this.credentials.username = this.model.username;
     this.credentials.password = this.model.password;
     this.auth.fetchToken()
-      .then((t) => this.credentials.token = t?.access_token)
+      .then(() => this.toast.show(ToastType.SUCCESS, "Successfully signed in!"));
   }
 
   public get inputType(): typeof InputType {
