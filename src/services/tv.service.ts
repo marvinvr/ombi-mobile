@@ -42,7 +42,8 @@ export class TvService {
             all: r.requestAll,
             firstSeason: r.firstSeason,
             latestSeason: r.latestSeason
-          }
+          },
+          seasons: r.seasonRequests
         },
         available: r.available,
         partlyAvailable: r.partlyAvailable
