@@ -21,11 +21,13 @@ import { RequestsComponent } from './pages/requests/requests.component';
 import { SearchComponent } from './base/search/search.component';
 import { HeaderComponent } from './base/header/header.component';
 import { ButtonComponent } from './base/button/button.component';
+import { ContentRowComponent } from './base/content-row/content-row.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    ContentRowComponent,
     NavigationComponent,
     InputComponent,
     MoviesComponent,

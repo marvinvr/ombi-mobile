@@ -45,6 +45,8 @@ export class TvService {
           },
           seasons: r.seasonRequests
         },
+        network: r.network,
+        status: r.status,
         available: r.available,
         partlyAvailable: r.partlyAvailable
       }) as TvShow

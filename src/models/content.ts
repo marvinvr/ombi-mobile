@@ -23,6 +23,7 @@ export interface Movie extends Content {
         approved: boolean,
         denied: boolean
     }
+    releaseDate: string,
     available: boolean
 }
 
@@ -43,6 +44,9 @@ export interface TvShow extends Content {
         },
         seasons: number[],
     }
+    network: string,
+    status: string,
+    aired: string,
     available: boolean,
-    partlyAvailable: boolean,
+    partlyAvailable: boolean
 }

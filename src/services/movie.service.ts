@@ -37,6 +37,7 @@ export class MovieService {
             approved: r.approved,
             denied: r.denied
         },
+        releaseDate: r.releaseDate,
         available: r.available
       }) as Movie
     )
