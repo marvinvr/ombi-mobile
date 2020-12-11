@@ -43,7 +43,7 @@ export class ApiService {
             : this.http[type as string](this.credentialsService.baseUrl + API_EXTENSION + path, {headers: this.formatHeaders(headers)}))
             .toPromise()
             .catch((err) => {
-              this.toast.show(err.status > 399 ? ToastType.ERROR: ToastType.WARNING, `${err.status} - ${err.statusText}`);
+              this.toast.show(err.status >= 400 ? ToastType.ERROR : ToastType.WARNING, `${err.status} - ${err.statusText}`);
               throw new Error(err);
             });
   }

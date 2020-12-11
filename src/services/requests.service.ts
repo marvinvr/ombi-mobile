@@ -21,15 +21,15 @@ export class RequestsService {
     sort: RequestSort = RequestSort.REQUEST_DATE_DESC,
     status: RequestStatus = RequestStatus.NO_FILTER,
     availability: RequestAvailability = RequestAvailability.NO_FILTER
-    ) {
+  ) {
     return this.api.get(`/Request/${type}/${count}/${position}/${sort}/${status}/${availability}`, {}, {});
   }
 
   public search(
     type: RequestType = RequestType.MOVIE,
     term: string
-    ) {
-      return this.api.get(`/Request/${type}/search/${term}`, {}, {});
+  ) {
+    return this.api.get(`/Request/${type}/search/${term}`, {}, {});
   }
 
   public deny(type: RequestActionType, id: number = 0): Promise<any> {
