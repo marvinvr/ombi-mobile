@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Item } from 'src/models/item';
+import { Movie } from 'src/models/item';
 import { MovieSearchType } from 'src/models/movie';
 import { ApiService } from './api.service';
 
@@ -12,28 +12,33 @@ export class MovieService {
     private api: ApiService
   ) { }
 
-  public list(type: MovieSearchType = MovieSearchType.POPULAR): Promise<Array<Item>> {
-    return this.api.getRequest(`/search/Movie/${type}`, {}, {})
-      .then(this.toItems)
+  public list(type: MovieSearchType = MovieSearchType.POPULAR): Promise<Array<Movie>> {
+    return this.api.get(`/search/Movie/${type}`, {}, {})
+      .then(this.format)
   }
 
-  public search(term: string): Promise<Array<Item>> {
-    return this.api.postRequest('/search/Movie/', {}, {
+  public search(term: string): Promise<Array<Movie>> {
+    return this.api.post('/search/Movie/', {}, {
         searchTerm: term,
         languageCode: 'en'
       })
-      .then(this.toItems)
+      .then(this.format)
   }
 
-  private toItems(results: Array<any>): Array<Item> {
-    return results.map((item) => {
-      return {
-        id: item.theMovieDbId,
-        title: item.originalTitle,
-        posterUrl: `https://image.tmdb.org/t/p/w300${item.posterPath}`,
-        description: item.overview,
-        requested: item.requested
-      }
-    })
+  private format(results: Array<any>): Array<Movie> {
+    return results.map((r) => ({
+        id: r.id,
+        title: r.title,
+        description: r.overview,
+        posterUrl: `https://image.tmdb.org/t/p/w300${r.posterPath}`,
+        request: {
+            id: r.requestId,
+            requested: r.requested,
+            approved: r.approved,
+            denied: r.denied
+        },
+        available: r.available
+      }) as Movie
+    )
   }
 }

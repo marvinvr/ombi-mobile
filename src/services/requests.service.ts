@@ -19,14 +19,14 @@ export class RequestsService {
     status: RequestStatus = RequestStatus.NO_FILTER,
     availability: RequestAvailability = RequestAvailability.NO_FILTER
     ) {
-    return this.api.getRequest(`/Request/${type}/${count}/${position}/${sort}/${status}/${availability}`, {}, {});
+    return this.api.get(`/Request/${type}/${count}/${position}/${sort}/${status}/${availability}`, {}, {});
   }
 
   public search(
     type: RequestType = RequestType.MOVIE,
     term: string
     ) {
-      return this.api.getRequest(`/Request/${type}/search/${term}`, {}, {});
+      return this.api.get(`/Request/${type}/search/${term}`, {}, {});
   }
 
   public deny(type: RequestActionType, id: number = 0) {
@@ -38,6 +38,6 @@ export class RequestsService {
   }
 
   private performAction(action: RequestAction, type: RequestActionType, id: number = 0) {
-    return this.api.putRequest(`/Request/${type}/${action}`, {}, {id: id});
+    return this.api.put(`/Request/${type}/${action}`, {}, {id: id});
   }
 }

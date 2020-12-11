@@ -13,7 +13,7 @@ export class AuthService {
   ) { }
 
   public fetchToken(): Promise<any> {
-    return this.apiService.postRequest(
+    return this.apiService.post(
       '/token',
       {},
       {

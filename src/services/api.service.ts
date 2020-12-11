@@ -1,7 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { RequestParameters, Headers } from 'src/models/http';
+import { RequestParameters, Headers, HttpRequestType } from 'src/models/http';
+import { ToastType } from 'src/models/toast';
 import { CredentialsService } from './credentials.service';
+import { ToastService } from './toast.service';
 
 const API_EXTENSION = '/api/v1';
 
@@ -13,25 +15,37 @@ export class ApiService {
   constructor(
     private http: HttpClient,
     private credentialsService: CredentialsService,
+    private toast: ToastService
   ) { }
 
-  public getRequest(path: string, headers: Headers, parameters: RequestParameters): Promise<any> {
-    return this.http.get(
-      this.credentialsService.baseUrl + API_EXTENSION + path + '?' + Object.keys(parameters).map((p) => [p, parameters[p]].join('=')).join('&'),
-      {headers: this.formatHeaders(headers)}
-    ).toPromise();
+  public get(path: string, headers: Headers, parameters: RequestParameters): Promise<any> {
+    return this.performRequest(
+      HttpRequestType.GET,
+      path + '?' + Object.keys(parameters).map((p) => [p, parameters[p]].join('=')).join('&'),
+      headers)
   }
 
-  public postRequest(path: string, headers: Headers, parameters: RequestParameters): Promise<any> {
-    return this.http.post(this.credentialsService.baseUrl + API_EXTENSION + path, parameters, {headers: this.formatHeaders(headers)}).toPromise();
+  public post(path: string, headers: Headers, parameters: RequestParameters): Promise<any> {
+    return this.performRequest(HttpRequestType.POST, path, headers, parameters);
   }
 
-  public putRequest(path: string, headers: Headers, parameters: RequestParameters): Promise<any> {
-    return this.http.put(this.credentialsService.baseUrl + API_EXTENSION + path, parameters, {headers: this.formatHeaders(headers)}).toPromise();
+  public put(path: string, headers: Headers, parameters: RequestParameters): Promise<any> {
+    return this.performRequest(HttpRequestType.PUT, path, headers, parameters);
   }
 
-  public deleteRequest(path: string, headers: Headers): Promise<any> {
-    return this.http.delete(this.credentialsService.baseUrl + API_EXTENSION + path, {headers: this.formatHeaders(headers)}).toPromise();
+  public delete(path: string, headers: Headers): Promise<any> {
+    return this.performRequest(HttpRequestType.DELETE, path, headers);
+  }
+
+  private performRequest(type: HttpRequestType, path: string, headers: Headers, parameters?: RequestParameters): Promise<any> {
+    return (parameters ? 
+            this.http[type as string](this.credentialsService.baseUrl + API_EXTENSION + path, parameters, {headers: this.formatHeaders(headers)})
+            : this.http[type as string](this.credentialsService.baseUrl + API_EXTENSION + path, {headers: this.formatHeaders(headers)}))
+            .toPromise()
+            .catch((err) => {
+              this.toast.show(err.status > 399 ? ToastType.ERROR: ToastType.WARNING, `${err.status} - ${err.statusText}`);
+              throw new Error(err);
+            });
   }
 
   private formatHeaders(headers: Headers): HttpHeaders {
