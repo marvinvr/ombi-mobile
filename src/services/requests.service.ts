@@ -28,8 +28,8 @@ export class RequestsService {
   public search(
     type: RequestType = RequestType.MOVIE,
     term: string
-    ) {
-      return this.api.get(`/Request/${type}/search/${term}`, {}, {});
+  ) {
+    return this.api.get(`/Request/${type}/search/${term}`, {}, {});
   }
 
   public deny(type: RequestActionType, id: number = 0): Promise<any> {
