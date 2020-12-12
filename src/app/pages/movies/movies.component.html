@@ -1,4 +1,6 @@
 <ion-content>
+  <app-header title="Movies"></app-header>
+  <app-search placeholder="Search Movies" (change)="searchChange($event)"></app-search>
   <ion-list lines="full">
     <app-movie-content-row *ngFor="let movie of movies" [movie]="movie"></app-movie-content-row>
   </ion-list>

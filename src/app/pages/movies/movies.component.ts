@@ -16,7 +16,24 @@ export class MoviesComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.fetchAllMovies();
+  }
+
+  ngOnDestroy() {
+    this.movies = [];
+  }
+
+  searchChange(e) {
+    if(e == '' || !e) this.fetchAllMovies()
+    else this.searchMovies(e);
+  }
+
+  private fetchAllMovies() {
     this.movie.list().then((movies) => this.movies = movies);
+  }
+
+  private searchMovies(term: string) {
+    this.movie.search(term).then((movies) => this.movies = movies);
   }
 
 }

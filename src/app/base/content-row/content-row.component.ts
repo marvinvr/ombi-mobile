@@ -14,14 +14,7 @@ export class ContentRowComponent implements OnInit {
   @Input() tags: Array<Tag> = [];
   @Input() description: string = '';
 
-  @Output() click: EventEmitter<void> = new EventEmitter<void>();
-
   constructor() { }
 
   ngOnInit() {}
-
-  public emitClick(event) {
-    event?.stopPropagation();
-    this.click.emit();
-  }
 }

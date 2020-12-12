@@ -10,13 +10,33 @@ import { TvService } from 'src/services/tv.service';
 export class TvComponent implements OnInit {
 
   public shows: Array<TvShow> = [];
+  private searchTerm: string = '';
 
   constructor(
     private tv: TvService
   ) {}
 
   ngOnInit() {
+    this.fetchAllShows();
+  }  
+
+  ngOnDestroy() {
+    this.shows = [];
+  }
+  
+  searchChange(e) {
+    this.searchTerm = e;
+    (e == '' || !e) 
+        ? this.fetchAllShows()
+        : this.searchShows();
+  }
+
+  public fetchAllShows() {
     this.tv.list().then((shows) => this.shows = shows);
+  }
+
+  public searchShows() {
+    this.tv.search(this.searchTerm).then((shows) => this.shows = shows);
   }
 
 }
