@@ -1,5 +1,5 @@
 {
-  "appId": "io.ombi-mobile",
+  "appId": "io.ombi.mobile",
   "appName": "ombi-mobile",
   "bundledWebRuntime": false,
   "npmClient": "npm",
