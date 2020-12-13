@@ -12,7 +12,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     
     if: github.event.pull_request.merged == true # only merged pull requests must trigger this job
 
@@ -28,8 +28,10 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - name: Install dependencies
       run: npm install
-    - name: Install Ionic CLI
+    - name: Install Ionic
       run: npm install -g @ionic/cli
+    - name: Install cocoapods
+      run: gem install cocoapods
     - name: Build Ionic App
       run: ionic build
     - name: Build iOS app
