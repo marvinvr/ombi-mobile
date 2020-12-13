@@ -13,7 +13,12 @@ export class TvService {
   ) { }
 
   list(type: TvSearchType = TvSearchType.POPULAR): Promise<Array<TvShow>> {
-    return this.api.get(`/search/Tv/${type}`, {}, {}).then(this.format);
+    return this.api.get(`/search/Tv/${type}`, {}, {})
+            .then(this.format)
+            .then((tv) => Promise.all(tv.map( async (t) => {
+              t.posterUrl = (await this.getInfo(t.id))?.banner;
+              return t;
+            })));
   }
 
   search(term: string): Promise<Array<TvShow>> {
