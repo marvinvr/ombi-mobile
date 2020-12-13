@@ -30,6 +30,8 @@ jobs:
       run: npm install
     - name: Install Ionic CLI
       run: npm install -g @ionic/cli
+    - name: Build Webapp
+      run: ionic build
     - name: Build iOS app
       run: ionic capacitor build ios
     - name: Create a Release
