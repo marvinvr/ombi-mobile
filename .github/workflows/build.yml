@@ -14,7 +14,7 @@ jobs:
   build:
     runs-on: macos-latest
     
-    if: github.event.pull_request.merged == true  && github.GITHUB_REF != null
+    if: github.event.pull_request.merged == true
 
     strategy:
       matrix:
@@ -44,7 +44,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         # The name of the tag. This should come from the webhook payload, `github.GITHUB_REF` when a user pushes a new tag
-        tag_name: ${{ github.GITHUB_REF }}
+        tag_name: 1.0.${{ github.GITHUB_RUN_NUMBER }}
         # The name of the release. For example, `Release v1.0.1`
-        release_name: Release ${{ github.GITHUB_REF }}
+        release_name: Release 1.0.${{ github.GITHUB_RUN_NUMBER }}
         # Text describing the contents of the tag.
