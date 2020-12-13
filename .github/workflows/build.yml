@@ -36,8 +36,8 @@ jobs:
       run: ionic build
     - name: Build iOS app
       run: ionic capacitor build ios
-    - name: Build Android app
-      run: ionic capacitor build android
+    #- name: Build Android app
+    #  run: ionic capacitor build android
     - name: Prepare release Files
       run: |
         cd ../
@@ -46,6 +46,7 @@ jobs:
         cd ./ombi-mobile
     - name: Create a Release
       uses: actions/create-release@v1.1.4
+      id: create_release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
