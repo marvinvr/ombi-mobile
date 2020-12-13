@@ -6,7 +6,7 @@ name: Build app for iOS / Android
 on:
   pull_request:
     branches:
-      - develop
+      - master
     types:
       - closed
 
