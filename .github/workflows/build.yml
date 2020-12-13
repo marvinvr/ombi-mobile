@@ -43,6 +43,7 @@ jobs:
         cd ../
         rm -rf ./ombi-mobile/node_modules/
         zip -r release.zip ./ombi-mobile
+        mv release.zip ./ombi-mobile/
         cd ./ombi-mobile
     - name: Create a Release
       uses: actions/create-release@v1.1.4
