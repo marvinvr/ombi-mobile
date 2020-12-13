@@ -55,3 +55,12 @@ export interface Tag {
     color: 'primary' | 'secondary' | 'tertiary' | 'success' | 'warning' | 'danger',
     text: string
 }
+
+export interface ContentClass {
+    title: string,
+    description: string,
+    tags: Array<Tag>,
+    available: boolean,
+    requested: boolean,
+    posterUrl: string
+}

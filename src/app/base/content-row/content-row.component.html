@@ -1,16 +1,16 @@
-<ion-item (click)="emitClick($event)">
+<ion-item (click)="click.emit()">
   <div class="content-row">
     <div class="content-top">
       <div class="poster">
-        <img src="{{posterUrl}}">
+        <img src="{{content.posterUrl}}">
       </div>
       <div class="info">
-        <h2>{{title}}</h2>
-        <p>{{description}}</p>
+        <h2>{{content.title}}</h2>
+        <p>{{content.description}}</p>
       </div>
     </div>
     <div class="content-bottom">
-      <ion-chip *ngFor="let tag of tags">
+      <ion-chip *ngFor="let tag of content.tags">
         <ion-label [color]="tag.color" disabled="true">{{tag.text}}</ion-label>
       </ion-chip>
     </div>

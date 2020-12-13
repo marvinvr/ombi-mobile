@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Content, Tag } from 'src/models/content';
+import { Content, ContentClass, Tag } from 'src/models/content';
 import { TvShow } from 'src/models/content';
 
 @Component({
@@ -9,10 +9,8 @@ import { TvShow } from 'src/models/content';
 })
 export class ContentRowComponent implements OnInit {
 
-  @Input() title: string = '';
-  @Input() posterUrl: string = '';
-  @Input() tags: Array<Tag> = [];
-  @Input() description: string = '';
+  @Input() content!: ContentClass;
+  @Output() click: EventEmitter<any> = new EventEmitter<any>();
 
   constructor() { }
 

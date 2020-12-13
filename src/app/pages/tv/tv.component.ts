@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { TvContent } from 'src/app/base/content-row/content-types/tv-row';
 import { TvShow } from 'src/models/content';
 import { TvService } from 'src/services/tv.service';
 
@@ -37,6 +38,10 @@ export class TvComponent implements OnInit {
 
   public searchShows() {
     this.tv.search(this.searchTerm).then((shows) => this.shows = shows);
+  }
+
+  public content(show: TvShow) {
+    return new TvContent(show);
   }
 
 }

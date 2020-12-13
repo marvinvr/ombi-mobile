@@ -2,6 +2,6 @@
   <app-header title="TV Shows"></app-header>
   <app-search placeholder="Search TV Shows" (change)="searchChange($event)"></app-search>
   <ion-list lines="full">
-    <app-tv-show-content-row *ngFor="let show of shows" [tvShow]="show"></app-tv-show-content-row>
+    <app-content-row *ngFor="let show of shows" [content]="content(show)"></app-content-row>
   </ion-list>
 </ion-content>
