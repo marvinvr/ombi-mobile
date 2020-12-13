@@ -1,7 +1,7 @@
 # This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: Build latest ionic app for iOS / Android
+name: Build app for iOS / Android
 
 on:
   pull_request:
@@ -21,24 +21,23 @@ jobs:
         node-version: [15.x]
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Prep env with nodejs@${{ matrix.node-version }}
-      uses: actions/setup-node@v1
+    - name: Prepare environment
+      uses: |
+        actions/setup-node@v1
+        actions/checkout@v2
       with:
         node-version: ${{ matrix.node-version }}
     - name: Install dependencies
-      run: npm install
-    - name: Install Ionic
-      run: npm install -g @ionic/cli
-    - name: Install cocoapods
-      run: gem install cocoapods
-    - name: Build Ionic App
-      run: ionic build
-    - name: Build iOS app
-      run: ionic capacitor build ios
-    #- name: Build Android app
-    #  run: ionic capacitor build android
-    - name: Prepare release Files
+      run: |
+          npm install
+          npm install -g @ionic/cli
+          gem install cocoapods
+    - name: Build App & Workspace files
+      run: |
+        ionic build
+        ionic capacitor build ios
+        ionic capacitor build android
+    - name: Prepare release Assets
       run: |
         cd ../
         rm -rf ./ombi-mobile/node_modules/
