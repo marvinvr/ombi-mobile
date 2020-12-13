@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Content, ContentClass, Tag } from 'src/models/content';
-import { TvShow } from 'src/models/content';
 
 @Component({
   selector: 'app-content-row',
