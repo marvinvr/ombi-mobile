@@ -1,0 +1,42 @@
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Build latest ionic app for iOS / Android
+
+on:
+  pull_request:
+    branches:
+      - develop
+    types:
+      - closed
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    if: github.event.pull_request.merged == true # only merged pull requests must trigger this job
+
+    strategy:
+      matrix:
+        node-version: [15.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Prep env with nodejs@${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Install dependencies
+      run: npm install
+    - name: Install Ionic CLI
+      run: npm install -g @ionic/cli
+    - name: Build iOS app
+      run: ionic capacitor build ios
+    - name: Create a Release
+      uses: actions/create-release@v1.1.4
+      with:
+        # The name of the tag. This should come from the webhook payload, `github.GITHUB_REF` when a user pushes a new tag
+        tag_name: 1.{{github.GITHUB_REF}}
+        # The name of the release. For example, `Release v1.0.1`
+        release_name: Release 1.{{github.GITHUB_REF}}
+        # Text describing the contents of the tag.
