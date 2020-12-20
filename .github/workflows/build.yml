@@ -35,8 +35,8 @@ jobs:
     - name: Build App & Workspace files
       run: |
         ionic build
-        ionic capacitor build ios
-        ionic capacitor build android
+#        ionic capacitor build ios
+#        ionic capacitor build android
     - name: Prepare release Assets
       run: |
         cd ../
