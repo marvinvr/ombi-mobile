@@ -4,12 +4,9 @@
 name: Build app for iOS / Android / Web
 
 on:
-  push:
-    branches: 
-      - develop
   pull_request:
     branches:
-      - master
+      - develop
     types:
       - closed
 
