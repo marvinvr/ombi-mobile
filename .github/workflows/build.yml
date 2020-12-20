@@ -4,6 +4,9 @@
 name: Build app for iOS / Android
 
 on:
+  push:
+    branches: 
+      - develop
   pull_request:
     branches:
       - master
@@ -44,6 +47,10 @@ jobs:
         zip -r release.zip ./ombi-mobile
         mv release.zip ./ombi-mobile/
         cd ./ombi-mobile
+    - name: GitHub Pages
+      uses: crazy-max/ghaction-github-pages@v2.2.0
+      with:
+        build_dir: www
     - name: Create a Release
       uses: actions/create-release@v1.1.4
       id: create_release
