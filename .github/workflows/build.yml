@@ -6,7 +6,7 @@ name: Build app for iOS / Android / Pages
 on:
   pull_request:
     branches:
-      - master
+      - develop
     types:
       - closed
 
@@ -34,7 +34,7 @@ jobs:
           gem install cocoapods
     - name: Build App & Workspace files
       run: |
-        ionic build
+        ionic build --prod
         ionic capacitor build ios
         ionic capacitor build android
     - name: Prepare release Assets
