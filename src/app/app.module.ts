@@ -22,7 +22,7 @@ import { SearchComponent } from './base/search/search.component';
 import { HeaderComponent } from './base/header/header.component';
 import { ButtonComponent } from './base/button/button.component';
 import { ContentRowComponent } from './base/content-row/content-row.component';
-
+import { ContentComponent } from './pages/content/content.component'; 
 
 @NgModule({
   declarations: [
@@ -36,7 +36,8 @@ import { ContentRowComponent } from './base/content-row/content-row.component';
     RequestsComponent,
     SearchComponent,
     HeaderComponent,
-    ButtonComponent
+    ButtonComponent,
+    ContentComponent
   ],
   entryComponents: [ ],
   imports: [BrowserModule, CommonModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule],

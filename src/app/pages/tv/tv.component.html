@@ -1,7 +1,10 @@
-<ion-content>
+<ion-content *ngIf="!contentPage">
   <app-header title="TV Shows"></app-header>
   <app-search placeholder="Search TV Shows" (change)="searchChange($event)"></app-search>
   <ion-list lines="full">
-    <app-content-row *ngFor="let show of shows" [content]="content(show)"></app-content-row>
+    <app-content-row *ngFor="let show of shows" [content]="content(show)" (click)="showContent(show)"></app-content-row>
   </ion-list>
+</ion-content>
+<ion-content *ngIf="contentPage">
+  <app-content (back)="hideContent()" [content]="selectedShow"></app-content>
 </ion-content>

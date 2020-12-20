@@ -7,6 +7,9 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class ButtonComponent implements OnInit {
   @Input() label: string = '';
+  @Input() size: 'small' | 'default' | 'large' = 'default';
+  @Input() disabled: boolean = false;
+  @Input() color: 'primary' | 'success' | 'danger' | 'warning' = 'primary';
 
   @Output() action: EventEmitter<void> = new EventEmitter();
 

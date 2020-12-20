@@ -11,7 +11,8 @@ import { TvService } from 'src/services/tv.service';
 export class TvComponent implements OnInit {
 
   public shows: Array<TvShow> = [];
-  private searchTerm: string = '';
+  public contentPage: boolean = false;
+  public selectedShow: TvContent;
 
   constructor(
     private tv: TvService
@@ -26,22 +27,31 @@ export class TvComponent implements OnInit {
   }
   
   searchChange(e) {
-    this.searchTerm = e;
     (e == '' || !e) 
         ? this.fetchAllShows()
-        : this.searchShows();
+        : this.searchShows(e.detail);
   }
 
   public fetchAllShows() {
     this.tv.list().then((shows) => this.shows = shows);
   }
 
-  public searchShows() {
-    this.tv.search(this.searchTerm).then((shows) => this.shows = shows);
+  public searchShows(term: string) {
+    this.tv.search(term).then((shows) => this.shows = shows);
   }
 
   public content(show: TvShow) {
     return new TvContent(show);
+  }
+
+  public showContent(show: TvShow): void {
+    this.contentPage = true;
+    this.selectedShow = this.content(show);
+  }
+
+  public hideContent(): void {
+    this.contentPage = false;
+    this.selectedShow = null;
   }
 
 }
