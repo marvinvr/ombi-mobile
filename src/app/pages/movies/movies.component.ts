@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { MovieContent } from 'src/app/base/content-row/content-types/movie-row';
 import { Movie } from 'src/models/content';
+import { RequestActionType } from 'src/models/requests';
 import { MovieService } from 'src/services/movie.service';
 
 @Component({
@@ -11,12 +13,10 @@ import { MovieService } from 'src/services/movie.service';
 export class MoviesComponent implements OnInit {
 
   public movies: Array<Movie> = [];
-  private searchTerm: string = '';
-  public contentPage: boolean = false;
-  public selectedMovie: MovieContent;
 
   constructor(
-    private movie: MovieService
+    private movie: MovieService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -25,8 +25,6 @@ export class MoviesComponent implements OnInit {
 
   ngOnDestroy() {
     this.movies = [];
-    this.contentPage = false;
-    this.selectedMovie = undefined;
   }
   
   searchChange(e) {
@@ -48,12 +46,6 @@ export class MoviesComponent implements OnInit {
   }
 
   public showContent(movie: Movie): void {
-    this.contentPage = true;
-    this.selectedMovie = this.content(movie);
-  }
-
-  public hideContent(): void {
-    this.contentPage = false;
-    this.selectedMovie = null;
+    this.router.navigate([RequestActionType.MOVIE, movie.id])
   }
 }

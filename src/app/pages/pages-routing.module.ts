@@ -8,11 +8,11 @@ import { TvComponent } from './tv/tv.component';
 
 const routes: Routes = [
     {
-        path: 'movies',
+        path: 'Movie',
         component: MoviesComponent,
     },
     {
-        path: 'tv',
+        path: 'Tv',
         component: TvComponent,
     },
     {
@@ -22,6 +22,10 @@ const routes: Routes = [
     {
         path: 'config',
         component: ConfigComponent,
+    },
+    {
+        path: ':type/:id',
+        component: ContentComponent
     }
 ];
 

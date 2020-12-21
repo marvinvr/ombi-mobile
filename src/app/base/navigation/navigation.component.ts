@@ -10,12 +10,12 @@ export class NavigationComponent implements OnInit {
 
   public tabs: Tab[] = [
     {
-      id: 'movies',
+      id: 'Movie',
       label: 'Movies',
       icon: 'videocam-outline'
     },
     {
-      id: 'tv',
+      id: 'Tv',
       label: 'TV Shows',
       icon: 'tv-outline'
     },
