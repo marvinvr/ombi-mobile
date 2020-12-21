@@ -10,7 +10,7 @@ export class ButtonComponent implements OnInit {
   @Input() size: 'small' | 'default' | 'large' = 'default';
   @Input() disabled: boolean = false;
   @Input() color: 'primary' | 'success' | 'danger' | 'warning' = 'primary';
-  @Input() fill: "clear" | "default" | "outline" | "solid" = 'solid'
+  @Input() fill: "clear" | "default" | "outline" | "solid" = 'default'
 
   @Output() action: EventEmitter<void> = new EventEmitter();
 
