@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { TvContent } from 'src/app/base/content-row/content-types/tv-row';
 import { TvShow } from 'src/models/content';
+import { RequestActionType } from 'src/models/requests';
 import { TvService } from 'src/services/tv.service';
 
 @Component({
@@ -11,11 +13,10 @@ import { TvService } from 'src/services/tv.service';
 export class TvComponent implements OnInit {
 
   public shows: Array<TvShow> = [];
-  public contentPage: boolean = false;
-  public selectedShow: TvContent;
 
   constructor(
-    private tv: TvService
+    private tv: TvService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -45,13 +46,7 @@ export class TvComponent implements OnInit {
   }
 
   public showContent(show: TvShow): void {
-    this.contentPage = true;
-    this.selectedShow = this.content(show);
-  }
-
-  public hideContent(): void {
-    this.contentPage = false;
-    this.selectedShow = null;
+    this.router.navigate([RequestActionType.TV, show.id])
   }
 
 }
