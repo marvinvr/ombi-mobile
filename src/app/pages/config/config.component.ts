@@ -34,7 +34,7 @@ export class ConfigComponent implements OnInit {
     this.credentials.username = this.model.username;
     this.credentials.password = this.model.password;
     this.auth.fetchToken()
-      .then(() => this.toast.show(ToastType.SUCCESS, "Successfully signed in!"));
+      .then((t) => this.toast.show(ToastType.SUCCESS, `Successfully signed in as ${this.credentials.name}!`));
   }
 
   public get inputType(): typeof InputType {
