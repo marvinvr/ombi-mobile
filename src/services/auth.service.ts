@@ -16,6 +16,7 @@ export class AuthService {
   ) { }
 
   public fetchToken(): Promise<any> {
+    if(!this.credentials.username || !this.credentials.password || !this.credentials.baseUrl) return
     return this.apiService.post(
       '/token',
       {},
