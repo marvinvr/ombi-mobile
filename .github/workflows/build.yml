@@ -1,7 +1,7 @@
 # This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: Build app for iOS / Android / Pages
+name: Build app for Pages
 
 on:
   pull_request:
@@ -12,7 +12,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: ubuntu-18.04 #macos-latest
     
     if: github.event.pull_request.merged == true
 
@@ -37,19 +37,20 @@ jobs:
         ionic build --prod
 #        ionic capacitor build ios
 #        ionic capacitor build android
-    - name: Prepare release Assets
-      run: |
-        cd ../
-        rm -rf ./ombi-mobile/node_modules/
-        zip -r release.zip ./ombi-mobile
-        mv release.zip ./ombi-mobile/
-        cd ./ombi-mobile
+#    - name: Prepare release Assets
+#      run: |
+#        cd ../
+#        rm -rf ./ombi-mobile/node_modules/
+#        zip -r release.zip ./ombi-mobile
+#        mv release.zip ./ombi-mobile/
+#        cd ./ombi-mobile
     - name: GitHub Pages
       uses: crazy-max/ghaction-github-pages@v2.2.0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         build_dir: www
+        fqdn: ombi-mobile.marvinvr.dev
 #    - name: Create a Release
 #      uses: actions/create-release@v1.1.4
 #      id: create_release
