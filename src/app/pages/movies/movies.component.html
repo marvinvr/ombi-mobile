@@ -1,4 +1,7 @@
 <ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <app-header title="Movies"></app-header>
   <app-search placeholder="Search Movies" (change)="searchChange($event)"></app-search>
   <ion-list lines="full">

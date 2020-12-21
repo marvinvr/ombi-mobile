@@ -13,5 +13,5 @@ export class ContentRowComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 }

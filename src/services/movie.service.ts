@@ -33,6 +33,10 @@ export class MovieService {
     return this.movieCache;
   }
 
+  cache(movie: Movie) {
+    this.movieCache[movie.id] = movie;
+  }
+
   private cacheResults(movies: Movie[]): Movie[] {
     movies.forEach((movie) => this.movieCache[movie.id] = movie);
     return movies;

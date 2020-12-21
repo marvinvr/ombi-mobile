@@ -48,4 +48,8 @@ export class MovieContent implements ContentClass {
     public disable(): void {
       this.movie.request.requested = true;
     }     
+
+    public set requested(requested: boolean) {
+      this.movie.request.requested = requested;
+    }
 }

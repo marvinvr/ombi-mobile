@@ -17,7 +17,9 @@
         }
 
         .info {
+            display: flex;
             text-align: initial;
+            flex-direction: column;
 
             h2 {
                 margin-bottom: 5px;
@@ -28,7 +30,8 @@
                 word-wrap: break-word;
                 text-overflow: ellipsis;
                 overflow: hidden;
-                height: 125px;
+                flex-grow: 1;
+                margin-bottom: 8px;
             }
         }
     }
