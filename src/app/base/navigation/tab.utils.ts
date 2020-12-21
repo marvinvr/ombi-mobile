@@ -1,14 +1,15 @@
+import { RequestActionType } from "src/models/requests"
 import { Tab } from "src/models/tabs"
 
 export const adminTabs = (): Tab[] => {
     return [
         {
-          id: 'movies',
+          id: RequestActionType.MOVIE,
           label: 'Movies',
           icon: 'videocam-outline'
         },
         {
-          id: 'tv',
+          id: RequestActionType.TV,
           label: 'TV Shows',
           icon: 'tv-outline'
         },
@@ -28,12 +29,12 @@ export const adminTabs = (): Tab[] => {
 export const userTabs = (): Tab[] => {
     return [
         {
-          id: 'movies',
+          id: RequestActionType.MOVIE,
           label: 'Movies',
           icon: 'videocam-outline'
         },
         {
-          id: 'tv',
+          id: RequestActionType.TV,
           label: 'TV Shows',
           icon: 'tv-outline'
         },

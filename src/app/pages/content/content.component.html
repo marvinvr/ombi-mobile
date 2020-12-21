@@ -11,8 +11,9 @@
     <app-button 
       [disabled]="content.requested || content.available" 
       (action)="request()" 
-      [label]="'Request ' + content.type"
-      color="success"
+      [label]="label"
+      [color]="color"
+      fill="outline"
       ></app-button>
     <img src="{{content.posterUrl}}" />
     <br />
