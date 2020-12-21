@@ -16,13 +16,14 @@ export class RequestsService {
 
   public list(
     type: RequestType = RequestType.MOVIE,
-    count: number = 10, 
+    count: number = 10,
     position: number = 0,
     sort: RequestSort = RequestSort.REQUEST_DATE_DESC,
     status: RequestStatus = RequestStatus.NO_FILTER,
     availability: RequestAvailability = RequestAvailability.NO_FILTER
   ) {
-    return this.api.get(`/Request/${type}/${count}/${position}/${sort}/${status}/${availability}`, {}, {});
+    return this.api.get(`/Request/${type}/${count}/${position}/${sort}/${status}/${availability}`, {}, {})
+            .then((requestResult) => this.format(requestResult.collection));
   }
 
   public search(
@@ -43,5 +44,31 @@ export class RequestsService {
   private performAction(action: RequestAction, type: RequestActionType, id: number = 0) {
     return this.api.put(`/Request/${type}/${action}`, {}, {id: id})
             .then(() => this.toast.show(ToastType.SUCCESS, `Successfully ${action == RequestAction.APPROVE ? 'approved' : 'denied'} request`));
+  }
+
+  private format(results): Array<any> {
+    return results.map((r) => ({
+        id: r.id,
+        title: r.title,
+        description: r.overview,
+        request: {
+          id: r.requestId,
+          requested: r.requested,
+          approved: r.approved,
+          denied: r.denied,
+          type: {
+            all: r.requestAll,
+            firstSeason: r.firstSeason,
+            latestSeason: r.latestSeason
+          },
+          seasons: r.seasonRequests
+        },
+        network: r.network,
+        status: r.status,
+        aired: r.firstAired,
+        available: r.available,
+        partlyAvailable: r.partlyAvailable
+      }) as TvShow
+    )
   }
 }

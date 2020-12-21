@@ -61,6 +61,6 @@ export interface ContentClass {
     description: string,
     tags: Array<Tag>,
     available: boolean,
-    requested: boolean,
+    requested?: boolean,
     posterUrl: string
 }
