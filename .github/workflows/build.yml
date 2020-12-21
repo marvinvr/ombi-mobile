@@ -31,7 +31,7 @@ jobs:
       run: |
           npm install
           npm install -g @ionic/cli
-          gem install cocoapods
+#          gem install cocoapods
     - name: Build App & Workspace files
       run: |
         ionic build --prod
