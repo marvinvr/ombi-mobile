@@ -1,18 +1,18 @@
 # This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: Build app for iOS / Android
+name: Build app for Pages
 
 on:
   pull_request:
     branches:
-      - master
+      - develop
     types:
       - closed
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: ubuntu-18.04 #macos-latest
     
     if: github.event.pull_request.merged == true
 
@@ -34,31 +34,38 @@ jobs:
           gem install cocoapods
     - name: Build App & Workspace files
       run: |
-        ionic build
-        ionic capacitor build ios
-        ionic capacitor build android
-    - name: Prepare release Assets
-      run: |
-        cd ../
-        rm -rf ./ombi-mobile/node_modules/
-        zip -r release.zip ./ombi-mobile
-        mv release.zip ./ombi-mobile/
-        cd ./ombi-mobile
-    - name: Create a Release
-      uses: actions/create-release@v1.1.4
-      id: create_release
+        ionic build --prod
+#        ionic capacitor build ios
+#        ionic capacitor build android
+#    - name: Prepare release Assets
+#      run: |
+#        cd ../
+#        rm -rf ./ombi-mobile/node_modules/
+#        zip -r release.zip ./ombi-mobile
+#        mv release.zip ./ombi-mobile/
+#        cd ./ombi-mobile
+    - name: GitHub Pages
+      uses: crazy-max/ghaction-github-pages@v2.2.0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: 1.0.${{ github.run_number }}
-        release_name: Release 1.0.${{ github.run_number }}
-    - name: Upload Release Assets
-      id: upload-release-asset 
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: ./release.zip
-        asset_name: ombi-mobile-1.0.${{ github.run_number }}.zip
-        asset_content_type: application/zip
+        build_dir: www
+        fqdn: ombi-mobile.marvinvr.dev
+#    - name: Create a Release
+#      uses: actions/create-release@v1.1.4
+#      id: create_release
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#      with:
+#        tag_name: 1.0.${{ github.run_number }}
+#        release_name: Release 1.0.${{ github.run_number }}
+#    - name: Upload Release Assets
+#      id: upload-release-asset 
+#      uses: actions/upload-release-asset@v1
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#      with:
+#        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+#        asset_path: ./release.zip
+#        asset_name: ombi-mobile-1.0.${{ github.run_number }}.zip
+#        asset_content_type: application/zip

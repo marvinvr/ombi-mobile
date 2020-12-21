@@ -23,6 +23,9 @@ import { HeaderComponent } from './base/header/header.component';
 import { ButtonComponent } from './base/button/button.component';
 import { ContentRowComponent } from './base/content-row/content-row.component';
 import { ContentComponent } from './pages/content/content.component'; 
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
+
 
 @NgModule({
   declarations: [
@@ -40,7 +43,7 @@ import { ContentComponent } from './pages/content/content.component';
     ContentComponent
   ],
   entryComponents: [ ],
-  imports: [BrowserModule, CommonModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule],
+  imports: [BrowserModule, CommonModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule, ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })],
   providers: [
     StatusBar,
     SplashScreen,
