@@ -52,7 +52,7 @@ export class ContentComponent implements OnInit, OnDestroy {
   }
 
   get color(): string {
-    return this.content.requested ? 'warning' : 'success';
+    return this.content.available ? 'success' : this.content.requested ? 'warning': 'success';
   }
 
   public goBack() {
@@ -61,5 +61,6 @@ export class ContentComponent implements OnInit, OnDestroy {
 
   public request(): void {
     this.requests.request(this.content.type, this.content.id)
+      .then(() => this.content.requested = true);
   }
 }

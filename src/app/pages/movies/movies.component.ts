@@ -13,6 +13,7 @@ import { MovieService } from 'src/services/movie.service';
 export class MoviesComponent implements OnInit {
 
   public movies: Array<Movie> = [];
+  private searchTerm: string = '';
 
   constructor(
     private movie: MovieService,
@@ -28,17 +29,19 @@ export class MoviesComponent implements OnInit {
   }
   
   searchChange(e) {
+    if(typeof e !== 'string') return;
+    this.searchTerm = e;
     (e == '' || !e) 
         ? this.fetchAllMovies()
-        : this.searchMovies(e.detail);
+        : this.searchMovies();
   }
 
-  private fetchAllMovies(): void {
-    this.movie.list().then((movies) => this.movies = movies);
+  private fetchAllMovies(): Promise<Movie[]> {
+    return this.movie.list().then((movies) => this.movies = movies);
   }
 
-  private searchMovies(term: string): void {
-    this.movie.search(term).then((movies) => this.movies = movies);
+  private searchMovies(): Promise<Movie[]> {
+    return this.movie.search(this.searchTerm).then((movies) => this.movies = movies);
   }
 
   public content(movie: Movie): MovieContent {
@@ -47,5 +50,12 @@ export class MoviesComponent implements OnInit {
 
   public showContent(movie: Movie): void {
     this.router.navigate([RequestActionType.MOVIE, movie.id])
+  }
+
+  public refresh(event) {
+    (this.searchTerm == '' ?
+      this.fetchAllMovies()
+      : this.searchMovies())
+      .then(() => event.target.complete())
   }
 }

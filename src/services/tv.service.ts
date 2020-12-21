@@ -38,6 +38,10 @@ export class TvService {
     return this.api.get(`/Images/tv/${id}`, {}, {});
   }
 
+  cache(tv: TvShow) {
+    this.showCache[tv.id] = tv;
+  }
+
   getInfo(id: number): Promise<any> {
     return this.api.get(`/search/Tv/info/${id}`, {}, {});
   }

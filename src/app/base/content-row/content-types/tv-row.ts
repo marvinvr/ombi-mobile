@@ -54,6 +54,10 @@ export class TvContent implements ContentClass {
         return this.tvShow.request.requested;
       }
 
+      public set requested(requested: boolean) {
+        this.tvShow.request.requested = requested;
+      }
+
       public disable(): void {
         this.tvShow.request.requested = true;
       }     

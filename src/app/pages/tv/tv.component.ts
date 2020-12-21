@@ -13,6 +13,7 @@ import { TvService } from 'src/services/tv.service';
 export class TvComponent implements OnInit {
 
   public shows: Array<TvShow> = [];
+  private searchTerm: string = '';
 
   constructor(
     private tv: TvService,
@@ -28,17 +29,19 @@ export class TvComponent implements OnInit {
   }
   
   searchChange(e) {
+    if(typeof e !== 'string') return;
+    this.searchTerm = e;
     (e == '' || !e) 
         ? this.fetchAllShows()
-        : this.searchShows(e.detail);
+        : this.searchShows();
   }
 
-  public fetchAllShows() {
-    this.tv.list().then((shows) => this.shows = shows);
+  public fetchAllShows(): Promise<TvShow[]> {
+    return this.tv.list().then((shows) => this.shows = shows);
   }
 
-  public searchShows(term: string) {
-    this.tv.search(term).then((shows) => this.shows = shows);
+  public searchShows(): Promise<TvShow[]> {
+    return this.tv.search(this.searchTerm).then((shows) => this.shows = shows);
   }
 
   public content(show: TvShow) {
@@ -47,6 +50,13 @@ export class TvComponent implements OnInit {
 
   public showContent(show: TvShow): void {
     this.router.navigate([RequestActionType.TV, show.id])
+  }
+
+  public refresh(event) {
+    (this.searchTerm == '' ?
+      this.fetchAllShows()
+      : this.searchShows())
+      .then(() => event.target.complete())
   }
 
 }
