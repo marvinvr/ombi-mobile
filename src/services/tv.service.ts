@@ -22,14 +22,19 @@ export class TvService {
   }
 
   search(term: string): Promise<Array<TvShow>> {
-    return this.api.get(`/search/Tv/${term}`, {}, {}).then(this.format);
+    return this.api.get(`/search/Tv/${term}`, {}, {})
+            .then(this.format)
+            .then((tv) => Promise.all(tv.map( async (t) => {
+              t.posterUrl = (await this.getInfo(t.id))?.banner;
+              return t;
+            })));
   }
 
   getImage(id: string): Promise<string> {
     return this.api.get(`/Images/tv/${id}`, {}, {});
   }
 
-  getInfo(id: string): Promise<any> {
+  getInfo(id: number): Promise<any> {
     return this.api.get(`/search/Tv/info/${id}`, {}, {});
   }
 

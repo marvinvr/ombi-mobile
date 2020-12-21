@@ -22,6 +22,7 @@ import { SearchComponent } from './base/search/search.component';
 import { HeaderComponent } from './base/header/header.component';
 import { ButtonComponent } from './base/button/button.component';
 import { ContentRowComponent } from './base/content-row/content-row.component';
+import { ContentComponent } from './pages/content/content.component'; 
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 
@@ -38,7 +39,8 @@ import { environment } from '../environments/environment';
     RequestsComponent,
     SearchComponent,
     HeaderComponent,
-    ButtonComponent
+    ButtonComponent,
+    ContentComponent
   ],
   entryComponents: [ ],
   imports: [BrowserModule, CommonModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule, ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })],

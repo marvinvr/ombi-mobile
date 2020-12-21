@@ -1,1 +1,9 @@
-<ion-button expand="block" color="primary" (click)='handleClick($event)'>{{label}}</ion-button>
+<ion-button 
+    expand="block" 
+    [size]="size" 
+    [disabled]="disabled" 
+    [color]="color" 
+    (click)='handleClick($event)'
+    >
+    {{label}}
+</ion-button>
