@@ -14,10 +14,12 @@ export class CredentialsService {
   constructor( ) { }
 
   public get name(): string {
+    if(this.token == '') return '';
     return jwt_decode(this.token)['sub'];
   }
 
   public get isAdmin(): boolean {
+    if(this.token == '') return false;
     return jwt_decode(this.token)['roles']?.indexOf('Admin') != -1;
   }
 

@@ -1,5 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { RequestActionType } from 'src/models/requests';
 import { Tab } from 'src/models/tabs';
 import { CredentialsService } from 'src/services/credentials.service';
 import { adminTabs, signedOutTabs, userTabs } from './tab.utils';
@@ -16,7 +18,8 @@ export class NavigationComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    private credentials: CredentialsService
+    private credentials: CredentialsService,
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -32,8 +35,13 @@ export class NavigationComponent implements OnInit, OnDestroy {
 
   updateTabs() {
     if(this.credentials.isAdmin) this.tabs = adminTabs()
-    else if(this.credentials.signedIn) this.tabs = userTabs()
-    else this.tabs = signedOutTabs()
+    else if(this.credentials.signedIn) {
+      this.tabs = userTabs()
+      this.router.navigate([RequestActionType.MOVIE])
+    } else {
+      this.tabs = signedOutTabs()
+      this.router.navigate(['config'])
+    }
   }
 
 }
