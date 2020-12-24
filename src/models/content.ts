@@ -1,5 +1,7 @@
+import { RequestActionType } from "./requests";
+
 export interface Content {
-    id: string,
+    id: number,
     title: string,
     description: string,
     posterUrl?: string,
@@ -13,7 +15,7 @@ export interface Content {
 }
 
 export interface Movie extends Content {
-    id: string,
+    id: number,
     title: string,
     description: string,
     posterUrl: string,
@@ -28,7 +30,7 @@ export interface Movie extends Content {
 }
 
 export interface TvShow extends Content {
-    id: string,
+    id: number,
     title: string,
     description: string,
     posterUrl?: string,
@@ -57,10 +59,13 @@ export interface Tag {
 }
 
 export interface ContentClass {
+    id: number,
     title: string,
     description: string,
     tags: Array<Tag>,
     available: boolean,
     requested?: boolean,
-    posterUrl: string
+    posterUrl: string,
+    type: RequestActionType,
+    disable: () => void
 }

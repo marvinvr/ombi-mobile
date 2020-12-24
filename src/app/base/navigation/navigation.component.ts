@@ -1,38 +1,47 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { RequestActionType } from 'src/models/requests';
 import { Tab } from 'src/models/tabs';
+import { CredentialsService } from 'src/services/credentials.service';
+import { adminTabs, signedOutTabs, userTabs } from './tab.utils';
 
 @Component({
   selector: 'app-navigation',
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.scss'],
 })
-export class NavigationComponent implements OnInit {
+export class NavigationComponent implements OnInit, OnDestroy {
 
-  public tabs: Tab[] = [
-    {
-      id: 'movies',
-      label: 'Movies',
-      icon: 'videocam-outline'
-    },
-    {
-      id: 'tv',
-      label: 'TV Shows',
-      icon: 'tv-outline'
-    },
-    {
-      id: 'requests',
-      label: 'Requests',
-      icon: 'git-pull-request-outline'
-    },
-    {
-      id: 'config',
-      label: 'Config',
-      icon: 'cog-outline'
-    },
-  ]
+  public tabs: Tab[] = [ ]
 
-  constructor() { }
+  private subscription: Subscription;
 
-  ngOnInit() {}
+  constructor(
+    private credentials: CredentialsService,
+    private router: Router,
+  ) { }
+
+  ngOnInit() {
+    this.updateTabs();
+    this.subscription = this.credentials.tokenChange().subscribe(() => {
+      this.updateTabs();
+    });
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
+  updateTabs() {
+    if(this.credentials.isAdmin) this.tabs = adminTabs()
+    else if(this.credentials.signedIn) {
+      this.tabs = userTabs()
+      this.router.navigate([RequestActionType.MOVIE])
+    } else {
+      this.tabs = signedOutTabs()
+      this.router.navigate(['config'])
+    }
+  }
 
 }

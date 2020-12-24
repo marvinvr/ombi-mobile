@@ -43,7 +43,7 @@ export class RequestsComponent implements OnInit {
   }
 
   private fetchAllRequests(): void {
-    if(this.selectedRequestType != '') this.request.list(this.selectedRequestType).then((requestResult) => this.contentList = requestResult.collection);
+    if(this.selectedRequestType != '') this.request.list(this.selectedRequestType).then((requestResult) => this.contentList = requestResult['collection']);
   }
 
   private searchRequests(): void {

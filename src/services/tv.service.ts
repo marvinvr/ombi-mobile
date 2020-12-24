@@ -8,6 +8,8 @@ import { ApiService } from './api.service';
 })
 export class TvService {
 
+  private showCache: {[key: string]: TvShow} = {}
+
   constructor(
     private api: ApiService
   ) { }
@@ -18,19 +20,39 @@ export class TvService {
             .then((tv) => Promise.all(tv.map( async (t) => {
               t.posterUrl = (await this.getInfo(t.id))?.banner;
               return t;
-            })));
+            })))
+            .then((tv) => this.cacheResults(tv));
   }
 
   search(term: string): Promise<Array<TvShow>> {
-    return this.api.get(`/search/Tv/${term}`, {}, {}).then(this.format);
+    return this.api.get(`/search/Tv/${term}`, {}, {})
+            .then(this.format)
+            .then((tv) => Promise.all(tv.map( async (t) => {
+              t.posterUrl = (await this.getInfo(t.id))?.banner;
+              return t;
+            })))
+            .then((tv) => this.cacheResults(tv));
   }
 
   getImage(id: string): Promise<string> {
     return this.api.get(`/Images/tv/${id}`, {}, {});
   }
 
-  getInfo(id: string): Promise<any> {
+  cache(tv: TvShow) {
+    this.showCache[tv.id] = tv;
+  }
+
+  getInfo(id: number): Promise<any> {
     return this.api.get(`/search/Tv/info/${id}`, {}, {});
+  }
+
+  public get shows(): {[key: string]: TvShow} {
+    return this.showCache;
+  }
+
+  private cacheResults(shows: TvShow[]): TvShow[] {
+    shows.forEach((show) => this.showCache[show.id] = show);
+    return shows;
   }
 
   private format(results): Array<TvShow> {

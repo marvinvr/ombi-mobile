@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { TvShow } from 'src/models/content';
 import { RequestAction, RequestActionType, RequestAvailability, RequestSort, RequestStatus, RequestType } from 'src/models/requests';
 import { ToastType } from 'src/models/toast';
 import { ApiService } from './api.service';
@@ -31,6 +32,11 @@ export class RequestsService {
     term: string
   ) {
     return this.api.get(`/Request/${type}/search/${term}`, {}, {});
+  }
+
+  public request(type: RequestActionType, id: number) {
+    return this.api.post(`/Request/${type}`, {}, this.requestBody(type, id))
+            .then((res) => this.toast.show(res.isError ? ToastType.ERROR : ToastType.SUCCESS, res[res.isError ? 'errorMessage': 'message']));
   }
 
   public deny(type: RequestActionType, id: number = 0): Promise<any> {
@@ -70,5 +76,11 @@ export class RequestsService {
         partlyAvailable: r.partlyAvailable
       }) as TvShow
     )
+  }
+  
+  private requestBody(type: RequestActionType, id: number) {
+    return type == RequestActionType.MOVIE ?
+          {"theMovieDbId": id,"languageCode": "en"}
+          : {"firstSeason": false, "latestSeason": false, "requestAll": true, "tvDbId": id}
   }
 }

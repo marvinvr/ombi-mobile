@@ -1,11 +1,17 @@
 import { ContentClass, Movie, Tag } from "src/models/content";
+import { RequestActionType } from "src/models/requests";
 
 export class MovieContent implements ContentClass {
+    public type: RequestActionType = RequestActionType.MOVIE;
 
     constructor(
         private movie: Movie
     ) { }
 
+    get id(): number {
+      return this.movie.id;
+    }
+    
     public get title(): string {
         return this.movie.title;
     }
@@ -42,5 +48,13 @@ export class MovieContent implements ContentClass {
 
     public get requested(): boolean {
         return this.movie.request?.requested;
+    }
+
+    public disable(): void {
+      this.movie.request.requested = true;
+    }     
+
+    public set requested(requested: boolean) {
+      this.movie.request.requested = requested;
     }
 }

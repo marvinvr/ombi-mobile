@@ -1,11 +1,17 @@
 import { ContentClass, Movie, Tag, TvShow } from "src/models/content";
+import { RequestActionType } from "src/models/requests";
 import { TvService } from "src/services/tv.service";
 
 export class TvContent implements ContentClass {
+    public type: RequestActionType = RequestActionType.TV;
 
     constructor(
         private tvShow: TvShow
     ) { }
+
+      get id(): number {
+        return this.tvShow.id;
+      }
     
       get title(): string {
         return this.tvShow.title
@@ -47,4 +53,12 @@ export class TvContent implements ContentClass {
       public get requested(): boolean {
         return this.tvShow.request.requested;
       }
+
+      public set requested(requested: boolean) {
+        this.tvShow.request.requested = requested;
+      }
+
+      public disable(): void {
+        this.tvShow.request.requested = true;
+      }     
 }
