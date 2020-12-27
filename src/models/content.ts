@@ -88,7 +88,7 @@ export interface ContentClass {
     requested?: boolean,
     requestId?: number,
     posterUrl: string,
-    type: RequestActionType,
+    type: RequestType,
     buttons: ContentActionButton[],
     disable: () => void
 }

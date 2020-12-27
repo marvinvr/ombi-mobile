@@ -1,8 +1,8 @@
 import { ContentClass, Movie, Tag } from "src/models/content";
-import { RequestActionType } from "src/models/requests";
+import { RequestType } from "src/models/requests";
 
 export class MovieContent implements ContentClass {
-    public type: RequestActionType = RequestActionType.MOVIE;
+    public type: RequestType = RequestType.MOVIE;
     public buttons = [];
 
     constructor(

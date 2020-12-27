@@ -6,7 +6,7 @@ name: Build app for Pages
 on:
   pull_request:
     branches:
-      - develop
+      - master
     types:
       - closed
 

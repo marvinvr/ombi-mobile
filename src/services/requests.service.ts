@@ -36,12 +36,12 @@ export class RequestsService {
               .then((requestResult) => this.format(requestResult.collection, type));
   }
 
-  public request(type: RequestActionType, id: number) {
+  public request(type: RequestType, id: number) {
     return this.api.post(`/Request/${type}`, {}, this.requestBody(type, id))
             .then((res) => this.toast.show(res.isError ? ToastType.ERROR : ToastType.SUCCESS, res[res.isError ? 'errorMessage': 'message']));
   }
 
-  public performAction(action: RequestAction, type: RequestActionType, id: number = 0) {
+  public performAction(action: RequestAction, type: RequestType, id: number = 0) {
     return this.api.put(`/Request/${type}/${action}`, {}, {id: id})
             .then(() => this.toast.show(ToastType.SUCCESS, `Successfully ${action == RequestAction.APPROVE ? 'approved' : 'denied'} request`));
   }
@@ -70,8 +70,8 @@ export class RequestsService {
     )
   }
   
-  private requestBody(type: RequestActionType, id: number) {
-    return type == RequestActionType.MOVIE ?
+  private requestBody(type: RequestType, id: number) {
+    return type == RequestType.MOVIE ?
           {"theMovieDbId": id,"languageCode": "en"}
           : {"firstSeason": false, "latestSeason": false, "requestAll": true, "tvDbId": id}
   }

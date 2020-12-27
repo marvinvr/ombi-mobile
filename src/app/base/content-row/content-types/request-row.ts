@@ -23,8 +23,8 @@ export class RequestContent implements ContentClass {
     public get tags(): Tag[] {
         return [
             {
-                color: this.type == RequestActionType.TV ? 'tertiary' : 'danger',
-                text: this.type == RequestActionType.TV ? this.type.toUpperCase() : this.type
+                color: this.type == RequestType.TV ? 'tertiary' : 'danger',
+                text: this.type == RequestType.TV ? this.type.toUpperCase() : this.type
             },
             {
                 color: 'primary',
@@ -46,7 +46,7 @@ export class RequestContent implements ContentClass {
     } 
 
     public get posterUrl(): string {
-        return this.type == RequestActionType.MOVIE 
+        return this.type == RequestType.MOVIE 
             ? `https://image.tmdb.org/t/p/w300//${this.request.posterUrl}`
             : this.request.posterUrl;
     }
@@ -59,8 +59,8 @@ export class RequestContent implements ContentClass {
         return this.request.request.id;
     }
 
-    public get type(): RequestActionType {
-        return this.request.type == RequestType.MOVIE ? RequestActionType.MOVIE : RequestActionType.TV;
+    public get type(): RequestType {
+        return this.request.type;
     }
 
     public get buttons(): ContentActionButton[] {
