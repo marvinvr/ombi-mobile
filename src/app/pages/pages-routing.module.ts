@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { RequestActionType } from 'src/models/requests';
 import { ConfigComponent } from './config/config.component';
 import { ContentComponent } from './content/content.component';
 import { MoviesComponent } from './movies/movies.component';
@@ -8,11 +9,11 @@ import { TvComponent } from './tv/tv.component';
 
 const routes: Routes = [
     {
-        path: 'Movie',
+        path: RequestActionType.MOVIE,
         component: MoviesComponent,
     },
     {
-        path: 'Tv',
+        path: RequestActionType.TV,
         component: TvComponent,
     },
     {

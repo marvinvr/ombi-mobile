@@ -34,7 +34,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
   }
 
   updateTabs() {
-    if(this.credentials.isAdmin) this.tabs = adminTabs()
+    if(this.credentials.isAdmin || this.credentials.canApproveRequests) this.tabs = adminTabs()
     else if(this.credentials.signedIn) {
       this.tabs = userTabs()
       this.router.navigate([RequestActionType.MOVIE])

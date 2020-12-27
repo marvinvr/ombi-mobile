@@ -1,9 +1,9 @@
-import { ContentClass, Movie, Tag, TvShow } from "src/models/content";
-import { RequestActionType } from "src/models/requests";
-import { TvService } from "src/services/tv.service";
+import { ContentClass, Tag, TvShow } from "src/models/content";
+import { RequestType } from "src/models/requests";
 
 export class TvContent implements ContentClass {
-    public type: RequestActionType = RequestActionType.TV;
+    public type: RequestType = RequestType.TV;
+    public buttons = [];
 
     constructor(
         private tvShow: TvShow

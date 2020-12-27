@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Content, ContentClass, Tag } from 'src/models/content';
+import { ContentClass } from 'src/models/content';
+import { RequestsService } from 'src/services/requests.service';
 
 @Component({
   selector: 'app-content-row',
@@ -9,6 +10,8 @@ import { Content, ContentClass, Tag } from 'src/models/content';
 export class ContentRowComponent implements OnInit {
 
   @Input() content!: ContentClass;
+  @Input() requestsService?: RequestsService;
+
   @Output() click: EventEmitter<any> = new EventEmitter<any>();
 
   constructor() { }
