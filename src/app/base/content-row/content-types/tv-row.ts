@@ -4,6 +4,7 @@ import { TvService } from "src/services/tv.service";
 
 export class TvContent implements ContentClass {
     public type: RequestActionType = RequestActionType.TV;
+    public buttons = [];
 
     constructor(
         private tvShow: TvShow

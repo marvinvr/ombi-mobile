@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { TvShow } from 'src/models/content';
+import { Request } from 'src/models/content';
 import { RequestAction, RequestActionType, RequestAvailability, RequestSort, RequestStatus, RequestType } from 'src/models/requests';
 import { ToastType } from 'src/models/toast';
+import { getParam } from 'src/utils/requests.utils';
 import { ApiService } from './api.service';
 import { ToastService } from './toast.service';
 
@@ -22,16 +23,17 @@ export class RequestsService {
     sort: RequestSort = RequestSort.REQUEST_DATE_DESC,
     status: RequestStatus = RequestStatus.NO_FILTER,
     availability: RequestAvailability = RequestAvailability.NO_FILTER
-  ) {
+  ): Promise<Request[]> {
     return this.api.get(`/Request/${type}/${count}/${position}/${sort}/${status}/${availability}`, {}, {})
-            .then((requestResult) => this.format(requestResult.collection));
+            .then((requestResult) => this.format(requestResult.collection, type));
   }
 
   public search(
     type: RequestType = RequestType.MOVIE,
     term: string
-  ) {
-    return this.api.get(`/Request/${type}/search/${term}`, {}, {});
+  ): Promise<Request[]> {
+    return this.api.get(`/Request/${type}/search/${term}`, {}, {}) 
+              .then((requestResult) => this.format(requestResult.collection, type));
   }
 
   public request(type: RequestActionType, id: number) {
@@ -39,42 +41,32 @@ export class RequestsService {
             .then((res) => this.toast.show(res.isError ? ToastType.ERROR : ToastType.SUCCESS, res[res.isError ? 'errorMessage': 'message']));
   }
 
-  public deny(type: RequestActionType, id: number = 0): Promise<any> {
-    return this.performAction(RequestAction.DENY, type, id);
-  }
-
-  public approve(type: RequestActionType, id: number = 0): Promise<any> {
-    return this.performAction(RequestAction.APPROVE, type, id);
-  }
-
-  private performAction(action: RequestAction, type: RequestActionType, id: number = 0) {
+  public performAction(action: RequestAction, type: RequestActionType, id: number = 0) {
     return this.api.put(`/Request/${type}/${action}`, {}, {id: id})
             .then(() => this.toast.show(ToastType.SUCCESS, `Successfully ${action == RequestAction.APPROVE ? 'approved' : 'denied'} request`));
   }
 
-  private format(results): Array<any> {
+  private format(results, type: RequestType): Array<Request> {
     return results.map((r) => ({
-        id: r.id,
-        title: r.title,
-        description: r.overview,
-        request: {
-          id: r.requestId,
-          requested: r.requested,
-          approved: r.approved,
-          denied: r.denied,
-          type: {
-            all: r.requestAll,
-            firstSeason: r.firstSeason,
-            latestSeason: r.latestSeason
-          },
-          seasons: r.seasonRequests
-        },
-        network: r.network,
-        status: r.status,
-        aired: r.firstAired,
-        available: r.available,
-        partlyAvailable: r.partlyAvailable
-      }) as TvShow
+      id: r?.theMovieDbId || r?.imdbId,
+      title: r.title,
+      description: r.overview,
+      posterUrl: r.posterPath,
+      request: {
+          id: r.id,
+          requested: true,
+          approved: getParam(r, type, 'approved'),
+          denied: getParam(r, type, 'denied'),
+          date: new Date(getParam(r, type, 'requestedDate')),
+          user: {
+            alias: getParam(r, type, 'requestedUser').alias,
+            email:  getParam(r, type, 'requestedUser').email,
+            name: getParam(r, type, 'requestedUser').userName
+          }
+      },
+      available: r.childRequests ? r.childRequests.map(cr => cr.available).indexOf([true]) == -1 : r.available,
+      type: type,
+      }) as Request
     )
   }
   

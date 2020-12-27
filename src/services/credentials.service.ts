@@ -20,7 +20,12 @@ export class CredentialsService {
 
   public get isAdmin(): boolean {
     if(this.token == '') return false;
-    return jwt_decode(this.token)['roles']?.indexOf('Admin') != -1;
+    return jwt_decode(this.token)['role']?.indexOf('Admin') != -1;
+  }
+
+  public get canApproveRequests(): boolean {
+    if(this.token == '') return false;
+    return jwt_decode(this.token)['role']?.indexOf('PowerUser') != -1;
   }
 
   public get signedIn(): boolean {

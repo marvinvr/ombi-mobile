@@ -1,14 +1,13 @@
 <ion-content>
   <app-header title="Requests"></app-header>
   <app-search placeholder="Search Requests" (change)="searchChange($event)"></app-search>
-  <ion-list lines="full">
-    <ion-item>
-      <ion-label>Type</ion-label>
-      <ion-select value="{{selectedRequestType}}" (ionChange)="typeChange($event)">
-        <ion-select-option value="{{requestType.MOVIE}}">Movie</ion-select-option>
-        <ion-select-option value="{{requestType.TV}}">TV Show</ion-select-option>
-      </ion-select>
-    </ion-item>
-    <app-content-row *ngFor="let item of contentList" [content]="content(item)"></app-content-row>
-  </ion-list>
+  <ion-content>
+    <ion-progress-bar *ngIf="this.contentList.length == 0" color="primary" type="indeterminate"></ion-progress-bar>
+    <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+    <ion-list lines="full">
+      <app-content-row *ngFor="let item of contentList" [content]="content(item)" [requestsService]="request"></app-content-row>
+    </ion-list>
+  </ion-content>
 </ion-content>

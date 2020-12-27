@@ -1,10 +1,9 @@
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, OnInit } from '@angular/core';
-import { MovieContent } from 'src/app/base/content-row/content-types/movie-row';
-import { TvContent } from 'src/app/base/content-row/content-types/tv-row';
-import { ContentClass, Movie, TvShow } from 'src/models/content';
+import { RequestContent } from 'src/app/base/content-row/content-types/request-row';
+import { Request } from 'src/models/content';
 import { RequestType } from 'src/models/requests';
 import { RequestsService } from 'src/services/requests.service';
+import { sort } from 'src/utils/requests.utils';
 
 @Component({
   selector: 'app-requests',
@@ -13,13 +12,13 @@ import { RequestsService } from 'src/services/requests.service';
 })
 export class RequestsComponent implements OnInit {
 
-  public contentList: Array<ContentClass> = [];
+  public contentList: Array<Request> = [];
 
-  public selectedRequestType: RequestType | '' = RequestType.MOVIE;
+  public selectedRequestType: RequestType = RequestType.MOVIE;
   public searchTerm: string = '';
 
   constructor(
-    private request: RequestsService
+    public request: RequestsService
   ) {}
 
   ngOnInit() {
@@ -37,28 +36,41 @@ export class RequestsComponent implements OnInit {
   }
 
   searchChange(e): void {
-    this.searchTerm = e.detail.value;
+    this.searchTerm = e;
     if(this.searchTerm == '' || !this.searchTerm) this.fetchAllRequests()
     else this.searchRequests();
   }
 
-  private fetchAllRequests(): void {
-    if(this.selectedRequestType != '') this.request.list(this.selectedRequestType).then((requestResult) => this.contentList = requestResult['collection']);
+  private fetchAllRequests(): Promise<Request[]> {
+    return Promise.all(
+        [
+          this.request.list(RequestType.MOVIE),
+          this.request.list(RequestType.TV)
+        ]
+    ).then(res => this.contentList = sort(res))
+   }
+
+  private searchRequests(): Promise<Request[]> {
+    return Promise.all(
+        [
+          this.request.search(RequestType.MOVIE, this.searchTerm),
+          this.request.search(RequestType.TV, this.searchTerm)
+        ]
+    ).then(res => this.contentList = sort(res))
   }
 
-  private searchRequests(): void {
-    if(this.selectedRequestType != '') this.request.search(this.selectedRequestType, this.searchTerm).then((requestResult) => this.contentList = requestResult.collection);
-  }
-
-  public content(content: any): TvContent | MovieContent {
-    console.log(content);
-    if(typeof content !== 'undefined') {
-      if(this.selectedRequestType == RequestType.MOVIE) return new MovieContent(content);
-      return new TvContent(content);
-    }
+  public content(content: any): RequestContent {
+    return new RequestContent(content);
   }
 
   public get requestType(): typeof RequestType {
     return RequestType;
+  }
+
+  public refresh(event) {
+    (this.searchTerm == '' ?
+      this.fetchAllRequests()
+      : this.searchRequests())
+      .then(() => event.target.complete())
   }
 }

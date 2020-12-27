@@ -1,4 +1,4 @@
-import { RequestActionType } from "./requests";
+import { RequestAction, RequestActionType, RequestType } from "./requests";
 
 export interface Content {
     id: number,
@@ -12,6 +12,27 @@ export interface Content {
         denied: boolean
     }
     available: boolean
+}
+
+export interface Request extends Content {
+    id: number,
+    title: string,
+    description: string,
+    posterUrl?: string,
+    request: {
+        id: number,
+        requested: boolean,
+        approved: boolean,
+        denied: boolean,
+        date: Date,
+        user: {
+            alias: string,
+            email: string,
+            name: string
+        },
+    }
+    available: boolean
+    type: RequestType
 }
 
 export interface Movie extends Content {
@@ -65,7 +86,16 @@ export interface ContentClass {
     tags: Array<Tag>,
     available: boolean,
     requested?: boolean,
+    requestId?: number,
     posterUrl: string,
     type: RequestActionType,
+    buttons: ContentActionButton[],
     disable: () => void
+}
+
+export interface ContentActionButton {
+    label: string,
+    color: string,
+    disabled: boolean,
+    action: RequestAction
 }

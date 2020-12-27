@@ -3,6 +3,7 @@ import { RequestActionType } from "src/models/requests";
 
 export class MovieContent implements ContentClass {
     public type: RequestActionType = RequestActionType.MOVIE;
+    public buttons = [];
 
     constructor(
         private movie: Movie

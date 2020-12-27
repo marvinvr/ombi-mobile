@@ -33,11 +33,21 @@
                 flex-grow: 1;
                 margin-bottom: 8px;
             }
+
+            .buttons {
+                display: inline-flex;
+                flex-direction: row;
+                align-content: right;
+                app-button {
+                    flex-grow: 1;
+                }
+            }
         }
     }
 
     .content-bottom {
         display: flex;
         margin: 0 0 8px -3px;
+        width: calc(100% - 12px);
     }
 }
