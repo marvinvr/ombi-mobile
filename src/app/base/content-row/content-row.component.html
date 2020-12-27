@@ -1,0 +1,30 @@
+<ion-item (click)="click.emit()">
+  <div class="content-row">
+    <div class="content-top">
+      <div class="poster">
+        <img src="{{content.posterUrl}}" />
+      </div>
+      <div class="info">
+        <h2>{{content.title}}</h2>
+        <p>{{content.description}}</p>
+        <ng-content select="buttons-slot"></ng-content>
+        <div class="buttons" *ngIf="content?.buttons?.length > 0">
+          <app-button 
+            *ngFor="let b of content.buttons" 
+            [label]="b.label"
+            size="default"
+            [color]="b.color"
+            fill="outline"
+            [disabled]="b.disabled"
+            (action)="this.requestsService.performAction(b.action, content.type, content.requestId)"
+            ></app-button>
+        </div>
+      </div>
+    </div>
+    <div class="content-bottom">
+      <ion-chip *ngFor="let tag of content.tags">
+        <ion-label [color]="tag.color" disabled="true">{{tag.text}}</ion-label>
+      </ion-chip>
+    </div>
+  </div>
+</ion-item>

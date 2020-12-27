@@ -11,8 +11,8 @@ export enum RequestActionType {
 }
 
 export enum RequestAction {
-    APPROVE = 'Approve',
-    DENY = 'Deny'
+    APPROVE = 'approve',
+    DENY = 'deny'
 }
 
 export enum RequestSort {

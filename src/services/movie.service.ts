@@ -8,6 +8,8 @@ import { ApiService } from './api.service';
 })
 export class MovieService {
 
+  private movieCache: {[key: string]: Movie} = {}
+
   constructor(
     private api: ApiService
   ) { }
@@ -15,6 +17,7 @@ export class MovieService {
   public list(type: MovieSearchType = MovieSearchType.POPULAR): Promise<Array<Movie>> {
     return this.api.get(`/search/Movie/${type}`, {}, {})
       .then(this.format)
+      .then((movies) => this.cacheResults(movies));
   }
 
   public search(term: string): Promise<Array<Movie>> {
@@ -23,6 +26,20 @@ export class MovieService {
         languageCode: 'en'
       })
       .then(this.format)
+      .then((movies) => this.cacheResults(movies));
+  }
+
+  public get movies(): {[key: string]: Movie} {
+    return this.movieCache;
+  }
+
+  cache(movie: Movie) {
+    this.movieCache[movie.id] = movie;
+  }
+
+  private cacheResults(movies: Movie[]): Movie[] {
+    movies.forEach((movie) => this.movieCache[movie.id] = movie);
+    return movies;
   }
 
   private format(results: Array<any>): Array<Movie> {
@@ -37,6 +54,7 @@ export class MovieService {
             approved: r.approved,
             denied: r.denied
         },
+        releaseDate: r.releaseDate,
         available: r.available
       }) as Movie
     )

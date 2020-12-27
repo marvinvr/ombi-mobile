@@ -1,0 +1,53 @@
+.content-row {
+    display: flex;
+    flex-direction: column;
+
+    .content-top {
+        display: flex;
+        height: 190px;
+
+        .poster {
+            flex: 0 0 auto;
+            margin: 20px 0 15px 0;
+            padding-right: 10px;
+            height: 160px;
+            img {
+                max-height: 100%;
+            }
+        }
+
+        .info {
+            display: flex;
+            text-align: initial;
+            flex-direction: column;
+
+            h2 {
+                margin-bottom: 5px;
+            }
+
+            p {
+                margin-top: 0.5em;
+                word-wrap: break-word;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                flex-grow: 1;
+                margin-bottom: 8px;
+            }
+
+            .buttons {
+                display: inline-flex;
+                flex-direction: row;
+                align-content: right;
+                app-button {
+                    flex-grow: 1;
+                }
+            }
+        }
+    }
+
+    .content-bottom {
+        display: flex;
+        margin: 0 0 8px -3px;
+        width: calc(100% - 12px);
+    }
+}

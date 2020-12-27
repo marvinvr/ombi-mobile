@@ -1,3 +1,13 @@
-<p>
-  tv works!
-</p>
+<ion-content>
+  <app-header title="TV Shows"></app-header>
+  <app-search placeholder="Search TV Shows" (change)="searchChange($event)"></app-search>
+  <ion-content>
+    <ion-progress-bar *ngIf="this.shows.length == 0" color="primary" type="indeterminate"></ion-progress-bar>
+    <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+    <ion-list lines="full">
+      <app-content-row *ngFor="let show of shows" [content]="content(show)" (click)="showContent(show)"></app-content-row>
+    </ion-list>
+  </ion-content>
+</ion-content>
