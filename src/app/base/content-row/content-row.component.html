@@ -6,9 +6,9 @@
       </div>
       <div class="info">
         <h2>{{content.title}}</h2>
-        <p>{{content.description}}</p>
+        <p [ngClass]="{hasButtons: hasButtons}">{{content.description}}</p>
         <ng-content select="buttons-slot"></ng-content>
-        <div class="buttons" *ngIf="content?.buttons?.length > 0">
+        <div class="buttons" *ngIf="hasButtons">
           <app-button 
             *ngFor="let b of content.buttons" 
             [label]="b.label"

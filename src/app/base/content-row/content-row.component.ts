@@ -17,4 +17,8 @@ export class ContentRowComponent implements OnInit {
   constructor() { }
 
   ngOnInit() { }
+
+  public get hasButtons(): boolean {
+    return this.content?.buttons?.length > 0;
+  }
 }
