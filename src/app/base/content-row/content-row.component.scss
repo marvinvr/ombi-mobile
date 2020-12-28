@@ -32,6 +32,9 @@
                 overflow: hidden;
                 flex-grow: 1;
                 margin-bottom: 8px;
+                &.hasButtons {
+                    max-height: 75px;
+                }
             }
 
             .buttons {
