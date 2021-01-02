@@ -1,12 +1,12 @@
+<ion-header translucent="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button (click)="goBack()" default-href="movies"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ content?.title }}</ion-title>
+  </ion-toolbar>
+</ion-header>
 <ion-content>
-  <ion-header translucent="true">
-    <ion-toolbar>
-      <ion-buttons slot="start">
-        <ion-back-button (click)="goBack()" default-href="movies"></ion-back-button>
-      </ion-buttons>
-      <ion-title>{{ content?.title }}</ion-title>
-    </ion-toolbar>
-  </ion-header>
   <div class="content">
     <app-button 
       [disabled]="content.requested || content.available" 
