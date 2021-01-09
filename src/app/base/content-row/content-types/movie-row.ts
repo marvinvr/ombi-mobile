@@ -30,8 +30,8 @@ export class MovieContent implements ContentClass {
 
         if(this.requested !== undefined) {
             tags.push({
-                color: this.available ? 'success' : this.requested ? 'warning' : 'danger',
-                text: this.available ? 'Available' : this.requested ? 'Requested' : 'Not Requested'
+                color: this.available ? 'success' : this.approved ? 'success' : this.requested ? 'warning' : 'danger',
+                text: this.available ? 'Available' : this.approved ? 'Approved' : this.requested ? 'Requested' : 'Not Requested'
             })
         }
 
@@ -49,6 +49,10 @@ export class MovieContent implements ContentClass {
 
     public get requested(): boolean {
         return this.movie.request?.requested;
+    }
+
+    private get approved(): boolean {
+        return this.movie.request?.approved;
     }
 
     public disable(): void {
