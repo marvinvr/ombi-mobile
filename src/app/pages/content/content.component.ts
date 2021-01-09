@@ -24,6 +24,7 @@ export class ContentComponent implements OnInit, OnDestroy {
   constructor(
     private requests: RequestsService,
     private route: ActivatedRoute,
+    private router: Router,
     private movieService: MovieService,
     private tvService: TvService
   ) { }
@@ -34,10 +35,12 @@ export class ContentComponent implements OnInit, OnDestroy {
       let id = params.get('id')
       switch (type) {
         case RequestActionType.TV:
-          this.content = new TvContent(this.tvService.shows[id])
+          if(!this.tvService?.shows[id]) this.router.navigate(['/']);
+          else this.content = new TvContent(this.tvService?.shows[id])
           break;
         case RequestActionType.MOVIE:
-          this.content = new MovieContent(this.movieService.movies[id])
+          if(!this.movieService?.movies[id]) this.router.navigate(['/']);
+          else this.content = new MovieContent(this.movieService?.movies[id])
           break;
       }
     })
