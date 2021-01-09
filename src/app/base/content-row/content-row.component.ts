@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ContentClass } from 'src/models/content';
+import { RequestAction } from 'src/models/requests';
 import { RequestsService } from 'src/services/requests.service';
 
 @Component({
@@ -20,5 +21,12 @@ export class ContentRowComponent implements OnInit {
 
   public get hasButtons(): boolean {
     return this.content?.buttons?.length > 0;
+  }
+
+  public performAction(action: RequestAction): void {
+    this.requestsService.performAction(action, this.content.type, this.content.requestId)
+      .then( r => {
+        this.content[action == RequestAction.APPROVE ? 'approve': 'deny']()
+      })
   }
 }

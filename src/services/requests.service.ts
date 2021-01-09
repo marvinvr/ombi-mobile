@@ -42,7 +42,7 @@ export class RequestsService {
   }
 
   public performAction(action: RequestAction, type: RequestType, id: number = 0) {
-    return this.api.put(`/Request/${type}/${action}`, {}, {id: id})
+    return this.api[action == RequestAction.APPROVE ? 'post': 'put'](`/Request/${type}/${action}`, {}, {id: id})
             .then(() => this.toast.show(ToastType.SUCCESS, `Successfully ${action == RequestAction.APPROVE ? 'approved' : 'denied'} request`));
   }
 
