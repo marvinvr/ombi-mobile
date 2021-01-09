@@ -16,7 +16,7 @@
             [color]="b.color"
             fill="outline"
             [disabled]="b.disabled"
-            (action)="this.requestsService.performAction(b.action, content.type, content.requestId)"
+            (action)="this.performAction(b.action)"
             ></app-button>
         </div>
       </div>
