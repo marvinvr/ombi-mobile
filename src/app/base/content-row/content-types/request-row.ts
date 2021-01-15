@@ -99,6 +99,10 @@ export class RequestContent implements ContentClass {
         }
         return buttons;
     }
+    
+    public deny(): void {this.request.request.denied = true}
+    
+    public approve(): void {this.request.request.approved = true}
 
     public disable () {
     }

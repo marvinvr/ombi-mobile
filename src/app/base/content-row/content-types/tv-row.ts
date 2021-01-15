@@ -28,8 +28,8 @@ export class TvContent implements ContentClass {
       get tags(): Array<Tag> {
         return [
           {
-            color: this.available ? 'success' : this.requested ? 'warning' : this.partlyAvailable ? 'warning' : 'danger',
-            text: this.available ? 'Available' : this.requested ? 'Requested' : this.partlyAvailable ? 'Partly Available' : 'Not Requested'
+            color: this.available ? 'success' : this.approved ? 'success' : this.requested ? 'warning' : this.partlyAvailable ? 'warning' : 'danger',
+            text: this.available ? 'Available' : this.approved ? 'Approved' : this.requested ? 'Requested' : this.partlyAvailable ? 'Partly Available' : 'Not Requested'
           },
           {
             color: 'primary',
@@ -52,6 +52,10 @@ export class TvContent implements ContentClass {
     
       public get requested(): boolean {
         return this.tvShow.request.requested;
+      }
+
+      private get approved(): boolean {
+        return this.tvShow.request.approved;
       }
 
       public set requested(requested: boolean) {

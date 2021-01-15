@@ -9,12 +9,17 @@ export class SearchComponent implements OnInit {
   @Input() placeholder: string = '';
   @Output() change: EventEmitter<string> = new EventEmitter<string>();
 
+  private timeout;
+
   constructor() { }
 
   ngOnInit() { }
 
   updateValue(value){
-    this.change.emit(value);
+    clearTimeout(this.timeout);
+    this.timeout = setTimeout( () => {
+      this.change.emit(value);
+    }, 500)
   }
 
 }

@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { MovieContent } from 'src/app/base/content-row/content-types/movie-row';
 import { TvContent } from 'src/app/base/content-row/content-types/tv-row';
 import { ContentClass } from 'src/models/content';
-import { RequestActionType } from 'src/models/requests';
+import { RequestActionType, RequestType } from 'src/models/requests';
 import { MovieService } from 'src/services/movie.service';
 import { RequestsService } from 'src/services/requests.service';
 import { TvService } from 'src/services/tv.service';
@@ -24,6 +24,7 @@ export class ContentComponent implements OnInit, OnDestroy {
   constructor(
     private requests: RequestsService,
     private route: ActivatedRoute,
+    private router: Router,
     private movieService: MovieService,
     private tvService: TvService
   ) { }
@@ -34,10 +35,12 @@ export class ContentComponent implements OnInit, OnDestroy {
       let id = params.get('id')
       switch (type) {
         case RequestActionType.TV:
-          this.content = new TvContent(this.tvService.shows[id])
+          if(!this.tvService?.shows[id]) this.router.navigate(['/']);
+          else this.content = new TvContent(this.tvService?.shows[id])
           break;
         case RequestActionType.MOVIE:
-          this.content = new MovieContent(this.movieService.movies[id])
+          if(!this.movieService?.movies[id]) this.router.navigate(['/']);
+          else this.content = new MovieContent(this.movieService?.movies[id])
           break;
       }
     })
@@ -47,8 +50,12 @@ export class ContentComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
+  get type(): RequestType {
+    return this.content.type;
+  }
+
   get label(): string {
-    return this.content.available ? 'Available' : this.content.requested ? 'Requested' : `Request ${this.content.type}`
+    return this.content.available ? 'Available' : this.content.requested ? 'Requested' : `Request ${this.type == RequestType.TV ? this.type.toUpperCase() : this.type}`
   }
 
   get color(): string {
