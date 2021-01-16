@@ -50,4 +50,12 @@ export class ConfigComponent implements OnInit {
     return InputType;
   }
 
+  public get hasBaseUrl(): boolean {
+    return this.model.ombiUrl != '';
+  }
+
+  public get hasCredentials(): boolean {
+    return this.model.username != '' && this.model.password != '' && this.hasBaseUrl;
+  }
+
 }
