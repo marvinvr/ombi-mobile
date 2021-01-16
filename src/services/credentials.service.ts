@@ -49,7 +49,7 @@ export class CredentialsService {
   /* Password */
 
   public get password(): string {
-    return this.settings.get(Settings.PASSWORD)
+    return this.settings.get(Settings.PASSWORD) || ''
   }
 
   public set password(password: string) {
@@ -59,7 +59,7 @@ export class CredentialsService {
   /* Username */
 
   public get username(): string {
-    return this.settings.get(Settings.USERNAME)
+    return this.settings.get(Settings.USERNAME) || ''
   }
 
   public set username(username: string) {

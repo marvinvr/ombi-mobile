@@ -85,6 +85,6 @@ export class RequestsComponent implements OnInit {
   }
 
   private handleEmptyResult(res: [Request[], Request[]]) {
-    this.noRequestsFound = res[0].length == 0 && res[1].length == 0);
+    this.noRequestsFound = res[0].length == 0 && res[1].length == 0;
   }
 }
