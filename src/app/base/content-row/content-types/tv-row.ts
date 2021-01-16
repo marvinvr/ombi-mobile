@@ -36,9 +36,17 @@ export class TvContent implements ContentClass {
             text: new Date(this.tvShow.aired).toLocaleDateString()
           },
           {
+            text: this.tvShow.status,
+            color: 'warning'
+          },
+          {
+            text: `${this.tvShow.rating}/10 ★`,
+            color: 'tertiary'
+          },
+          {
             color: 'tertiary',
             text: this.tvShow.network
-          }
+          },
         ]
       }
     

@@ -32,7 +32,8 @@ export interface Request extends Content {
         },
     }
     available: boolean
-    type: RequestType
+    type: RequestType,
+    rating: number
 }
 
 export interface Movie extends Content {
@@ -47,7 +48,8 @@ export interface Movie extends Content {
         denied: boolean
     }
     releaseDate: string,
-    available: boolean
+    available: boolean,
+    rating: number
 }
 
 export interface TvShow extends Content {
@@ -71,7 +73,8 @@ export interface TvShow extends Content {
     status: string,
     aired: string,
     available: boolean,
-    partlyAvailable: boolean
+    partlyAvailable: boolean,
+    rating: number
 }
 
 export interface Tag {

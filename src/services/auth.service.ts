@@ -65,8 +65,6 @@ export class AuthService {
             }
           ).then(res => {
             windowReference.location = res.url;
-            
-            window.open(res.url)
             let numAttempts: number = 0;
             let interval = setInterval(() => {
               if(numAttempts > 100) {

@@ -2,6 +2,9 @@
     display: flex;
     flex-direction: column;
     width: 100%;
+    &.increaseMargin {
+        margin-bottom: 12px;
+    }
 
     .content-top {
         display: flex;
@@ -11,7 +14,7 @@
             flex: 0 0 auto;
             margin: 20px 0 15px 0;
             padding-right: 10px;
-            height: 160px;
+            height: 166px;
             img {
                 max-height: 100%;
             }
@@ -36,6 +39,7 @@
                 overflow: hidden;
                 flex-grow: 1;
                 margin-bottom: 8px;
+                font-size: 15px;
                 &.hasButtons {
                     max-height: 75px;
                 }
@@ -47,6 +51,9 @@
                 align-content: right;
                 app-button {
                     flex-grow: 1;
+                    &:not(:first-of-type) {
+                        margin-left: 10px;
+                    }
                 }
             }
         }
