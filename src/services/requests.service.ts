@@ -38,7 +38,7 @@ export class RequestsService {
 
   public request(type: RequestType, id: number) {
     return this.api.post(`/Request/${type}`, {}, this.requestBody(type, id))
-            .then((res) => this.toast.show(res.isError ? ToastType.ERROR : ToastType.SUCCESS, res[res.isError ? 'errorMessage': 'message']));
+            .then((res) => this.toast.show(res.isError ? ToastType.ERROR : ToastType.SUCCESS, res.isError? res['errorMessage']: `Successfully requested ${type}`));
   }
 
   public performAction(action: RequestAction, type: RequestType, id: number = 0) {
@@ -48,7 +48,7 @@ export class RequestsService {
 
   private format(results, type: RequestType): Array<Request> {
     return results.map((r) => ({
-      id: r?.theMovieDbId || r?.imdbId,
+      id: r?.theMovieDbId || r?.tvDbId,
       title: r.title,
       description: r.overview,
       posterUrl: r.posterPath,
