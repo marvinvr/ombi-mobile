@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ContentClass } from 'src/models/content';
-import { RequestAction } from 'src/models/requests';
+import { RequestAction, RequestType } from 'src/models/requests';
 import { RequestsService } from 'src/services/requests.service';
 
 @Component({
@@ -24,7 +24,7 @@ export class ContentRowComponent implements OnInit {
   }
 
   public performAction(action: RequestAction): void {
-    this.requestsService.performAction(action, this.content.type, this.content.id)
+    this.requestsService.performAction(action, this.content.type, this.content.type == RequestType.MOVIE ? this.content.requestId : this.content.id)
       .then( r => {
         this.content[action == RequestAction.APPROVE ? 'approve': 'deny']()
       })
