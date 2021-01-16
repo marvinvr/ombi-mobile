@@ -16,6 +16,7 @@ export class RequestsComponent implements OnInit {
 
   public selectedRequestType: RequestType = RequestType.MOVIE;
   public searchTerm: string = '';
+  public noRequestsFound: boolean = false;
 
   constructor(
     public request: RequestsService
@@ -47,7 +48,12 @@ export class RequestsComponent implements OnInit {
           this.request.list(RequestType.MOVIE),
           this.request.list(RequestType.TV)
         ]
-    ).then(res => this.contentList = sort(res))
+    )
+      .then(res => {
+        this.handleEmptyResult(res);
+        this.contentList = sort(res);
+        return this.contentList;
+      })  
    }
 
   private searchRequests(): Promise<Request[]> {
@@ -56,7 +62,11 @@ export class RequestsComponent implements OnInit {
           this.request.search(RequestType.MOVIE, this.searchTerm),
           this.request.search(RequestType.TV, this.searchTerm)
         ]
-    ).then(res => this.contentList = sort(res))
+    ).then(res => {
+      this.handleEmptyResult(res);
+      this.contentList = sort(res);
+      return this.contentList;
+    })
   }
 
   public content(content: any): RequestContent {
@@ -72,5 +82,9 @@ export class RequestsComponent implements OnInit {
       this.fetchAllRequests()
       : this.searchRequests())
       .then(() => event.target.complete())
+  }
+
+  private handleEmptyResult(res: [Request[], Request[]]) {
+    if(res[0].length == 0 && res[1].length == 0) this.noRequestsFound = true;
   }
 }
