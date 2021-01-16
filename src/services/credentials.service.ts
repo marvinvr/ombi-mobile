@@ -3,6 +3,7 @@ import { CredentialsNames } from 'src/models/credentials';
 import jwt_decode from 'jwt-decode';
 import { Observable } from 'rxjs/internal/Observable';
 import { Subscriber } from 'rxjs';
+import { hasProtocol, removeTrailingSlash } from 'src/utils/credentials.utils';
 
 @Injectable({
   providedIn: 'root'
@@ -46,7 +47,11 @@ export class CredentialsService {
   }
 
   public set baseUrl(baseUrl: string) {
-    localStorage.setItem(CredentialsNames.BASE_URL, baseUrl);
+    let url = baseUrl.toLowerCase();
+    if(!hasProtocol(url)) 
+      url = 'http://' + url;
+    url = removeTrailingSlash(url);
+    localStorage.setItem(CredentialsNames.BASE_URL, url);
   }
 
   public get password(): string {
