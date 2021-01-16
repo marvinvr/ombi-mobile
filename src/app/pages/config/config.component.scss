@@ -1,5 +1,5 @@
 .form {
-    margin-top: 40px;
+    margin-top: 15px;
     app-button {
         position: relative;
         top: 20px;
@@ -17,12 +17,14 @@
     p {
         text-align: center;
         color: gray;
+        margin-bottom: 0;
     }
 
     app-button {
         margin-bottom: 12px;
-        &:last-child {
-            margin-top: -22px;
+        &:last-of-type {
+            margin-top: -7px;
+            margin-bottom: 20px
         }
     }
 }

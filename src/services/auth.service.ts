@@ -39,6 +39,7 @@ export class AuthService {
 
   public triggerPlexOauth(): Promise<any> {
     if(!this.credentials.baseUrl) return new Promise<any>((resolve, reject) => reject(false));
+    var windowReference = window.open();
     return new Promise<any>((resolve, reject) => {
       this.apiService.post(
         '/api/v2/pins?strong=true',
@@ -63,6 +64,8 @@ export class AuthService {
               'plexTvPin': res
             }
           ).then(res => {
+            windowReference.location = res.url;
+            
             window.open(res.url)
             let numAttempts: number = 0;
             let interval = setInterval(() => {
@@ -80,6 +83,8 @@ export class AuthService {
                     this.credentials.token = res.access_token
                     clearInterval(interval)
                     resolve(true);
+                    if(this.settings.get(Settings.IS_SIGNED_IN)) this.router.navigate([RequestActionType.MOVIE])
+                    else this.router.navigate(['config'])
                     this.settings.set(Settings.USE_PLEX_OAUTH, true)
                   } 
                 })

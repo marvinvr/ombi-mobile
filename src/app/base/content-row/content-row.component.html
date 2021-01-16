@@ -6,7 +6,7 @@
       </div>
       <div class="info">
         <h2>{{content.title}}</h2>
-        <p [ngClass]="{hasButtons: hasButtons}">{{content.description}}</p>
+        <p *ngIf="!hasButtons">{{content.description}}</p>
         <ng-content select="buttons-slot"></ng-content>
         <div class="buttons" *ngIf="hasButtons">
           <app-button 
