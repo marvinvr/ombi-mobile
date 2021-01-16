@@ -1,11 +1,10 @@
 <ion-item>
-  <ion-label position="stacked">{{label}}</ion-label>
+  <ion-label position="floating">{{label}}</ion-label>
   <ion-input
     autocomplete='{{autocomplete}}'
     type='{{type}}'
     required='{{required}}'
     disabled='{{disabled}}'
-    placeholder='{{placeholder}}'
     [value]='value'
     (ionChange)='updateValue($event.detail.value)'
   ></ion-input>

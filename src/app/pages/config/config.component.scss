@@ -8,3 +8,21 @@
         display: inline-block;
     }
 }
+
+.credentialsContainer {
+    margin: 20px 10px 0 10px;
+    padding: 12px 0;
+    border: 1px solid gray;
+    border-radius: 15px;
+    p {
+        text-align: center;
+        color: gray;
+    }
+
+    app-button {
+        margin-bottom: 12px;
+        &:last-child {
+            margin-top: -22px;
+        }
+    }
+}
