@@ -1,16 +1,39 @@
 :host {
-    img {
-        width: 45%;
+
+    ion-title {
+        text-transform: capitalize;
     }
     
     .content {
         margin: 10px;
         font-size: 1.2em;
-    }
+        .header {
+            display: flex;
+            height: 250px;
+            flex-direction: row;
+    
+            .poster {
+                height: 100%;
+                display: inline-flex;
+            }
+            .title {
+                height: 100%;
+                flex-grow: 1;
+                display: inline-flex;
+                flex-direction: column;
+                padding-left: 10px;
+                justify-content: space-between;
 
-    app-button {
-        float: right;
-        width: 52%;
-        margin-top: 190px;
+                h1 {
+                    margin-top: 10px;
+                }
+            }
+        }
+        .details {
+            padding-top: 10px;
+            p {
+                margin-top: 10px;
+            }
+        }
     }
 }

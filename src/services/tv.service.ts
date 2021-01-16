@@ -76,7 +76,8 @@ export class TvService {
         status: r.status,
         aired: r.firstAired,
         available: r.available,
-        partlyAvailable: r.partlyAvailable
+        partlyAvailable: r.partlyAvailable,
+        rating: Math.round(r.rating)
       }) as TvShow
     )
   }

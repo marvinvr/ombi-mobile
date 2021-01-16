@@ -66,6 +66,7 @@ export class RequestsService {
       },
       available: r.childRequests ? r.childRequests.map(cr => cr.available).indexOf([true]) == -1 : r.available,
       type: type,
+      rating: Math.round(type == RequestType.MOVIE ? r.voteAverage : r.rating)
       }) as Request
     )
   }

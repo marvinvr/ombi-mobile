@@ -24,7 +24,7 @@ export class ContentRowComponent implements OnInit {
   }
 
   public performAction(action: RequestAction): void {
-    this.requestsService.performAction(action, this.content.type, this.content.requestId)
+    this.requestsService.performAction(action, this.content.type, this.content.id)
       .then( r => {
         this.content[action == RequestAction.APPROVE ? 'approve': 'deny']()
       })

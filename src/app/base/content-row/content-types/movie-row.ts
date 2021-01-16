@@ -26,7 +26,7 @@ export class MovieContent implements ContentClass {
     }
 
     public get tags(): Tag[] {
-        let tags = []
+        let tags: Tag[] = []
 
         if(this.requested !== undefined) {
             tags.push({
@@ -38,6 +38,11 @@ export class MovieContent implements ContentClass {
         tags.push({
             color: 'primary',
             text: new Date(this.movie.releaseDate).toLocaleDateString()
+        })
+
+        tags.push({
+            color: "tertiary",
+            text: `${this.movie.rating}/10 ★`
         })
 
         return tags

@@ -41,6 +41,8 @@ export class ConfigComponent implements OnInit {
 
   public submitWithPlex() {
     this.credentials.baseUrl = this.model.ombiUrl;
+    this.model.username = '';
+    this.model.password = '';
     this.auth.triggerPlexOauth()
       .then((t) => this.toast.show(ToastType.SUCCESS, `Successfully signed in as ${this.credentials.name}!`))
       .catch(e => this.toast.show(ToastType.ERROR, 'Unable to sign in with Plex'));
