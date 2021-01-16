@@ -1,6 +1,7 @@
 .content-row {
     display: flex;
     flex-direction: column;
+    width: 100%;
 
     .content-top {
         display: flex;
@@ -22,6 +23,7 @@
             flex-direction: column;
             justify-content: space-between;
             margin-bottom: 5px;
+            width: 100%;
 
             h2 {
                 margin-bottom: 5px;
@@ -54,6 +56,5 @@
         display: flex;
         margin: 0 0 8px -3px;
         width: calc(100% - 12px);
-        text-transform: capitalize;
     }
 }

@@ -22,9 +22,7 @@
       </div>
     </div>
     <div class="content-bottom">
-      <ion-chip *ngFor="let tag of content.tags">
-        <ion-label [color]="tag.color" disabled="true">{{tag.text}}</ion-label>
-      </ion-chip>
+      <app-tags [tags]="content.tags"></app-tags>
     </div>
   </div>
 </ion-item>
