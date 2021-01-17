@@ -28,7 +28,7 @@ Enter the following credentials on the configuration page in the app
 `npm install -g @ionic/cli`
 
 #### Clone the repository
-`git clone git@github.com:MarvinvR/ombi-mobile.git`
+`git clone https://github.com/MarvinvR/ombi-mobile`
 
 #### Install dependencies
 `npm install`
