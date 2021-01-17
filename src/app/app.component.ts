@@ -6,6 +6,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AuthService } from 'src/services/auth.service';
 import { Settings } from 'src/models/settings';
 import { SettingsService } from 'src/services/settings.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -18,7 +19,8 @@ export class AppComponent {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private settings: SettingsService,
-    private auth: AuthService
+    private auth: AuthService,
+    private router: Router
   ) {
     this.initializeApp();
   }
@@ -28,6 +30,7 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
       if(!this.settings.get(Settings.USE_PLEX_OAUTH)) this.auth.fetchToken();
+      else this.router.navigate(['Movie'])
     });
     
   }

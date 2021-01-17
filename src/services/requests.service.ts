@@ -59,9 +59,9 @@ export class RequestsService {
           denied: getParam(r, type, 'denied'),
           date: new Date(getParam(r, type, 'requestedDate')),
           user: {
-            alias: getParam(r, type, 'requestedUser').alias,
-            email:  getParam(r, type, 'requestedUser').email,
-            name: getParam(r, type, 'requestedUser').userName
+            alias: getParam(r, type, 'requestedUser')?.alias,
+            email:  getParam(r, type, 'requestedUser')?.email,
+            name: getParam(r, type, 'requestedUser')?.userName
           }
       },
       available: r.childRequests ? r.childRequests.map(cr => cr.available).indexOf([true]) == -1 : r.available,
