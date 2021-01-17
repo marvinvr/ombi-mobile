@@ -55,7 +55,8 @@ export class MovieService {
             denied: r.denied
         },
         releaseDate: r.releaseDate,
-        available: r.available
+        available: r.available,
+        rating: Math.round(r.voteAverage)
       }) as Movie
     )
   }

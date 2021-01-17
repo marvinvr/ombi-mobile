@@ -12,17 +12,33 @@
       [type]="inputType.URL"
       [(value)]="model.ombiUrl" 
     ></app-input>
-    <app-input
-      label="Username"
-      placeholder="Username"
-      [(value)]="model.username" 
-    ></app-input>
-    <app-input
-      label="Password"
-      [type]="inputType.PASSWORD"
-      placeholder="Password"
-      [(value)]="model.password" 
-    ></app-input>
-    <app-button label="Submit" (action)="submit()"></app-button>
+    <div class="credentialsContainer">
+      <app-input
+        label="Username"
+        placeholder="Username"
+        [(value)]="model.username"
+        [disabled]="!hasBaseUrl"
+      ></app-input>
+      <app-input
+        label="Password"
+        [type]="inputType.PASSWORD"
+        placeholder="Password"
+        [(value)]="model.password" 
+        [disabled]="!hasBaseUrl"
+      ></app-input>
+      <app-button 
+        label="Sign in" 
+        (action)="submit()"
+        [disabled]="!hasCredentials"
+        ></app-button>
+      <p>or</p>
+      <app-button 
+        class="plex" 
+        color="light" 
+        label="Sign in with Plex" 
+        (action)="submitWithPlex()"
+        [disabled]="!hasBaseUrl"
+        ></app-button>
+    </div>
   </div>
 </ion-content>

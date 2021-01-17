@@ -38,7 +38,7 @@ export class RequestsService {
 
   public request(type: RequestType, id: number) {
     return this.api.post(`/Request/${type}`, {}, this.requestBody(type, id))
-            .then((res) => this.toast.show(res.isError ? ToastType.ERROR : ToastType.SUCCESS, res[res.isError ? 'errorMessage': 'message']));
+            .then((res) => this.toast.show(res.isError ? ToastType.ERROR : ToastType.SUCCESS, res.isError? res['errorMessage']: `Successfully requested ${type}`));
   }
 
   public performAction(action: RequestAction, type: RequestType, id: number = 0) {
@@ -48,7 +48,7 @@ export class RequestsService {
 
   private format(results, type: RequestType): Array<Request> {
     return results.map((r) => ({
-      id: r?.theMovieDbId || r?.imdbId,
+      id: r?.theMovieDbId || r?.tvDbId,
       title: r.title,
       description: r.overview,
       posterUrl: r.posterPath,
@@ -59,13 +59,14 @@ export class RequestsService {
           denied: getParam(r, type, 'denied'),
           date: new Date(getParam(r, type, 'requestedDate')),
           user: {
-            alias: getParam(r, type, 'requestedUser').alias,
-            email:  getParam(r, type, 'requestedUser').email,
-            name: getParam(r, type, 'requestedUser').userName
+            alias: getParam(r, type, 'requestedUser')?.alias,
+            email:  getParam(r, type, 'requestedUser')?.email,
+            name: getParam(r, type, 'requestedUser')?.userName
           }
       },
       available: r.childRequests ? r.childRequests.map(cr => cr.available).indexOf([true]) == -1 : r.available,
       type: type,
+      rating: Math.round(type == RequestType.MOVIE ? r.voteAverage : r.rating)
       }) as Request
     )
   }

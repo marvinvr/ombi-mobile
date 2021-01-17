@@ -3,7 +3,8 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { RequestActionType } from 'src/models/requests';
 import { Tab } from 'src/models/tabs';
-import { CredentialsService } from 'src/services/credentials.service';
+import { Settings } from 'src/models/settings';
+import { SettingsService } from 'src/services/settings.service';
 import { adminTabs, signedOutTabs, userTabs } from './tab.utils';
 
 @Component({
@@ -18,13 +19,13 @@ export class NavigationComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    private credentials: CredentialsService,
+    private settings: SettingsService,
     private router: Router,
   ) { }
 
   ngOnInit() {
     this.updateTabs();
-    this.subscription = this.credentials.tokenChange().subscribe(() => {
+    this.subscription = this.settings.change().subscribe(() => {
       this.updateTabs();
     });
   }
@@ -34,8 +35,8 @@ export class NavigationComponent implements OnInit, OnDestroy {
   }
 
   updateTabs() {
-    if(this.credentials.isAdmin || this.credentials.canApproveRequests) this.tabs = adminTabs()
-    else if(this.credentials.signedIn) {
+    if(this.settings.get(Settings.IS_ADMIN) || this.settings.get(Settings.CAN_APPROVE_REQUESTS)) this.tabs = adminTabs()
+    else if(this.settings.get(Settings.IS_SIGNED_IN)) {
       this.tabs = userTabs()
       this.router.navigate([RequestActionType.MOVIE])
     } else {

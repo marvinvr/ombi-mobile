@@ -3,6 +3,7 @@ import { RequestAction, RequestActionType, RequestType } from "src/models/reques
 
 export class RequestContent implements ContentClass {
     private request: Request;
+    public tags: Tag[] = [];
 
     constructor (request: Request) {
         this.request = request;
@@ -17,20 +18,9 @@ export class RequestContent implements ContentClass {
     }
 
     public get description(): string {
-        return this.request.description;
-    }
-    
-    public get tags(): Tag[] {
-        return [
-            {
-                color: this.type == RequestType.TV ? 'tertiary' : 'danger',
-                text: this.type == RequestType.TV ? this.type.toUpperCase() : this.type
-            },
-            {
-                color: 'primary',
-                text: this.request.request.user.name
-            }
-        ]
+        return `<b>${this.type.toUpperCase()}</b> requested by
+                <br />
+                <i>${this.request.request.user.name}</i>`;
     }
 
     public get available(): boolean {

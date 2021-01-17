@@ -33,12 +33,31 @@ export class ConfigComponent implements OnInit {
     this.credentials.baseUrl = this.model.ombiUrl;
     this.credentials.username = this.model.username;
     this.credentials.password = this.model.password;
+    this.credentials.token = '';
     this.auth.fetchToken()
-      .then((t) => this.toast.show(ToastType.SUCCESS, `Successfully signed in as ${this.credentials.name}!`));
+      .then((t) => this.toast.show(ToastType.SUCCESS, `Successfully signed in as ${this.credentials.name}!`))
+      .catch(e => this.toast.show(ToastType.ERROR, 'Unable to sign in with these credentials'));
+  }
+
+  public submitWithPlex() {
+    this.credentials.baseUrl = this.model.ombiUrl;
+    this.credentials.username = '';
+    this.credentials.password = '';
+    this.auth.triggerPlexOauth()
+      .then((t) => this.toast.show(ToastType.SUCCESS, `Successfully signed in as ${this.credentials.name}!`))
+      .catch(e => this.toast.show(ToastType.ERROR, 'Unable to sign in with Plex'));
   }
 
   public get inputType(): typeof InputType {
     return InputType;
+  }
+
+  public get hasBaseUrl(): boolean {
+    return this.model.ombiUrl != '';
+  }
+
+  public get hasCredentials(): boolean {
+    return this.model.username != '' && this.model.password != '' && this.hasBaseUrl;
   }
 
 }

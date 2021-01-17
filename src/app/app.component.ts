@@ -4,6 +4,9 @@ import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AuthService } from 'src/services/auth.service';
+import { Settings } from 'src/models/settings';
+import { SettingsService } from 'src/services/settings.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +18,9 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private auth: AuthService
+    private settings: SettingsService,
+    private auth: AuthService,
+    private router: Router
   ) {
     this.initializeApp();
   }
@@ -24,7 +29,8 @@ export class AppComponent {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-      this.auth.fetchToken();
+      if(!this.settings.get(Settings.USE_PLEX_OAUTH)) this.auth.fetchToken();
+      else this.router.navigate(['Movie'])
     });
     
   }
