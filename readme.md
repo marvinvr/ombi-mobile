@@ -1,6 +1,8 @@
 # Ombi-Mobile
 Unofficial mobile PWA for [Ombi](https://github.com/tidusjar/Ombi)
 
+**Note** This is only a frontend for the Ombi app. We are **not** able to access your data in any way.
+
 by @marvinvr
 
 ## Installation
