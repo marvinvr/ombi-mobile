@@ -4,14 +4,14 @@
 name: Build app for Pages
 
 on:
+  push:
+    branches: 
+      - master
   pull_request:
     branches:
       - master
     types:
       - closed
-  push:
-    branches: 
-      - master
 
 jobs:
   build:
