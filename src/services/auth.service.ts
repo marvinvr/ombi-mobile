@@ -81,6 +81,7 @@ export class AuthService {
                     this.credentials.token = res.access_token
                     clearInterval(interval)
                     resolve(true);
+                    windowReference.close();
                     if(this.settings.get(Settings.IS_SIGNED_IN)) this.router.navigate([RequestActionType.MOVIE])
                     else this.router.navigate(['config'])
                     this.settings.set(Settings.USE_PLEX_OAUTH, true)

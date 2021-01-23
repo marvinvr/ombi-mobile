@@ -3,7 +3,7 @@ import { CredentialsNames } from 'src/models/credentials';
 import jwt_decode from 'jwt-decode';
 import { Observable } from 'rxjs/internal/Observable';
 import { Subscriber } from 'rxjs';
-import { hasProtocol, removeTrailingSlash } from 'src/utils/credentials.utils';
+import { hasProtocol, removeTrailingSlash, replaceBackslashes } from 'src/utils/credentials.utils';
 import { SettingsService } from './settings.service';
 import { Settings } from 'src/models/settings';
 
@@ -40,6 +40,7 @@ export class CredentialsService {
   public set baseUrl(baseUrl: string) {
     if(!baseUrl) return;
     let url = baseUrl.toLowerCase();
+    url = replaceBackslashes(url);
     if(!hasProtocol(url)) 
       url = 'http://' + url;
     url = removeTrailingSlash(url);

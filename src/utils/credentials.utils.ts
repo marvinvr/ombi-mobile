@@ -7,3 +7,7 @@ export function removeTrailingSlash(url: string): string {
         return url.substring(0, url.length-1);
     return url;
 }
+
+export function replaceBackslashes(url: string): string {
+    return url.replace('\\', '/');
+}
