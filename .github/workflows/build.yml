@@ -9,6 +9,9 @@ on:
       - master
     types:
       - closed
+  push:
+    branches: 
+      - master
 
 jobs:
   build:
