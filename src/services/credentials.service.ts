@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CredentialsNames } from 'src/models/credentials';
 import jwt_decode from 'jwt-decode';
 import { Observable } from 'rxjs/internal/Observable';
-import { Subscriber } from 'rxjs';
+import { Subject } from 'rxjs';
 import { hasProtocol, removeTrailingSlash, replaceBackslashes } from 'src/utils/credentials.utils';
 import { SettingsService } from './settings.service';
 import { Settings } from 'src/models/settings';
@@ -11,8 +11,7 @@ import { Settings } from 'src/models/settings';
   providedIn: 'root'
 })
 export class CredentialsService {
-  private tokenChangeObservable = new Observable<void>(subscriber => this.subscriber = subscriber);
-  private subscriber: Subscriber<void>;
+  private tokenChangeSubject = new Subject();
 
   constructor(
     private settings: SettingsService
@@ -75,7 +74,7 @@ export class CredentialsService {
 
   public set token(token: string) {
     localStorage.setItem(CredentialsNames.TOKEN, token);
-    this.subscriber.next();
+    this.tokenChangeSubject.next();
   }
 
   public get tokenContents() {
@@ -86,8 +85,8 @@ export class CredentialsService {
     }
   }
 
-  public tokenChange(): Observable<void> {
-    return this.tokenChangeObservable;
+  public tokenChange(): Subject<any> {
+    return this.tokenChangeSubject;
   }
 
   public get hasValidToken(): boolean {

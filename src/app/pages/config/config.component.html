@@ -7,12 +7,13 @@
 <ion-content scrollY="false">  
   <div class="form">
     <app-input
-      label="URL"
+      label="Ombi Server URL"
       placeholder="Ombi Server URL"
       [type]="inputType.URL"
       [(value)]="model.ombiUrl" 
+      (change)="baseUrlChange()"
     ></app-input>
-    <div class="credentialsContainer">
+    <div [ngClass]="{'credentialsContainer': true, 'bordered': hasOauth}" *ngIf="validUrl">
       <app-input
         label="Username"
         placeholder="Username"
@@ -31,13 +32,14 @@
         (action)="submit()"
         [disabled]="!hasCredentials"
         ></app-button>
-      <p>or</p>
+      <p *ngIf="hasOauth">or</p>
       <app-button 
         class="plex" 
         color="light" 
         label="Sign in with Plex" 
         (action)="submitWithPlex()"
         [disabled]="!hasBaseUrl"
+        *ngIf="hasOauth"
         ></app-button>
     </div>
   </div>

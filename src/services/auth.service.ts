@@ -16,7 +16,9 @@ export class AuthService {
     private credentials: CredentialsService,
     private settings: SettingsService,
     private router: Router
-  ) { }
+  ) { 
+    this.updateAuthConfig();
+  }
 
   public fetchToken(): Promise<any> {
     if(!this.credentials.username || !this.credentials.password || !this.credentials.baseUrl) return new Promise<any>((resolve, reject) => reject(false));
@@ -35,6 +37,24 @@ export class AuthService {
       else this.router.navigate(['config'])
       this.settings.set(Settings.USE_PLEX_OAUTH, false)
     })
+  }
+
+  public updateAuthConfig(): void {
+    this.apiService.get(
+      '/Settings/Authentication',
+      {},
+      {},
+      undefined,
+      '1',
+      false
+    )
+      .then(res => {
+        this.settings.set(Settings.URL_IS_VALID, true);
+        this.settings.set(Settings.URL_HAS_OAUTH, res?.enableOAuth);
+      })
+      .catch(() => {
+        this.settings.set(Settings.URL_IS_VALID, false);
+      })
   }
 
   public triggerPlexOauth(): Promise<any> {
