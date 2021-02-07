@@ -13,10 +13,8 @@ import { sort } from 'src/utils/requests.utils';
 export class RequestsComponent implements OnInit {
 
   public contentList: Array<Request> = [];
-
-  public selectedRequestType: RequestType = RequestType.MOVIE;
   public searchTerm: string = '';
-  public noRequestsFound: boolean = false;
+  public isLoading: boolean = false;
 
   constructor(
     public request: RequestsService
@@ -30,19 +28,15 @@ export class RequestsComponent implements OnInit {
     this.contentList = [];
   }
 
-  typeChange(e): void {
-    this.selectedRequestType = e.detail.value;
-    if(this.searchTerm == '' || !this.searchTerm) this.fetchAllRequests()
-    else this.searchRequests();
-  }
-
   searchChange(e): void {
     this.searchTerm = e;
+    if(typeof e !== 'string') return;
     if(this.searchTerm == '' || !this.searchTerm) this.fetchAllRequests()
     else this.searchRequests();
   }
 
   private fetchAllRequests(): Promise<Request[]> {
+    this.isLoading = true;
     return Promise.all(
         [
           this.request.list(RequestType.MOVIE),
@@ -50,21 +44,22 @@ export class RequestsComponent implements OnInit {
         ]
     )
       .then(res => {
-        this.handleEmptyResult(res);
         this.contentList = sort(res);
+        this.isLoading = false;
         return this.contentList;
       })  
    }
 
   private searchRequests(): Promise<Request[]> {
+    this.isLoading = true;
     return Promise.all(
         [
           this.request.search(RequestType.MOVIE, this.searchTerm),
           this.request.search(RequestType.TV, this.searchTerm)
         ]
     ).then(res => {
-      this.handleEmptyResult(res);
       this.contentList = sort(res);
+      this.isLoading = false;
       return this.contentList;
     })
   }
@@ -82,9 +77,5 @@ export class RequestsComponent implements OnInit {
       this.fetchAllRequests()
       : this.searchRequests())
       .then(() => event.target.complete())
-  }
-
-  private handleEmptyResult(res: [Request[], Request[]]) {
-    this.noRequestsFound = res[0].length == 0 && res[1].length == 0;
   }
 }

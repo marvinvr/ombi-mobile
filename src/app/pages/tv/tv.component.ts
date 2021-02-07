@@ -14,6 +14,7 @@ export class TvComponent implements OnInit {
 
   public shows: Array<TvShow> = [];
   private searchTerm: string = '';
+  public isLoading: boolean = false;
 
   constructor(
     private tv: TvService,
@@ -37,11 +38,21 @@ export class TvComponent implements OnInit {
   }
 
   public fetchAllShows(): Promise<TvShow[]> {
-    return this.tv.list().then((shows) => this.shows = shows);
+    this.isLoading = true;
+    return this.tv.list().then((shows) => {
+      this.shows = shows;
+      this.isLoading = false;
+      return this.shows;
+    });
   }
 
   public searchShows(): Promise<TvShow[]> {
-    return this.tv.search(this.searchTerm).then((shows) => this.shows = shows);
+    this.isLoading = true;
+    return this.tv.search(this.searchTerm).then((shows) => {
+      this.shows = shows;
+      this.isLoading = false;
+      return this.shows;
+    });
   }
 
   public content(show: TvShow) {

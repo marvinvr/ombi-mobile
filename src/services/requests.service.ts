@@ -33,7 +33,7 @@ export class RequestsService {
     term: string
   ): Promise<Request[]> {
     return this.api.get(`/Request/${type}/search/${term}`, {}, {}) 
-              .then((requestResult) => this.format(requestResult.collection, type));
+              .then((res) => this.format(res, type));
   }
 
   public request(type: RequestType, id: number) {
