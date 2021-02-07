@@ -14,6 +14,7 @@ export class MoviesComponent implements OnInit {
 
   public movies: Array<Movie> = [];
   private searchTerm: string = '';
+  public isLoading: boolean = false;
 
   constructor(
     private movie: MovieService,
@@ -37,11 +38,21 @@ export class MoviesComponent implements OnInit {
   }
 
   private fetchAllMovies(): Promise<Movie[]> {
-    return this.movie.list().then((movies) => this.movies = movies);
+    this.isLoading = true;
+    return this.movie.list().then((movies) => {
+      this.movies = movies;
+      this.isLoading = false;
+      return movies
+    });
   }
 
   private searchMovies(): Promise<Movie[]> {
-    return this.movie.search(this.searchTerm).then((movies) => this.movies = movies);
+    this.isLoading = true;
+    return this.movie.search(this.searchTerm).then((movies) => {
+      this.movies = movies;
+      this.isLoading = false;
+      return movies
+    });
   }
 
   public content(movie: Movie): MovieContent {

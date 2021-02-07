@@ -25,7 +25,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.updateTabs();
-    this.subscription = this.settings.change().subscribe(() => {
+    this.settings.change.subscribe(() => {
       this.updateTabs();
     });
   }
