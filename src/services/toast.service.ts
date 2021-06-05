@@ -14,7 +14,7 @@ export class ToastService {
   async show(type: ToastType, message: string) {
     let toast = await this.toast.create({
       header: message,
-      position: 'top',
+      position: 'bottom',
       color: type,
       duration: 1500
     });
