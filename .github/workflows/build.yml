@@ -48,12 +48,11 @@ jobs:
         push: true
         tags: ${{ secrets.DOCKER_HUB_USERNAME }}/ombi-mobile:latest
     - name: Deploy update
-        - name: Webhook
-          uses: joelwmale/webhook-action@master
-          with:
-            url: ${{ secrets.WEBHOOK_URL }}
-            headers: '{"x-api-key": "${{ secrets.WEBHOOK_API_KEY }}"}'
-            body: '{"container": "ombi-mobile"}'
+        uses: joelwmale/webhook-action@master
+        with:
+          url: ${{ secrets.WEBHOOK_URL }}
+          headers: '{"x-api-key": "${{ secrets.WEBHOOK_API_KEY }}"}'
+          body: '{"container": "ombi-mobile"}'
     - name: GitHub Pages
       uses: crazy-max/ghaction-github-pages@v2.2.0
       env:
