@@ -24,6 +24,11 @@ jobs:
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
+    - name: Login to Docker Hub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_HUB_USERNAME }}
+        password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
     - name: Prepare environment
       uses: actions/setup-node@v1
       with:
@@ -32,19 +37,23 @@ jobs:
       run: |
           npm install
           npm install -g @ionic/cli
-#          gem install cocoapods
     - name: Build App & Workspace files
       run: |
         ionic build --prod
-#        ionic capacitor build ios
-#        ionic capacitor build android
-#    - name: Prepare release Assets
-#      run: |
-#        cd ../
-#        rm -rf ./ombi-mobile/node_modules/
-#        zip -r release.zip ./ombi-mobile
-#        mv release.zip ./ombi-mobile/
-#        cd ./ombi-mobile
+    - name: Build and push container
+      id: docker_build
+      uses: docker/build-push-action@v2
+      with:
+        context: ./
+        file: ./Dockerfile
+        push: true
+        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/ombi-mobile:latest
+    - name: Deploy update
+      uses: joelwmale/webhook-action@master
+      with:
+        url: ${{ secrets.WEBHOOK_URL }}
+        headers: '{"x-api-key": "${{ secrets.WEBHOOK_API_KEY }}"}'
+        body: '{"container": "ombi-mobile"}'
     - name: GitHub Pages
       uses: crazy-max/ghaction-github-pages@v2.2.0
       env:
@@ -52,21 +61,3 @@ jobs:
       with:
         build_dir: www
         fqdn: ombi-mobile.marvinvr.dev
-#    - name: Create a Release
-#      uses: actions/create-release@v1.1.4
-#      id: create_release
-#      env:
-#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#      with:
-#        tag_name: 1.0.${{ github.run_number }}
-#        release_name: Release 1.0.${{ github.run_number }}
-#    - name: Upload Release Assets
-#      id: upload-release-asset 
-#      uses: actions/upload-release-asset@v1
-#      env:
-#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#      with:
-#        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-#        asset_path: ./release.zip
-#        asset_name: ombi-mobile-1.0.${{ github.run_number }}.zip
-#        asset_content_type: application/zip
