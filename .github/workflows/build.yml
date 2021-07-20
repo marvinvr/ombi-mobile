@@ -5,16 +5,13 @@ name: Build app for Pages
 
 on:
   pull_request:
-    branches:
-      - master
-    types:
-      - closed
+    branches: [ master, develop ]
+  push: 
+    branches: [ master, develop ]
 
 jobs:
   build:
-    runs-on: ubuntu-18.04 #macos-latest
-    
-    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-18.04
 
     strategy:
       matrix:
@@ -23,6 +20,13 @@ jobs:
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
+    - name: Generate correct docker tag
+      id: gen_tags
+      run: |
+        if [[ $GITHUB_REF == 'refs/heads/master' ]]; then
+          echo '::set-output name=tag::latest'
+        else
+          echo '::set-output name=tag::alpha'
     - name: Login to Docker Hub
       uses: docker/login-action@v1
       with:
@@ -46,13 +50,13 @@ jobs:
         context: ./
         file: ./Dockerfile
         push: true
-        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/ombi-mobile:latest
+        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/ombi-mobile:${{ fromJson(steps.gen_tags.outputs.tag) }}
     - name: Deploy update
       uses: joelwmale/webhook-action@master
       with:
         url: ${{ secrets.WEBHOOK_URL }}
         headers: '{"x-api-key": "${{ secrets.WEBHOOK_API_KEY }}"}'
-        body: '{"container": "ombi-mobile"}'
+        body: '{"container": "ombi-mobile${{ fromJson(steps.gen_tags.outputs.tag) }}"}'
     - name: GitHub Pages
       uses: crazy-max/ghaction-github-pages@v2.2.0
       env:
