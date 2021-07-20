@@ -24,9 +24,11 @@ jobs:
       id: gen_tags
       run: |
         if [[ $GITHUB_REF == 'refs/heads/master' ]]; then
-          echo '::set-output name=tag::latest'
+          TAG='latest'
         else
-          echo '::set-output name=tag::alpha'
+          TAG='alpha'
+        fi
+          echo '::set-output name=tag::'$TAG
     - name: Login to Docker Hub
       uses: docker/login-action@v1
       with:
