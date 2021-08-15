@@ -47,7 +47,17 @@ import { environment } from '../environments/environment';
     ListRemarkComponent
   ],
   entryComponents: [ ],
-  imports: [BrowserModule, CommonModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule, ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })],
+  imports: [
+    BrowserModule, 
+    CommonModule, 
+    IonicModule.forRoot(), 
+    AppRoutingModule, 
+    HttpClientModule, 
+    IonicModule.forRoot({
+      mode: 'md'
+    }),
+    ServiceWorkerModule.register('ngsw-worker.js', 
+    { enabled: environment.production })],
   providers: [
     StatusBar,
     SplashScreen,
