@@ -4,6 +4,9 @@
 name: Build app for Pages
 
 on:
+  push:
+    branches: 
+      - master
   pull_request:
     branches: [ master, develop ]
   push: 
