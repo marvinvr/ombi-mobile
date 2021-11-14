@@ -54,9 +54,8 @@ jobs:
         file: ./Dockerfile
         push: true
         tags: ${{ secrets.REGISTRY_URL }}/ombi-mobile:${{ steps.gen_tags.outputs.tag }}
-#    - name: Deploy update
-#      uses: joelwmale/webhook-action@master
-#      with:
-#        url: ${{ secrets.WEBHOOK_URL }}
-#        headers: '{"x-api-key": "${{ secrets.WEBHOOK_API_KEY }}"}'
-#        body: '{"container": "ombi-mobile-${{ steps.gen_tags.outputs.tag }}"}'
+    - name: Deploy update
+      uses: joelwmale/webhook-action@master
+      with:
+        url: ${{ secrets.WEBHOOK_URL }}
+        headers: '{"x-api-key": "${{ secrets.WEBHOOK_API_KEY }}"}'
