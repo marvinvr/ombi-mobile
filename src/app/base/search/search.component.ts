@@ -15,7 +15,8 @@ export class SearchComponent implements OnInit {
 
   ngOnInit() { }
 
-  updateValue(value){
+  updateValue(event){
+    const value = event?.detail?.value;
     clearTimeout(this.timeout);
     this.timeout = setTimeout( () => {
       this.valueChange.emit(value);
