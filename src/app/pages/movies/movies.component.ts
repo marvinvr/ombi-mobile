@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MovieContent } from 'src/app/base/content-row/content-types/movie-row';
 import { Movie } from 'src/models/content';
@@ -10,11 +10,11 @@ import { MovieService } from 'src/services/movie.service';
   templateUrl: './movies.component.html',
   styleUrls: ['./movies.component.scss'],
 })
-export class MoviesComponent implements OnInit {
+export class MoviesComponent implements OnInit, OnDestroy {
 
   public movies: Array<Movie> = [];
-  private searchTerm: string = '';
-  public isLoading: boolean = false;
+  public isLoading = false;
+  private searchTerm = '';
 
   constructor(
     private movie: MovieService,
@@ -28,13 +28,32 @@ export class MoviesComponent implements OnInit {
   ngOnDestroy() {
     this.movies = [];
   }
-  
+
   searchChange(e) {
-    if(typeof e !== 'string') return;
+    if(typeof e !== 'string') {
+      return;
+    }
     this.searchTerm = e;
-    (e == '' || !e) 
-        ? this.fetchAllMovies()
-        : this.searchMovies();
+    if(e === '' || !e) {
+      this.fetchAllMovies();
+    } else {
+      this.searchMovies();
+    }
+  }
+
+  public content(movie: Movie): MovieContent {
+    return new MovieContent(movie);
+  }
+
+  public showContent(movie: Movie): void {
+    this.router.navigate([RequestActionType.MOVIE, movie.id]);
+  }
+
+  public refresh(event) {
+    (this.searchTerm === '' ?
+      this.fetchAllMovies()
+      : this.searchMovies())
+      .then(() => event.target.complete());
   }
 
   private fetchAllMovies(): Promise<Movie[]> {
@@ -42,7 +61,7 @@ export class MoviesComponent implements OnInit {
     return this.movie.list().then((movies) => {
       this.movies = movies;
       this.isLoading = false;
-      return movies
+      return movies;
     });
   }
 
@@ -51,22 +70,7 @@ export class MoviesComponent implements OnInit {
     return this.movie.search(this.searchTerm).then((movies) => {
       this.movies = movies;
       this.isLoading = false;
-      return movies
+      return movies;
     });
-  }
-
-  public content(movie: Movie): MovieContent {
-    return new MovieContent(movie);
-  }
-
-  public showContent(movie: Movie): void {
-    this.router.navigate([RequestActionType.MOVIE, movie.id])
-  }
-
-  public refresh(event) {
-    (this.searchTerm == '' ?
-      this.fetchAllMovies()
-      : this.searchMovies())
-      .then(() => event.target.complete())
   }
 }

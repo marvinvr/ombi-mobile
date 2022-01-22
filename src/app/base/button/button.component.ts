@@ -6,11 +6,11 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
   styleUrls: ['./button.component.scss'],
 })
 export class ButtonComponent implements OnInit {
-  @Input() label: string = '';
+  @Input() label = '';
   @Input() size: 'small' | 'default' | 'large' = 'default';
-  @Input() disabled: boolean = false;
+  @Input() disabled = false;
   @Input() color: 'primary' | 'success' | 'danger' | 'warning' | 'light' = 'primary';
-  @Input() fill: "clear" | "default" | "outline" | "solid" = 'solid'
+  @Input() fill: 'clear' | 'default' | 'outline' | 'solid' = 'solid';
 
   @Output() action: EventEmitter<void> = new EventEmitter();
 

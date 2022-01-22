@@ -5,10 +5,8 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './list-remark.component.html',
   styleUrls: ['./list-remark.component.scss'],
 })
-export class ListRemarkComponent implements OnInit {
+export class ListRemarkComponent {
 
   constructor() { }
-
-  ngOnInit() {}
 
 }

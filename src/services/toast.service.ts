@@ -12,7 +12,7 @@ export class ToastService {
   ) { }
 
   async show(type: ToastType, message: string) {
-    let toast = await this.toast.create({
+    const toast = await this.toast.create({
       header: message,
       position: 'bottom',
       color: type,

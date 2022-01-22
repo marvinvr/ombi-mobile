@@ -7,21 +7,22 @@ import { InputAutocomplete, InputType } from 'src/models/input';
   styleUrls: ['./input.component.scss'],
 })
 export class InputComponent implements OnInit {
-  @Input() label: string = '';
+  @Input() label = '';
   @Input() autocomplete: InputAutocomplete = InputAutocomplete.OFF;
   @Input() type: InputType = InputType.TEXT;
-  @Input() required: boolean = false;
-  @Input() disabled: boolean = false;
-  @Input() placeholder: string = '';
+  @Input() required = false;
+  @Input() disabled = false;
+  @Input() placeholder = '';
 
-  @Input() value: string = '';
+  @Input() value = '';
   @Output() valueChange: EventEmitter<string> = new EventEmitter<string>();
 
   constructor() { }
 
   ngOnInit() {}
-  
-  updateValue(value){
+
+  updateValue(event){
+    const value = event?.detail?.value;
     this.value = value;
     this.valueChange.emit(value);
   }

@@ -1,10 +1,9 @@
 <ion-header>
   <app-header title="Movies"></app-header>
-  <app-search placeholder="Search Movies" (change)="searchChange($event)"></app-search>
+  <app-search placeholder="Search Movies" (valueChange)="searchChange($event)"></app-search>
 </ion-header>
 
 <ion-content>
-  <ion-progress-bar *ngIf="this.isLoading" color="primary" type="indeterminate"></ion-progress-bar>
   <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>

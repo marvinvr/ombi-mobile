@@ -1,4 +1,4 @@
-export const SETTINGS_STORAGE_KEY = 'settings'
+export const SETTINGS_STORAGE_KEY = 'settings';
 
 export enum Settings {
     IS_ADMIN = 'aa',

@@ -14,7 +14,7 @@ import { adminTabs, signedOutTabs, userTabs } from './tab.utils';
 })
 export class NavigationComponent implements OnInit, OnDestroy {
 
-  public tabs: Tab[] = [ ]
+  public tabs: Tab[] = [];
 
   private subscription: Subscription;
 
@@ -35,13 +35,14 @@ export class NavigationComponent implements OnInit, OnDestroy {
   }
 
   updateTabs() {
-    if(this.settings.get(Settings.IS_ADMIN) || this.settings.get(Settings.CAN_APPROVE_REQUESTS)) this.tabs = adminTabs()
-    else if(this.settings.get(Settings.IS_SIGNED_IN)) {
-      this.tabs = userTabs()
-      this.router.navigate([RequestActionType.MOVIE])
+    if(this.settings.get(Settings.IS_ADMIN) || this.settings.get(Settings.CAN_APPROVE_REQUESTS)) {
+      this.tabs = adminTabs();
+    } else if(this.settings.get(Settings.IS_SIGNED_IN)) {
+      this.tabs = userTabs();
+      this.router.navigate([RequestActionType.MOVIE]);
     } else {
-      this.tabs = signedOutTabs()
-      this.router.navigate(['config'])
+      this.tabs = signedOutTabs();
+      this.router.navigate(['config']);
     }
   }
 

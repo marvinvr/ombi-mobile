@@ -15,9 +15,9 @@ import { TvService } from 'src/services/tv.service';
   styleUrls: ['./content.component.scss'],
 })
 export class ContentComponent implements OnInit, OnDestroy {
-  public content: ContentClass;
-
   @Output() back: EventEmitter<void> = new EventEmitter<void>();
+
+  public content: ContentClass;
 
   private subscription: Subscription;
 
@@ -29,37 +29,45 @@ export class ContentComponent implements OnInit, OnDestroy {
     private tvService: TvService
   ) { }
 
-  ngOnInit() {
-    this.subscription = this.route.paramMap.subscribe( params => {
-      let type = params.get('type');
-      let id = params.get('id')
-      switch (type) {
-        case RequestActionType.TV:
-          if(!this.tvService?.shows[id]) this.router.navigate(['/']);
-          else this.content = new TvContent(this.tvService?.shows[id])
-          break;
-        case RequestActionType.MOVIE:
-          if(!this.movieService?.movies[id]) this.router.navigate(['/']);
-          else this.content = new MovieContent(this.movieService?.movies[id])
-          break;
-      }
-    })
-  }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-  }
-
   get type(): RequestType {
     return this.content.type;
   }
 
   get label(): string {
-    return this.content.available ? 'Available' : this.content.requested ? 'Requested' : `Request ${this.type == RequestType.TV ? this.type.toUpperCase() : this.type}`
+    return this.content.available ? 'Available'
+    : this.content.requested ? 'Requested'
+    : `Request ${this.type === RequestType.TV ? this.type.toUpperCase() : this.type}`;
   }
 
-  get color(): string {
+  get color(): 'primary' | 'success' | 'danger' | 'warning' | 'light' {
     return this.content.available ? 'success' : this.content.requested ? 'warning': 'success';
+  }
+
+  ngOnInit() {
+    this.subscription = this.route.paramMap.subscribe( params => {
+      const type = params.get('type');
+      const id = params.get('id');
+      switch (type) {
+        case RequestActionType.TV:
+          if(!this.tvService?.shows[id]){
+            this.router.navigate(['/']);
+          } else {
+            this.content = new TvContent(this.tvService?.shows[id]);
+          }
+          break;
+        case RequestActionType.MOVIE:
+          if(!this.movieService?.movies[id]){
+            this.router.navigate(['/']);
+          } else {
+            this.content = new MovieContent(this.movieService?.movies[id]);
+          }
+          break;
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   public goBack() {

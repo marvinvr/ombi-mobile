@@ -1,17 +1,17 @@
-import { ContentActionButton, ContentClass, Request, Tag } from "src/models/content";
-import { RequestAction, RequestActionType, RequestType } from "src/models/requests";
+import { ContentActionButton, ContentClass, Request, Tag } from 'src/models/content';
+import { RequestAction, RequestType } from 'src/models/requests';
 
 export class RequestContent implements ContentClass {
-    private request: Request;
     public tags: Tag[] = [];
+    private request: Request;
 
-    constructor (request: Request) {
+    constructor(request: Request) {
         this.request = request;
     }
 
     public get id(): number {
         return this.request.id;
-    } 
+    }
 
     public get title(): string {
         return this.request.title;
@@ -33,11 +33,11 @@ export class RequestContent implements ContentClass {
 
     public get denied(): boolean {
         return this.request.request.denied;
-    } 
+    }
 
     public get posterUrl(): string {
-        return this.type == RequestType.MOVIE 
-            ? `https://image.tmdb.org/t/p/w300//${this.request.posterUrl}`
+        return this.type === RequestType.MOVIE ?
+            `https://image.tmdb.org/t/p/w300//${this.request.posterUrl}`
             : this.request.posterUrl;
     }
 
@@ -54,7 +54,7 @@ export class RequestContent implements ContentClass {
     }
 
     public get buttons(): ContentActionButton[] {
-        let buttons = []
+        let buttons = [];
         if(this.approved) {
             buttons = [
                 {
@@ -63,7 +63,7 @@ export class RequestContent implements ContentClass {
                     action: undefined,
                     disabled: true
                 }
-            ]
+            ];
         } else if(this.denied) {
             buttons = [
                 {
@@ -72,7 +72,7 @@ export class RequestContent implements ContentClass {
                     action: undefined,
                     disabled: true
                 }
-            ]
+            ];
         } else {
             buttons = [
                 {
@@ -85,15 +85,19 @@ export class RequestContent implements ContentClass {
                     color: 'success',
                     action: RequestAction.APPROVE
                 },
-            ]
+            ];
         }
         return buttons;
     }
-    
-    public deny(): void {this.request.request.denied = true}
-    
-    public approve(): void {this.request.request.approved = true}
 
-    public disable () {
+    public deny(): void {
+        this.request.request.denied = true;
+    }
+
+    public approve(): void {
+        this.request.request.approved = true;
+    }
+
+    public disable() {
     }
 }

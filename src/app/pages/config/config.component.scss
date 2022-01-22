@@ -30,3 +30,27 @@
         }
     }
 }
+
+.github {
+    &.dark {
+        display: none;
+    }
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    height: 44px;
+    width: auto;
+}
+
+@media (prefers-color-scheme: dark) {
+    :host {
+        .github {
+            &.dark {
+                display: block;
+            }
+            &.light {
+                display: none;
+            }
+        }
+    }
+}

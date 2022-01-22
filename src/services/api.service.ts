@@ -18,7 +18,13 @@ export class ApiService {
     private toast: ToastService
   ) { }
 
-  public get(path: string, headers: Headers, parameters: RequestParameters, customBaseUrl?: string, version?: string, showError: boolean = true): Promise<any> {
+  public get(
+    path: string,
+    headers: Headers,
+    parameters: RequestParameters,
+    customBaseUrl?: string,
+    version?: string,
+    showError: boolean = true): Promise<any> {
     return this.performRequest(
       HttpRequestType.GET,
       path + '?' + Object.keys(parameters).map((p) => [p, parameters[p]].join('=')).join('&'),
@@ -26,7 +32,7 @@ export class ApiService {
       undefined,
       customBaseUrl,
       version,
-      showError)
+      showError);
   }
 
   public post(path: string, headers: Headers, parameters: RequestParameters, customBaseUrl?: string, version?: string): Promise<any> {
@@ -41,18 +47,32 @@ export class ApiService {
     return this.performRequest(HttpRequestType.DELETE, path, headers);
   }
 
-  private performRequest(type: HttpRequestType, path: string, headers: Headers, parameters?: RequestParameters, customBaseUrl?: string, version?: string, showError: boolean = true): Promise<any> {
-    return (parameters ? 
-            this.http[type as string]((customBaseUrl || (this.credentialsService.baseUrl + this.getApiExtension(version))) + path, parameters, {headers: this.formatHeaders(headers)})
-            : this.http[type as string]((customBaseUrl || (this.credentialsService.baseUrl + this.getApiExtension(version))) + path, {headers: this.formatHeaders(headers)}))
+  private performRequest(
+    type: HttpRequestType,
+    path: string,
+    headers: Headers,
+    parameters?: RequestParameters,
+    customBaseUrl?: string,
+    version?: string,
+    showError: boolean = true): Promise<any> {
+    return (parameters ?
+            this.http[type as string]((
+              customBaseUrl || (this.credentialsService.baseUrl + this.getApiExtension(version))) + path,
+              parameters,
+              {headers: this.formatHeaders(headers)})
+            : this.http[type as string]((
+              customBaseUrl || (this.credentialsService.baseUrl + this.getApiExtension(version))) + path,
+              {headers: this.formatHeaders(headers)}))
             .toPromise()
             .catch((err) => {
-              if(err.status == 401) {
-                this.credentialsService.token = ''
+              if(err.status === 401) {
+                this.credentialsService.token = '';
                 this.router.navigate(['config']);
-                this.toast.show(ToastType.WARNING, 'You have been signed out.')
+                this.toast.show(ToastType.WARNING, 'You have been signed out.');
               } else {
-                if(showError) this.toast.show(err.status >= 400 ? ToastType.ERROR : ToastType.WARNING, `${err.status} - ${err.statusText}`);
+                if(showError) {
+                  this.toast.show(err.status >= 400 ? ToastType.ERROR : ToastType.WARNING, `${err.status} - ${err.statusText}`);
+                }
               }
               throw new Error(err);
             });
@@ -63,10 +83,10 @@ export class ApiService {
   }
 
   private formatHeaders(headers: Headers): HttpHeaders {
-    let httpHeaders = new HttpHeaders({
+    const httpHeaders = new HttpHeaders({
       'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': `Bearer ${this.credentialsService.token}`,
+      Accept: 'application/json',
+      Authorization: `Bearer ${this.credentialsService.token}`,
       ...headers
     });
     return httpHeaders;

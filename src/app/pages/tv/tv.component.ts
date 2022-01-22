@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TvContent } from 'src/app/base/content-row/content-types/tv-row';
 import { TvShow } from 'src/models/content';
@@ -10,11 +10,12 @@ import { TvService } from 'src/services/tv.service';
   templateUrl: './tv.component.html',
   styleUrls: ['./tv.component.scss'],
 })
-export class TvComponent implements OnInit {
+export class TvComponent implements OnInit, OnDestroy {
 
   public shows: Array<TvShow> = [];
-  private searchTerm: string = '';
-  public isLoading: boolean = false;
+  public isLoading = false;
+
+  private searchTerm = '';
 
   constructor(
     private tv: TvService,
@@ -23,18 +24,22 @@ export class TvComponent implements OnInit {
 
   ngOnInit() {
     this.fetchAllShows();
-  }  
+  }
 
   ngOnDestroy() {
     this.shows = [];
   }
-  
+
   searchChange(e) {
-    if(typeof e !== 'string') return;
+    if(typeof e !== 'string') {
+      return;
+    }
     this.searchTerm = e;
-    (e == '' || !e) 
-        ? this.fetchAllShows()
-        : this.searchShows();
+    if(e === '' || !e) {
+      this.fetchAllShows();
+    } else {
+      this.searchShows();
+    }
   }
 
   public fetchAllShows(): Promise<TvShow[]> {
@@ -60,14 +65,14 @@ export class TvComponent implements OnInit {
   }
 
   public showContent(show: TvShow): void {
-    this.router.navigate([RequestActionType.TV, show.id])
+    this.router.navigate([RequestActionType.TV, show.id]);
   }
 
   public refresh(event) {
-    (this.searchTerm == '' ?
+    (this.searchTerm === '' ?
       this.fetchAllShows()
       : this.searchShows())
-      .then(() => event.target.complete())
+      .then(() => event.target.complete());
   }
 
 }
