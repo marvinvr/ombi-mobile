@@ -6,8 +6,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
   styleUrls: ['./search.component.scss'],
 })
 export class SearchComponent implements OnInit {
-  @Input() placeholder: string = '';
-  @Output() change: EventEmitter<string> = new EventEmitter<string>();
+  @Input() placeholder = '';
+  @Output() valueChange: EventEmitter<string> = new EventEmitter<string>();
 
   private timeout;
 
@@ -18,8 +18,8 @@ export class SearchComponent implements OnInit {
   updateValue(value){
     clearTimeout(this.timeout);
     this.timeout = setTimeout( () => {
-      this.change.emit(value);
-    }, 500)
+      this.valueChange.emit(value);
+    }, 500);
   }
 
 }

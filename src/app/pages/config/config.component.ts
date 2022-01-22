@@ -13,16 +13,17 @@ import { InputType } from '../../../models/input';
   styleUrls: ['./config.component.scss'],
 })
 export class ConfigComponent implements OnInit {
+
+  public validUrl = false;
+  public hasOauth = false;
+
   public model = {
     ombiUrl: '',
     username: '',
     password: ''
-  }
+  };
 
   private baseUrlTimeout;
-
-  public validUrl: boolean = false;
-  public hasOauth: boolean = false;
 
   constructor(
     private credentials: CredentialsService,
@@ -30,6 +31,18 @@ export class ConfigComponent implements OnInit {
     private toast: ToastService,
     private settings: SettingsService,
   ) { }
+
+  public get inputType(): typeof InputType {
+    return InputType;
+  }
+
+  public get hasBaseUrl(): boolean {
+    return this.model.ombiUrl !== '';
+  }
+
+  public get hasCredentials(): boolean {
+    return this.model.username !== '' && this.model.password !== '' && this.hasBaseUrl;
+  }
 
   ngOnInit() {
     this.model.ombiUrl = this.credentials.baseUrl;
@@ -40,7 +53,7 @@ export class ConfigComponent implements OnInit {
     this.settings.change.subscribe(() => {
       this.validUrl = this.settings.get(Settings.URL_IS_VALID);
       this.hasOauth = this.settings.get(Settings.URL_HAS_OAUTH);
-    })
+    });
   }
 
   public submit() {
@@ -63,19 +76,11 @@ export class ConfigComponent implements OnInit {
     this.baseUrlTimeout = setTimeout(() => {
       this.credentials.baseUrl = this.model.ombiUrl;
       this.auth.updateAuthConfig();
-    }, 500)
+    }, 500);
   }
 
-  public get inputType(): typeof InputType {
-    return InputType;
-  }
-
-  public get hasBaseUrl(): boolean {
-    return this.model.ombiUrl != '';
-  }
-
-  public get hasCredentials(): boolean {
-    return this.model.username != '' && this.model.password != '' && this.hasBaseUrl;
+  public openGithub(): void {
+    location.href = 'https://github.com/marvinvr/ombi-mobile';
   }
 
 }

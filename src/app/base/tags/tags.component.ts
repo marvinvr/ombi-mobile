@@ -6,11 +6,9 @@ import { Tag } from 'src/models/content';
   templateUrl: './tags.component.html',
   styleUrls: ['./tags.component.scss'],
 })
-export class TagsComponent implements OnInit {
+export class TagsComponent {
   @Input() tags: Tag[] = [];
 
   constructor() { }
-
-  ngOnInit() {}
 
 }

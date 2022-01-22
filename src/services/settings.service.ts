@@ -13,13 +13,13 @@ export class SettingsService {
     this.init();
   }
 
-  private init() {
-    this.settings = JSON.parse(localStorage.getItem(SETTINGS_STORAGE_KEY)) || {};
+  public get change(): Subject<any> {
+    return this.settingsChange;
   }
 
   public set(key: Settings, value: any): void {
     this.settings[key] = value;
-    localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(this.settings))
+    localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(this.settings));
     this.settingsChange.next();
   }
 
@@ -27,7 +27,7 @@ export class SettingsService {
     return this.settings[key];
   }
 
-  public get change(): Subject<any> {
-    return this.settingsChange;
+  private init() {
+    this.settings = JSON.parse(localStorage.getItem(SETTINGS_STORAGE_KEY)) || {};
   }
 }

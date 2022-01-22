@@ -16,27 +16,34 @@ export class AuthService {
     private credentials: CredentialsService,
     private settings: SettingsService,
     private router: Router
-  ) { 
+  ) {
     this.updateAuthConfig();
   }
 
   public fetchToken(): Promise<any> {
-    if(!this.credentials.username || !this.credentials.password || !this.credentials.baseUrl) return new Promise<any>((resolve, reject) => reject(false));
+    if(!this.credentials.username
+      || !this.credentials.password
+      || !this.credentials.baseUrl) {
+        return new Promise<any>((resolve, reject) => reject(false));
+      }
     return this.apiService.post(
       '/token',
       {},
       {
-        'username': this.credentials.username,
-        'password': this.credentials.password,
-        'rememberMe': true,
-        'usePlexOAuth': false,
+        username: this.credentials.username,
+        password: this.credentials.password,
+        rememberMe: true,
+        usePlexOAuth: false,
       }
     ).then(t => this.credentials.token = t?.access_token)
     .then(() => {
-      if(this.settings.get(Settings.IS_SIGNED_IN)) this.router.navigate([RequestActionType.MOVIE])
-      else this.router.navigate(['config'])
-      this.settings.set(Settings.USE_PLEX_OAUTH, false)
-    })
+      if(this.settings.get(Settings.IS_SIGNED_IN)) {
+        this.router.navigate([RequestActionType.MOVIE]);
+      } else {
+        this.router.navigate(['config']);
+      }
+      this.settings.set(Settings.USE_PLEX_OAUTH, false);
+    });
   }
 
   public updateAuthConfig(): void {
@@ -54,12 +61,14 @@ export class AuthService {
       })
       .catch(() => {
         this.settings.set(Settings.URL_IS_VALID, false);
-      })
+      });
   }
 
   public triggerPlexOauth(): Promise<any> {
-    if(!this.credentials.baseUrl) return new Promise<any>((resolve, reject) => reject(false));
-    var windowReference = window.open();
+    if(!this.credentials.baseUrl) {
+      return new Promise<any>((resolve, reject) => reject(false));
+    }
+    const windowReference = window.open();
     return new Promise<any>((resolve, reject) => {
       this.apiService.post(
         '/api/v2/pins?strong=true',
@@ -72,45 +81,48 @@ export class AuthService {
         },
         {},
         'https://plex.tv')
-        .then( res => {
+        .then( pinResponse => {
           this.apiService.post(
             '/token',
             {},
             {
-              'username': '',
-              'password': '',
-              'rememberMe': true,
-              'usePlexOauth': true,
-              'plexTvPin': res
+              username: '',
+              password: '',
+              rememberMe: true,
+              usePlexOauth: true,
+              plexTvPin: pinResponse
             }
-          ).then(res => {
-            windowReference.location = res.url;
-            let numAttempts: number = 0;
-            let interval = setInterval(() => {
+          ).then(tokenResponse => {
+            windowReference.location = tokenResponse.url;
+            let numAttempts = 0;
+            const interval = setInterval(() => {
               if(numAttempts > 100) {
                 clearInterval(interval);
-                reject({errorMessage: 'Sign in with Plex timed out'})
+                reject({errorMessage: 'Sign in with Plex timed out'});
               }
               this.apiService.get(
-                `/token/${res.pinId}`,
+                `/token/${tokenResponse.pinId}`,
                 {},
                 {}
               )
-                .then(res => {
-                  if(res.access_token) {
-                    this.credentials.token = res.access_token
-                    clearInterval(interval)
+                .then(accessTokenResponse => {
+                  if(accessTokenResponse.access_token) {
+                    this.credentials.token = accessTokenResponse.access_token;
+                    clearInterval(interval);
                     resolve(true);
                     windowReference.close();
-                    if(this.settings.get(Settings.IS_SIGNED_IN)) this.router.navigate([RequestActionType.MOVIE])
-                    else this.router.navigate(['config'])
-                    this.settings.set(Settings.USE_PLEX_OAUTH, true)
-                  } 
-                })
+                    if(this.settings.get(Settings.IS_SIGNED_IN)) {
+                      this.router.navigate([RequestActionType.MOVIE]);
+                    } else {
+                      this.router.navigate(['config']);
+                    }
+                    this.settings.set(Settings.USE_PLEX_OAUTH, true);
+                  }
+                });
               numAttempts++;
-            }, 1000)
-          }).catch( err => reject(err))
-        }).catch( err => reject(err))
-    })
+            }, 1000);
+          }).catch( err => reject(err));
+        }).catch( err => reject(err));
+    });
   }
 }

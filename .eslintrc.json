@@ -40,7 +40,9 @@
     },
     {
       "files": ["*.html"],
-      "rules": {}
+      "rules": {
+        "@typescript-eslint/camelcase": "off"
+      }
     }
   ]
 }

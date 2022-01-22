@@ -8,11 +8,15 @@ import { ApiService } from './api.service';
 })
 export class TvService {
 
-  private showCache: {[key: string]: TvShow} = {}
+  private showCache: {[key: string]: TvShow} = {};
 
   constructor(
     private api: ApiService
   ) { }
+
+  public get shows(): {[key: string]: TvShow} {
+    return this.showCache;
+  }
 
   list(type: TvSearchType = TvSearchType.POPULAR): Promise<Array<TvShow>> {
     return this.api.get(`/search/Tv/${type}`, {}, {})
@@ -46,10 +50,6 @@ export class TvService {
     return this.api.get(`/search/Tv/info/${id}`, {}, {});
   }
 
-  public get shows(): {[key: string]: TvShow} {
-    return this.showCache;
-  }
-
   private cacheResults(shows: TvShow[]): TvShow[] {
     shows.forEach((show) => this.showCache[show.id] = show);
     return shows;
@@ -79,6 +79,6 @@ export class TvService {
         partlyAvailable: r.partlyAvailable,
         rating: Math.round(r.rating)
       }) as TvShow
-    )
+    );
   }
 }

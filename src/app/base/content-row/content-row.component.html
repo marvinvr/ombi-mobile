@@ -1,4 +1,4 @@
-<ion-item (click)="click.emit()" >
+<ion-item>
   <div [ngClass]="{'increaseMargin': hasButtons, 'content-row': true}">
     <div class="content-top">
       <div class="poster">
@@ -6,7 +6,7 @@
       </div>
       <div class="info">
         <h2>{{content.title}}</h2>
-        <p innerHTML={{content.description}}></p>
+        <p [innerHtml]="description"></p>
         <div class="buttons" *ngIf="hasButtons">
           <app-button 
             *ngFor="let b of content.buttons" 

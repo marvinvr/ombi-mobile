@@ -28,22 +28,18 @@ export class RequestsService {
             .then((requestResult) => this.format(requestResult.collection, type));
   }
 
-  public search(
-    type: RequestType = RequestType.MOVIE,
-    term: string
-  ): Promise<Request[]> {
-    return this.api.get(`/Request/${type}/search/${term}`, {}, {}) 
-              .then((res) => this.format(res, type));
-  }
-
   public request(type: RequestType, id: number) {
     return this.api.post(`/Request/${type}`, {}, this.requestBody(type, id))
-            .then((res) => this.toast.show(res.isError ? ToastType.ERROR : ToastType.SUCCESS, res.isError? res['errorMessage']: `Successfully requested ${type}`));
+            .then((res) => this.toast.show(
+              res.isError ? ToastType.ERROR : ToastType.SUCCESS,
+              res.isError? res?.errorMessage: `Successfully requested ${type}`));
   }
 
   public performAction(action: RequestAction, type: RequestType, id: number = 0) {
-    return this.api[action == RequestAction.APPROVE ? 'post': 'put'](`/Request/${type}/${action}`, {}, {id: id})
-            .then(() => this.toast.show(ToastType.SUCCESS, `Successfully ${action == RequestAction.APPROVE ? 'approved' : 'denied'} request`));
+    return this.api[action === RequestAction.APPROVE ? 'post': 'put'](`/Request/${type}/${action}`, {}, {id})
+            .then(() => this.toast.show(
+              ToastType.SUCCESS,
+              `Successfully ${action === RequestAction.APPROVE ? 'approved' : 'denied'} request`));
   }
 
   private format(results, type: RequestType): Array<Request> {
@@ -64,16 +60,23 @@ export class RequestsService {
             name: getParam(r, type, 'requestedUser')?.userName
           }
       },
-      available: r.childRequests ? r.childRequests.map(cr => cr.available).indexOf([true]) == -1 : r.available,
-      type: type,
-      rating: Math.round(type == RequestType.MOVIE ? r.voteAverage : r.rating)
+      available: r.childRequests ? r.childRequests.map(cr => cr.available).indexOf([true]) === -1 : r.available,
+      type,
+      rating: Math.round(type === RequestType.MOVIE ? r.voteAverage : r.rating)
       }) as Request
-    )
+    );
   }
-  
+
   private requestBody(type: RequestType, id: number) {
-    return type == RequestType.MOVIE ?
-          {"theMovieDbId": id,"languageCode": "en"}
-          : {"firstSeason": false, "latestSeason": false, "requestAll": true, "tvDbId": id}
+    return type === RequestType.MOVIE ?
+          {
+            theMovieDbId: id,
+            languageCode: 'en'
+          } : {
+            firstSeason: false,
+            latestSeason: false,
+            requestAll: true,
+            tvDbId: id
+          };
   }
 }
