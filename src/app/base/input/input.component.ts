@@ -21,7 +21,8 @@ export class InputComponent implements OnInit {
 
   ngOnInit() {}
   
-  updateValue(value){
+  updateValue(event){
+    const value = event?.detail?.value;
     this.value = value;
     this.valueChange.emit(value);
   }
