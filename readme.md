@@ -37,3 +37,9 @@ Enter the following credentials on the configuration page in the app
 
 #### Start the project
 `ionic serve`
+
+## Self Hosting
+
+### Docker
+Pull the official Docker image here [https://hub.docker.com/r/marvinvr/ombi-mobile](https://hub.docker.com/r/marvinvr/ombi-mobile)
+HTTP Port `3000``
