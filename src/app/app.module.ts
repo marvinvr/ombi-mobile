@@ -3,8 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { HttpClientModule } from '@angular/common/http';
 
@@ -24,9 +22,7 @@ import { TagsComponent } from './base/tags/tags.component';
 import { ListRemarkComponent } from './base/list-remark/list-remark.component';
 import { ButtonComponent } from './base/button/button.component';
 import { ContentRowComponent } from './base/content-row/content-row.component';
-import { ContentComponent } from './pages/content/content.component'; 
-import { ServiceWorkerModule } from '@angular/service-worker';
-import { environment } from '../environments/environment';
+import { ContentComponent } from './pages/content/content.component';
 
 
 @NgModule({
@@ -48,19 +44,15 @@ import { environment } from '../environments/environment';
   ],
   entryComponents: [ ],
   imports: [
-    BrowserModule, 
-    CommonModule, 
-    IonicModule.forRoot(), 
-    AppRoutingModule, 
-    HttpClientModule, 
+    BrowserModule,
+    CommonModule,
+    IonicModule.forRoot(),
+    AppRoutingModule,
+    HttpClientModule,
     IonicModule.forRoot({
       mode: 'md'
-    }),
-    ServiceWorkerModule.register('ngsw-worker.js', 
-    { enabled: environment.production })],
+    })],
   providers: [
-    StatusBar,
-    SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
