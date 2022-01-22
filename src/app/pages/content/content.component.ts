@@ -58,7 +58,7 @@ export class ContentComponent implements OnInit, OnDestroy {
     return this.content.available ? 'Available' : this.content.requested ? 'Requested' : `Request ${this.type == RequestType.TV ? this.type.toUpperCase() : this.type}`
   }
 
-  get color(): string {
+  get color(): 'primary' | 'success' | 'danger' | 'warning' | 'light' {
     return this.content.available ? 'success' : this.content.requested ? 'warning': 'success';
   }
 

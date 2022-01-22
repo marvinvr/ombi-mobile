@@ -1,4 +1,4 @@
-import { RequestAction, RequestActionType, RequestType } from "./requests";
+import { RequestAction, RequestActionType, RequestType } from './requests';
 
 export interface Content {
     id: number,
@@ -98,7 +98,7 @@ export interface ContentClass {
 
 export interface ContentActionButton {
     label: string,
-    color: string,
+    color: 'primary' | 'success' | 'danger' | 'warning' | 'light',
     disabled: boolean,
     action: RequestAction
 }
