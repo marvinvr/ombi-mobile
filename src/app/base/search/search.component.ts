@@ -20,7 +20,7 @@ export class SearchComponent implements OnInit {
     clearTimeout(this.timeout);
     this.timeout = setTimeout( () => {
       this.valueChange.emit(value);
-    }, 500);
+    }, 400);
   }
 
 }
