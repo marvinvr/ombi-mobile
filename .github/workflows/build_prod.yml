@@ -53,7 +53,7 @@ jobs:
         url: ${{ secrets.WEBHOOK_URL }}
         headers: '{"x-api-key": "${{ secrets.WEBHOOK_API_KEY }}"}'
     - name: Prepare release files
-      uses: papeloto/action-zip@v1
+      uses: vimtor/action-zip@v1
       with:
         files: www/
         dest: ombi-mobile-web.zip
