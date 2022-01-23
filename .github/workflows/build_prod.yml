@@ -1,13 +1,12 @@
 # This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: Build app for Pages
+name: Build and deploy App for testing
 
 on:
   push: 
-    branches: [ master, develop ]
-  pull_request:
-    branches: [ master, develop ]
+    tags:
+    - '*'
 
 jobs:
   build:
@@ -23,12 +22,7 @@ jobs:
     - name: Generate correct docker tag
       id: gen_tags
       run: |
-        if [[ $GITHUB_REF == 'refs/heads/master' ]]; then
-          TAG='latest'
-        else
-          TAG='alpha'
-        fi
-          echo '::set-output name=tag::'$TAG
+        TAG='latest'
     - name: Login to Docker Hub
       uses: docker/login-action@v1
       with:
@@ -58,3 +52,16 @@ jobs:
       with:
         url: ${{ secrets.WEBHOOK_URL }}
         headers: '{"x-api-key": "${{ secrets.WEBHOOK_API_KEY }}"}'
+    - name: Prepare release files
+      uses: papeloto/action-zip@v1
+      with:
+        files: www/
+        dest: ombi-mobile-web.zip
+    - name: Create Release
+      uses: "marvinpinto/action-automatic-releases@latest"
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        prerelease: false
+        files: |
+          ombi-mobile-web.zip
+    
