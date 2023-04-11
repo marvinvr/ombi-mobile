@@ -20,7 +20,7 @@ export class SettingsService {
   public set(key: Settings, value: any): void {
     this.settings[key] = value;
     localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(this.settings));
-    this.settingsChange.next();
+    this.settingsChange.next(null);
   }
 
   public get(key: Settings): any {

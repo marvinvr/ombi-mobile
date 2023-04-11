@@ -81,7 +81,7 @@ export class CredentialsService {
 
   public set token(token: string) {
     localStorage.setItem(CredentialsNames.TOKEN, token);
-    this.tokenChangeSubject.next();
+    this.tokenChangeSubject.next(null);
   }
 
   public get tokenContents() {
