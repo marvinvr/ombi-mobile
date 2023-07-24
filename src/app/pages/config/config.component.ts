@@ -6,6 +6,7 @@ import { CredentialsService } from 'src/services/credentials.service';
 import { SettingsService } from 'src/services/settings.service';
 import { ToastService } from 'src/services/toast.service';
 import { InputType } from '../../../models/input';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-config',
@@ -30,6 +31,7 @@ export class ConfigComponent implements OnInit {
     private auth: AuthService,
     private toast: ToastService,
     private settings: SettingsService,
+    private router: Router
   ) { }
 
   public get inputType(): typeof InputType {
@@ -61,13 +63,19 @@ export class ConfigComponent implements OnInit {
     this.credentials.password = this.model.password;
     this.credentials.token = '';
     this.auth.fetchToken()
-      .then((t) => this.toast.show(ToastType.SUCCESS, `Successfully signed in as ${this.credentials.name}!`))
+      .then((t) => {
+        this.toast.show(ToastType.SUCCESS, `Signed in as ${this.credentials.name}!`);
+        this.router.navigate(['search']);
+      })
       .catch(e => this.toast.show(ToastType.ERROR, 'Unable to sign in with these credentials'));
   }
 
   public submitWithPlex() {
     this.auth.triggerPlexOauth()
-      .then((t) => this.toast.show(ToastType.SUCCESS, `Successfully signed in as ${this.credentials.name}!`))
+      .then((t) => {
+        this.toast.show(ToastType.SUCCESS, `Signed in as ${this.credentials.name}!`);
+        this.router.navigate(['search']);
+      })
       .catch(e => this.toast.show(ToastType.ERROR, 'Unable to sign in with Plex'));
   }
 
