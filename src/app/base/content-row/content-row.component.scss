@@ -5,12 +5,12 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    height: 200px;
+    height: 180px;
     border-radius: 5px;
     margin-bottom: 10px;
     padding: 10px;
 
-    .play-icon {
+    .icon {
         $dimension: 90px;
         height: $dimension;
         width: $dimension;
@@ -21,7 +21,7 @@
     }
 
     .poster {
-        height: 210px;
+        height: 190px;
         margin-left: 60%;
         z-index: 10;
         position: relative;
