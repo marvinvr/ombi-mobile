@@ -1,29 +1,41 @@
-<ion-header translucent="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button (click)="goBack()" default-href="movies"></ion-back-button>
-    </ion-buttons>
-    <ion-title>{{ content?.type }}</ion-title>
-  </ion-toolbar>
-</ion-header>
-<ion-content>
-  <div class="content">
-    <div class="header">
-      <img class="poster" src="{{content?.posterUrl}}" />
-      <div class="title">
-        <h1>{{ content?.title }}</h1>
-        <app-button 
-          [disabled]="content?.requested || content?.available" 
-          (action)="request()" 
-          [label]="label"
-          [color]="color"
-          fill="outline"
-          ></app-button>
-      </div>
-    </div>
-    <div class="details">
-      <app-tags [tags]="content?.tags"></app-tags>
-      <p>{{content?.description}}</p>
-    </div>
-  </div>
+<ion-breadcrumbs>
+  <ion-breadcrumb (click)="goBack()">
+    <ion-icon slot="start" name="search-outline"></ion-icon>
+    Search
+  </ion-breadcrumb>
+  <ion-breadcrumb href="#">
+    <ion-icon slot="start" [name]="icon"></ion-icon>
+    {{ contentName }}
+  </ion-breadcrumb>
+</ion-breadcrumbs>
+
+
+<div class="poster-backdrop" *ngIf="!isLoading">
+  <ion-icon class="play-icon" [name]="icon"></ion-icon>
+  <img class="poster" [alt]="content?.title" [src]="content?.posterUrl" />
+</div>
+
+<ion-content class="ion-padding" *ngIf="!isLoading">
+  <h1>{{ content?.title }}</h1>&nbsp;<i *ngIf="content?.releaseYear">({{content?.releaseYear}})</i>
+  
+  <ion-badge
+    *ngIf="content?.requested || content?.available" 
+    class="badge" 
+    [color]="color"
+    >{{ label }}</ion-badge>
+  <br />
+  <ion-chip class="genres" *ngFor="let genre of content?.genres">
+    <ion-label disabled="true">{{genre}}</ion-label>
+  </ion-chip>
+
+  <p>{{content?.description}}</p>
+
+  <ion-fab class="single-action" horizontal="end">
+    <ion-fab-button 
+      [disabled]="content?.requested || content?.available"
+      [color]="color"
+      (click)="request()">
+      <ion-icon [name]="fabIcon"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

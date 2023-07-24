@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Request } from 'src/models/content';
-import { RequestAction, RequestActionType, RequestAvailability, RequestSort, RequestStatus, RequestType } from 'src/models/requests';
+import { OverviewContentRequest, Request } from 'src/models/content';
+import { RequestAction, RequestType } from 'src/models/requests';
 import { ToastType } from 'src/models/toast';
-import { getParam } from 'src/utils/requests.utils';
 import { ApiService } from './api.service';
 import { ToastService } from './toast.service';
+import { getPoster } from 'src/utils/poster.utils';
 
 @Injectable({
   providedIn: 'root'
@@ -18,46 +18,73 @@ export class RequestsService {
 
   public list(
     type: RequestType = RequestType.MOVIE,
-    count: number = 10,
+    count: number = 20,
     position: number = 0,
-    sort: RequestSort = RequestSort.REQUEST_DATE_DESC,
-    status: RequestStatus = RequestStatus.NO_FILTER,
-    availability: RequestAvailability = RequestAvailability.NO_FILTER
-  ): Promise<Request[]> {
-    return this.api.get(`/Request/${type}/${count}/${position}/${sort}/${status}/${availability}`, {}, {})
-            .then((requestResult) => this.format(requestResult.collection, type));
+    sort: string = 'requestedDate',
+    order: string = 'desc'
+  ): Promise<OverviewContentRequest[]> {
+    return this.api.get(`/Requests/${type}/${count}/${position}/${sort}/${order}`, {}, {}, null, '2')
+            .then((requestResult) => this.formatOverviewContent(requestResult.collection, type));
   }
 
   public request(type: RequestType, id: number) {
-    return this.api.post(`/Request/${type}`, {}, this.requestBody(type, id))
+    return this.api.post(`/Request/${type}`, {}, this.requestBody(type, id), null, '1')
             .then((res) => this.toast.show(
               res.isError ? ToastType.ERROR : ToastType.SUCCESS,
               res.isError? res?.errorMessage: `Successfully requested ${type}`));
   }
 
-  public performAction(action: RequestAction, type: RequestType, id: number = 0) {
-    return this.api[action === RequestAction.APPROVE ? 'post': 'put'](`/Request/${type}/${action}`, {}, {id})
+  public performAction(action: RequestAction, type: RequestType, id: number | string = 0) {
+    return this.api[action === RequestAction.APPROVE ? 'post': 'put'](`/Request/${type}/${action}`, {}, {id}, null, '1')
             .then(() => this.toast.show(
               ToastType.SUCCESS,
               `Successfully ${action === RequestAction.APPROVE ? 'approved' : 'denied'} request`));
+  }
+
+  private formatOverviewContent(results, type: RequestType): OverviewContentRequest[] {
+    return results.map(r => ({
+        mediaType: type as string,
+        id: r.id,
+        title: r.title,
+        description: type === RequestType.MOVIE ? r.overview : r.parentRequest?.overview,
+        posterUrl: type === RequestType.MOVIE ? getPoster(r.posterPath) : r?.parentRequest?.posterPath,
+        date: new Date(r.requestedDate),
+        request: this.parseRequest(r, type)
+      }) as unknown as OverviewContentRequest);
+  }
+
+  private parseRequest(r: any, type: RequestType): RequestInfo {
+    return {
+      id: r.id,
+      requested: true,
+      approved: r?.approved,
+      available: r?.available,
+      denied: r?.denied,
+      date: r?.requestedDate,
+      user: {
+        alias: r?.requestedUser?.alias,
+        email: r?.requestedUser?.email,
+        name: r?.requestedUser?.userName
+      }
+    } as unknown as RequestInfo;
   }
 
   private format(results, type: RequestType): Array<Request> {
     return results.map((r) => ({
       id: r?.theMovieDbId || r?.tvDbId,
       title: r.title,
-      description: r.overview,
+      description: type === RequestType.MOVIE ? r.overview : r.parentRequest?.overview,
       posterUrl: r.posterPath,
       request: {
           id: r.id,
           requested: true,
-          approved: getParam(r, type, 'approved'),
-          denied: getParam(r, type, 'denied'),
-          date: new Date(getParam(r, type, 'requestedDate')),
+          approved: r?.approved,
+          denied: r?.denied,
+          date: r?.requestedDate,
           user: {
-            alias: getParam(r, type, 'requestedUser')?.alias,
-            email:  getParam(r, type, 'requestedUser')?.email,
-            name: getParam(r, type, 'requestedUser')?.userName
+            alias: r?.requestedUser?.alias,
+            email: r?.requestedUser?.email,
+            name: r?.requestedUser?.userName
           }
       },
       available: r.childRequests ? r.childRequests.map(cr => cr.available).indexOf([true]) === -1 : r.available,

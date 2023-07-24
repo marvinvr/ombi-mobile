@@ -1,7 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ContentClass } from 'src/models/content';
-import { RequestAction, RequestType } from 'src/models/requests';
-import { RequestsService } from 'src/services/requests.service';
+import { Component, Input } from '@angular/core';
+import { OverviewContent, RequestStatus } from 'src/models/content';
 
 @Component({
   selector: 'app-content-row',
@@ -10,27 +8,18 @@ import { RequestsService } from 'src/services/requests.service';
 })
 export class ContentRowComponent {
 
-  @Input() content!: ContentClass;
-  @Input() requestsService?: RequestsService;
+  @Input() content!: OverviewContent;
 
-  constructor() { }
-
-  public get hasButtons(): boolean {
-    return this.content?.buttons?.length > 0;
-  }
-
-  public get description(): string {
-    return this.hasButtons ?
-      this.content.description
-      : this.content.description.substring(0, 110) + '...' + ' <b>read more</b>';
-  }
-
-  public performAction(action: RequestAction): void {
-    this.content[action === RequestAction.APPROVE ? 'approve': 'deny']();
-    this.requestsService.performAction(
-      action,
-      this.content.type,
-      this.content.type === RequestType.MOVIE ? this.content.requestId : this.content.id
-      ).then();
+  get color(): string {
+    switch(this.content.status) {
+      case RequestStatus.APPROVED:
+        return 'secondary';
+      case RequestStatus.DENIED:
+        return 'danger';
+      case RequestStatus.AVAILABLE:
+        return 'success';
+      case RequestStatus.OPEN:
+        return 'primary';
+    }
   }
 }

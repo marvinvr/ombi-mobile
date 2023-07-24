@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { TvShow } from 'src/models/content';
-import { TvSearchType } from 'src/models/tv';
+import { OverviewContent, TvShow } from 'src/models/content';
 import { ApiService } from './api.service';
+import { getPoster } from 'src/utils/poster.utils';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +9,7 @@ import { ApiService } from './api.service';
 export class TvService {
 
   private showCache: {[key: string]: TvShow} = {};
+  private popularCache: OverviewContent[] = [];
 
   constructor(
     private api: ApiService
@@ -18,67 +19,73 @@ export class TvService {
     return this.showCache;
   }
 
-  list(type: TvSearchType = TvSearchType.POPULAR): Promise<Array<TvShow>> {
-    return this.api.get(`/search/Tv/${type}`, {}, {})
-            .then(this.format)
-            .then((tv) => Promise.all(tv.map( async (t) => {
-              t.posterUrl = (await this.getInfo(t.id))?.banner;
-              return t;
-            })))
-            .then((tv) => this.cacheResults(tv));
+  public getPopular(): Promise<Array<OverviewContent>> {
+    if(this.popularCache.length > 0) {
+      return Promise.resolve(this.popularCache);
+    }
+
+    return this.api.get(`/search/Tv/popular/0/14`, {}, {})
+            .then(this.toOverviewContent)
+            .then(res => this.cachePopular(res));
+
   }
 
-  search(term: string): Promise<Array<TvShow>> {
-    return this.api.get(`/search/Tv/${term}`, {}, {})
-            .then(this.format)
-            .then((tv) => Promise.all(tv.map( async (t) => {
-              t.posterUrl = (await this.getInfo(t.id))?.banner;
-              return t;
-            })))
-            .then((tv) => this.cacheResults(tv));
+  public get(id: string): Promise<TvShow> {
+    if(this.showCache[id]) {
+      return Promise.resolve(this.showCache[id]);
+    }
+    return this.api.get(`/search/Tv/moviedb/${id}`, {}, {}, null, '2')
+            .then(this.formatResult)
+            .then(res => this.cacheShow(res));
   }
 
-  getImage(id: string): Promise<string> {
-    return this.api.get(`/Images/tv/${id}`, {}, {});
-  }
-
-  cache(tv: TvShow) {
+  private cacheShow(tv: TvShow): TvShow {
     this.showCache[tv.id] = tv;
+    return tv;
   }
 
-  getInfo(id: number): Promise<any> {
-    return this.api.get(`/search/Tv/info/${id}`, {}, {});
+  private cachePopular(items: OverviewContent[]): OverviewContent[] {
+    this.popularCache.push(...items);
+    return items;
   }
 
-  private cacheResults(shows: TvShow[]): TvShow[] {
-    shows.forEach((show) => this.showCache[show.id] = show);
-    return shows;
-  }
-
-  private format(results): Array<TvShow> {
-    return results.map((r) => ({
-        id: r.id,
-        title: r.title,
-        description: r.overview,
-        request: {
-          id: r.requestId,
-          requested: r.requested,
-          approved: r.approved,
-          denied: r.denied,
-          type: {
-            all: r.requestAll,
-            firstSeason: r.firstSeason,
-            latestSeason: r.latestSeason
-          },
-          seasons: r.seasonRequests
+  private formatResult(r: any): TvShow {
+    return ({
+      mediaType: 'tv',
+      id: r.id,
+      title: r.title,
+      description: r.overview,
+      posterUrl: getPoster(r?.images?.original),
+      request: {
+        id: r.requestId,
+        requested: r.requested,
+        approved: r.approved,
+        denied: r.denied,
+        type: {
+          all: r.requestAll,
+          firstSeason: r.firstSeason,
+          latestSeason: r.latestSeason
         },
-        network: r.network,
-        status: r.status,
-        aired: r.firstAired,
-        available: r.available,
-        partlyAvailable: r.partlyAvailable,
-        rating: Math.round(r.rating)
-      }) as TvShow
-    );
+        seasons: r.seasonRequests
+      },
+      genres: r.genres?.map((g) => g.name),
+      network: r.network,
+      status: r.status,
+      releaseDate: new Date(r.firstAired),
+      available: r.available,
+      partlyAvailable: r.partlyAvailable,
+      rating: Math.round(r.rating)
+    }) as TvShow;
+  }
+
+  private toOverviewContent(results: any[]): OverviewContent[] {
+    return results.map((result) => ({
+        mediaType: 'tv',
+        id: result.id,
+        title: result.title,
+        description: result.overview,
+        posterUrl: getPoster(result.backdropPath),
+        rating: Math.round(result?.rating)
+    }));
   }
 }

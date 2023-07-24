@@ -1,27 +1,25 @@
-<ion-item>
-  <div [ngClass]="{'increaseMargin': hasButtons, 'content-row': true}">
-    <div class="content-top">
-      <div class="poster">
-        <img src="{{content.posterUrl}}" />
-      </div>
-      <div class="info">
-        <h2>{{content.title}}</h2>
-        <p [innerHtml]="description"></p>
-        <div class="buttons" *ngIf="hasButtons">
-          <app-button 
-            *ngFor="let b of content.buttons" 
-            [label]="b.label"
-            size="default"
-            [color]="b.color"
-            fill="outline"
-            [disabled]="b.disabled"
-            (action)="this.performAction(b.action)"
-            ></app-button>
-        </div>
-      </div>
-    </div>
-    <div class="content-bottom" *ngIf="!hasButtons">
-      <app-tags [tags]="content.tags"></app-tags>
-    </div>
+<ion-card>
+  <div class="poster-backdrop">
+    <ion-icon class="play-icon" [name]="content.mediaType == 'movie' ? 'film' : 'tv-outline'"></ion-icon>
+    <img 
+      class="poster" 
+      [alt]="content.title" 
+      [src]="content.posterUrl"
+      onerror="this.onerror=null; this.src='/assets/backdrop.png'"
+      />
   </div>
-</ion-item>
+  <ion-card-header>
+    <ion-badge 
+      class="badge" 
+      [color]="color"
+      >{{ content.status }}</ion-badge>
+    <ion-card-title>{{content.title}}</ion-card-title>
+    <ion-card-subtitle>{{content.mediaType?.toUpperCase()}}<span *ngIf="content?.requestedBy"> requested by {{content?.requestedBy}}</span></ion-card-subtitle>
+  </ion-card-header>
+
+  <ion-card-content>
+    <p [innerHtml]="content?.description"></p>
+  </ion-card-content>
+
+  <ng-content></ng-content>
+</ion-card>

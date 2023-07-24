@@ -3,18 +3,13 @@ import { RouterModule, Routes } from '@angular/router';
 import { RequestActionType } from 'src/models/requests';
 import { ConfigComponent } from './config/config.component';
 import { ContentComponent } from './content/content.component';
-import { MoviesComponent } from './movies/movies.component';
 import { RequestsComponent } from './requests/requests.component';
-import { TvComponent } from './tv/tv.component';
+import { SearchPageComponent } from './search/search-page.component';
 
 const routes: Routes = [
     {
-        path: RequestActionType.MOVIE,
-        component: MoviesComponent,
-    },
-    {
-        path: RequestActionType.TV,
-        component: TvComponent,
+        path: 'search',
+        component: SearchPageComponent,
     },
     {
         path: 'requests',

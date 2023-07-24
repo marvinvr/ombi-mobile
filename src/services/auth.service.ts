@@ -34,11 +34,13 @@ export class AuthService {
         password: this.credentials.password,
         rememberMe: true,
         usePlexOAuth: false,
-      }
+      },
+      null,
+      '1'
     ).then(t => this.credentials.token = t?.access_token)
     .then(() => {
       if(this.settings.get(Settings.IS_SIGNED_IN)) {
-        this.router.navigate([RequestActionType.MOVIE]);
+        this.router.navigate(['search']);
       } else {
         this.router.navigate(['config']);
       }
@@ -91,7 +93,9 @@ export class AuthService {
               rememberMe: true,
               usePlexOauth: true,
               plexTvPin: pinResponse
-            }
+            },
+            null,
+            '1'
           ).then(tokenResponse => {
             windowReference.location = tokenResponse.url;
             let numAttempts = 0;
@@ -103,7 +107,9 @@ export class AuthService {
               this.apiService.get(
                 `/token/${tokenResponse.pinId}`,
                 {},
-                {}
+                {},
+                null,
+                '1',
               )
                 .then(accessTokenResponse => {
                   if(accessTokenResponse.access_token) {
@@ -112,7 +118,7 @@ export class AuthService {
                     resolve(true);
                     windowReference.close();
                     if(this.settings.get(Settings.IS_SIGNED_IN)) {
-                      this.router.navigate([RequestActionType.MOVIE]);
+                      this.router.navigate(['search']);
                     } else {
                       this.router.navigate(['config']);
                     }

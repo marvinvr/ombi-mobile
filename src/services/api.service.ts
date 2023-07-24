@@ -78,7 +78,7 @@ export class ApiService {
             });
   }
 
-  private getApiExtension(version: string = '1'): string {
+  private getApiExtension(version: string = '2'): string {
     return `/api/v${version}`;
   }
 
