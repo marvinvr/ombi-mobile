@@ -35,20 +35,32 @@ export class RequestsComponent implements OnInit, OnDestroy {
     return item.status !== RequestStatus.OPEN;
   }
 
-  public approve(id: number | string, mediaType: string) {
+  public approve(item: OverviewContentRequest) {
+    item.request.approved = true;
+    item.status = RequestStatus.APPROVED;
+
     this.requestsService.performAction(
       RequestAction.APPROVE,
-      mediaType as RequestType,
-      id
-    );
+      item.mediaType as RequestType,
+      item.id
+    ).catch(() => {
+      item.status = RequestStatus.OPEN;
+      item.request.approved = null;
+    });
   }
 
-  public deny(id: number | string, mediaType: string) {
+  public deny(item: OverviewContentRequest) {
+    item.request.approved = false;
+    item.status = RequestStatus.DENIED;
+
     this.requestsService.performAction(
       RequestAction.DENY,
-      mediaType as RequestType,
-      id
-    );
+      item.mediaType as RequestType,
+      item.id
+    ).catch(() => {
+      item.status = RequestStatus.OPEN;
+      item.request.approved = null;
+    });
   }
 
   private fetchAllRequests(): Promise<OverviewContentRequest[]> {
