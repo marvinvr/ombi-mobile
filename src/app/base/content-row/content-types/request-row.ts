@@ -27,6 +27,14 @@ export class RequestContent implements ContentClass {
         return this.request.available;
     }
 
+    public get genres(): string[] {
+        return this.request.genres;
+    }
+
+    public get releaseYear(): number {
+        return this.request.releaseDate.getFullYear();
+    }
+
     public get approved(): boolean {
         return this.request.request.approved;
     }

@@ -46,9 +46,6 @@ export class CredentialsService {
     }
     let url = baseUrl.toLowerCase();
     url = replaceBackslashes(url);
-    if(!hasProtocol(url)) {
-      url = 'http://' + url;
-    }
     url = removeTrailingSlash(url);
     this.settings.set(Settings.BASE_URL, url);
   }

@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { RequestContent } from 'src/app/base/content-row/content-types/request-row';
-import { Request } from 'src/models/content';
-import { RequestType } from 'src/models/requests';
+import { OverviewContentRequest, RequestStatus } from 'src/models/content';
+import { RequestAction, RequestType } from 'src/models/requests';
 import { RequestsService } from 'src/services/requests.service';
 import { sort } from 'src/utils/requests.utils';
 
@@ -12,17 +11,12 @@ import { sort } from 'src/utils/requests.utils';
 })
 export class RequestsComponent implements OnInit, OnDestroy {
 
-  public contentList: Array<Request> = [];
-  public searchTerm = '';
+  public contentList: OverviewContentRequest[] = [];
   public isLoading = false;
 
   constructor(
-    public request: RequestsService
+    public requestsService: RequestsService
   ) {}
-
-  public get requestType(): typeof RequestType {
-    return RequestType;
-  }
 
   ngOnInit() {
     this.fetchAllRequests();
@@ -32,27 +26,67 @@ export class RequestsComponent implements OnInit, OnDestroy {
     this.contentList = [];
   }
 
-  public content(content: any): RequestContent {
-    return new RequestContent(content);
-  }
-
   public refresh(event) {
       this.fetchAllRequests()
         .then(() => event.target.complete());
   }
 
-  private fetchAllRequests(): Promise<Request[]> {
+  public disableButtons(item: OverviewContentRequest) {
+    return item.status !== RequestStatus.OPEN;
+  }
+
+  public approve(item: OverviewContentRequest) {
+    item.request.approved = true;
+    item.status = RequestStatus.APPROVED;
+
+    this.requestsService.performAction(
+      RequestAction.APPROVE,
+      item.mediaType as RequestType,
+      item.id
+    ).catch(() => {
+      item.status = RequestStatus.OPEN;
+      item.request.approved = null;
+    });
+  }
+
+  public deny(item: OverviewContentRequest) {
+    item.request.approved = false;
+    item.status = RequestStatus.DENIED;
+
+    this.requestsService.performAction(
+      RequestAction.DENY,
+      item.mediaType as RequestType,
+      item.id
+    ).catch(() => {
+      item.status = RequestStatus.OPEN;
+      item.request.approved = null;
+    });
+  }
+
+  private fetchAllRequests(): Promise<OverviewContentRequest[]> {
     this.isLoading = true;
     return Promise.all(
         [
-          this.request.list(RequestType.MOVIE),
-          this.request.list(RequestType.TV)
+          this.requestsService.list(RequestType.MOVIE),
+          this.requestsService.list(RequestType.TV)
         ]
     )
       .then(res => {
-        this.contentList = sort(res);
+        this.contentList = sort(res)
+          .map(this.enhance);
+
         this.isLoading = false;
         return this.contentList;
       });
    }
+
+  private enhance(content: OverviewContentRequest): OverviewContentRequest {
+    content.requestedBy = content.request.user?.name || content?.request?.user?.email;
+    content.status = content.request.available ? RequestStatus.AVAILABLE
+                      : content.request.denied ? RequestStatus.DENIED
+                      : content.request.approved ? RequestStatus.APPROVED
+                      : RequestStatus.OPEN;
+
+    return content;
+  }
 }

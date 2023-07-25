@@ -7,7 +7,22 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <ion-list lines="full">
-    <app-content-row *ngFor="let item of contentList" [content]="content(item)" [requestsService]="request"></app-content-row>
+    <app-content-row *ngFor="let item of contentList" [content]="item">
+      <div class="buttons">
+        <ion-button 
+          [disabled]="disableButtons(item)" 
+          fill="clear" 
+          color="danger"
+          (click)="deny(item)"
+          >Deny</ion-button>
+        <ion-button 
+          [disabled]="disableButtons(item)" 
+          fill="clear" 
+          color="success"
+          (click)="approve(item)"
+          >Approve</ion-button>
+      </div>
+    </app-content-row>
   </ion-list>
   <app-list-remark *ngIf="this.contentList.length == 0 && !isLoading">No Requests Found</app-list-remark>
 </ion-content>

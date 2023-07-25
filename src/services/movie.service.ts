@@ -1,63 +1,76 @@
 import { Injectable } from '@angular/core';
-import { Movie } from 'src/models/content';
-import { MovieSearchType } from 'src/models/movie';
+import { Movie, OverviewContent } from 'src/models/content';
 import { ApiService } from './api.service';
+import { getPoster } from 'src/utils/poster.utils';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MovieService {
+  private movieCache: { [key: string]: Movie } = {};
+  private popularCache: OverviewContent[] = [];
 
-  private movieCache: {[key: string]: Movie} = {};
+  constructor(private api: ApiService) { }
 
-  constructor(
-    private api: ApiService
-  ) { }
-
-  public get movies(): {[key: string]: Movie} {
-    return this.movieCache;
+  public get(id: string): Promise<Movie> {
+    if (this.movieCache[id]) {
+      return Promise.resolve(this.movieCache[id]);
+    }
+    return this.api
+      .get(`/search/Movie/${id}`, {}, {})
+      .then(this.formatResult)
+      .then(res => this.cacheMovie(res));
   }
 
+  public getPopular(force: boolean = false): Promise<OverviewContent[]> {
+    if (this.popularCache.length > 0 && !force) {
+      return Promise.resolve(this.popularCache);
+    }
 
-  public list(type: MovieSearchType = MovieSearchType.POPULAR): Promise<Array<Movie>> {
-    return this.api.get(`/search/Movie/${type}`, {}, {})
-      .then(this.format)
-      .then((movies) => this.cacheResults(movies));
+    return this.api
+      .get(`/search/Movie/popular/0/20`, {}, {})
+      .then(this.toOverviewContent)
+      .then(res => this.cachePopular(res));
   }
 
-  public search(term: string): Promise<Array<Movie>> {
-    return this.api.post('/search/Movie/', {}, {
-        searchTerm: term,
-        languageCode: 'en'
-      })
-      .then(this.format)
-      .then((movies) => this.cacheResults(movies));
-  }
-  cache(movie: Movie) {
+  private cacheMovie(movie: Movie): Movie {
     this.movieCache[movie.id] = movie;
+    return movie;
   }
 
-  private cacheResults(movies: Movie[]): Movie[] {
-    movies.forEach((movie) => this.movieCache[movie.id] = movie);
-    return movies;
+  private cachePopular(items: OverviewContent[]): OverviewContent[] {
+    this.popularCache = items;
+    return items;
   }
 
-  private format(results: Array<any>): Array<Movie> {
-    return results.map((r) => ({
-        id: r.id,
-        title: r.title,
-        description: r.overview,
-        posterUrl: `https://image.tmdb.org/t/p/w300${r.posterPath}`,
-        request: {
-            id: r.requestId,
-            requested: r.requested,
-            approved: r.approved,
-            denied: r.denied
-        },
-        releaseDate: r.releaseDate,
-        available: r.available,
-        rating: Math.round(r.voteAverage)
-      }) as Movie
-    );
+  private formatResult(r: any): Movie {
+    return {
+      mediaType: 'movie',
+      id: r.id,
+      title: r.title,
+      description: r.overview,
+      posterUrl: getPoster(r.posterPath),
+      request: {
+        id: r.requestId,
+        requested: r.requested,
+        approved: r.approved,
+        denied: r.denied,
+      },
+      genres: r.genres?.map((g) => g.name),
+      releaseDate: new Date(r.releaseDate),
+      available: r.available,
+      rating: Math.round(r.voteAverage),
+    } as Movie;
+  }
+
+  private toOverviewContent(results: any[]): OverviewContent[] {
+    return results.map((result) => ({
+      mediaType: 'movie',
+      id: result.id,
+      title: result.title,
+      description: result.overview,
+      posterUrl: getPoster(result.posterPath),
+      rating: Math.round(result?.voteAverage),
+    }));
   }
 }

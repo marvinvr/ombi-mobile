@@ -25,27 +25,12 @@ export class MovieContent implements ContentClass {
         return this.movie.posterUrl;
     }
 
-    public get tags(): Tag[] {
-        const tags: Tag[] = [];
+    public get genres(): string[] {
+        return this.movie.genres;
+    }
 
-        if(this.requested !== undefined) {
-            tags.push({
-                color: this.available ? 'success' : this.approved ? 'success' : this.requested ? 'warning' : 'danger',
-                text: this.available ? 'Available' : this.approved ? 'Approved' : this.requested ? 'Requested' : 'Not Requested'
-            });
-        }
-
-        tags.push({
-            color: 'primary',
-            text: new Date(this.movie.releaseDate).toLocaleDateString()
-        });
-
-        tags.push({
-            color: 'tertiary',
-            text: `${this.movie.rating}/10 ★`
-        });
-
-        return tags;
+    public get releaseYear(): number {
+        return this.movie.releaseDate.getFullYear();
     }
 
     public get approved(): boolean {

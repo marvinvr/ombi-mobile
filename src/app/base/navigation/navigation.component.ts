@@ -39,7 +39,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
       this.tabs = adminTabs();
     } else if(this.settings.get(Settings.IS_SIGNED_IN)) {
       this.tabs = userTabs();
-      this.router.navigate([RequestActionType.MOVIE]);
+      this.router.navigate(['search']);
     } else {
       this.tabs = signedOutTabs();
       this.router.navigate(['config']);
