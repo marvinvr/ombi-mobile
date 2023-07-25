@@ -8,6 +8,7 @@ import { SearchPageComponent } from './search/search-page.component';
 const routes: Routes = [
     {
         path: '',
+        pathMatch: 'full',
         redirectTo: 'search',
     },
     {
