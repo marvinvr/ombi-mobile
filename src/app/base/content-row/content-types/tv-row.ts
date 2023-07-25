@@ -25,35 +25,12 @@ export class TvContent implements ContentClass {
         return this.tvShow.description;
       }
 
-      get tags(): Array<Tag> {
-        return [
-          {
-            color: this.available ? 'success'
-            : this.approved ? 'success'
-            : this.requested ? 'warning'
-            : this.partlyAvailable ? 'warning' : 'danger',
-            text: this.available ? 'Available'
-            : this.approved ? 'Approved'
-            : this.requested ? 'Requested'
-            : this.partlyAvailable ? 'Partly Available' : 'Not Requested'
-          },
-          {
-            color: 'primary',
-            text: new Date(this.tvShow.aired).toLocaleDateString()
-          },
-          {
-            text: this.tvShow.status,
-            color: 'warning'
-          },
-          {
-            text: `${this.tvShow.rating}/10 ★`,
-            color: 'tertiary'
-          },
-          {
-            color: 'tertiary',
-            text: this.tvShow.network
-          },
-        ];
+      get genres(): string[] {
+        return this.tvShow.genres;
+      }
+
+      public get releaseYear(): number {
+          return this.tvShow.releaseDate.getFullYear();
       }
 
       public get approved(): boolean {

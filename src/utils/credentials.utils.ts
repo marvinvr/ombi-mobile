@@ -1,4 +1,4 @@
-export const hasProtocol = (url: string): boolean => !(url.indexOf('https://') === -1 && url.indexOf('http://') === -1);
+export const hasProtocol = (url: string): boolean => !(url?.indexOf('https://') === -1 && url?.indexOf('http://') === -1);
 
 export const removeTrailingSlash = (url: string): string => {
     if(url.charAt(url.length-1) === '/')

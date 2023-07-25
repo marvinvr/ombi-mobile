@@ -15,9 +15,9 @@ import { TvService } from 'src/services/tv.service';
   styleUrls: ['./content.component.scss'],
 })
 export class ContentComponent implements OnInit, OnDestroy {
-  @Output() back: EventEmitter<void> = new EventEmitter<void>();
 
   public content: ContentClass;
+  public isLoading = false;
 
   private subscription: Subscription;
 
@@ -35,33 +35,58 @@ export class ContentComponent implements OnInit, OnDestroy {
 
   get label(): string {
     return this.content.available ? 'Available'
+    : this.content.approved ? 'Approved'
     : this.content.requested ? 'Requested'
-    : `Request ${this.type === RequestType.TV ? this.type.toUpperCase() : this.type}`;
+    : '';
   }
 
-  get color(): 'primary' | 'success' | 'danger' | 'warning' | 'light' {
-    return this.content.available ? 'success' : this.content.requested ? 'warning': 'success';
+  get color(): 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'light' {
+    return this.content.available ? 'success'
+    : this.content.approved ? 'secondary'
+    : this.content.requested ? 'warning'
+    : 'success';
+  }
+
+  get fabIcon(): string {
+    return this.content?.available ? 'checkmark'
+    : this.content?.approved ? 'cloud-download-outline'
+    : this.content?.requested ? 'person-outline'
+    : 'download-outline';
+  }
+
+  get icon(): string {
+    return this.content?.type === 'movie' ? 'film' : 'tv-outline';
+  }
+
+  get contentName(): string {
+    return this.content?.type === 'movie' ? 'Movie' : 'TV-Show';
   }
 
   ngOnInit() {
+    this.isLoading = true;
     this.subscription = this.route.paramMap.subscribe( params => {
       const type = params.get('type');
       const id = params.get('id');
       switch (type) {
-        case RequestActionType.TV:
-          if(!this.tvService?.shows[id]){
-            this.router.navigate(['/']);
-          } else {
-            this.content = new TvContent(this.tvService?.shows[id]);
-          }
+        case 'tv':
+          this.tvService.get(id)
+            .then((show) => {
+              if(!show) {
+                this.router.navigate(['/']);
+              }
+              this.content = new TvContent(show);
+              this.isLoading = false;
+            });
           break;
-        case RequestActionType.MOVIE:
-          if(!this.movieService?.movies[id]){
-            this.router.navigate(['/']);
-          } else {
-            this.content = new MovieContent(this.movieService?.movies[id]);
-          }
-          break;
+        case 'movie':
+          this.movieService.get(id)
+            .then((movie) => {
+              if(!movie) {
+                this.router.navigate(['/']);
+              }
+              this.content = new MovieContent(movie);
+              this.isLoading = false;
+            });
       }
     });
   }
@@ -71,11 +96,13 @@ export class ContentComponent implements OnInit, OnDestroy {
   }
 
   public goBack() {
-    this.back.emit();
+    this.router.navigate(['search']);
   }
 
   public request(): void {
     this.content.requested = true;
-    this.requests.request(this.content.type, this.content.id).then();
+    this.requests.request(this.content.type, this.content.id)
+      .then()
+      .catch(() => this.content.requested = false);
   }
 }

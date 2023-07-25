@@ -25,8 +25,6 @@ export class AppComponent {
     this.platform.ready().then(() => {
       if(!this.settings.get(Settings.USE_PLEX_OAUTH)){
         this.auth.fetchToken();
-      } else {
-        this.router.navigate(['Movie']);
       }
     });
   }

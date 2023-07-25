@@ -39,8 +39,8 @@ export class ApiService {
     return this.performRequest(HttpRequestType.POST, path, headers, parameters, customBaseUrl, version);
   }
 
-  public put(path: string, headers: Headers, parameters: RequestParameters): Promise<any> {
-    return this.performRequest(HttpRequestType.PUT, path, headers, parameters);
+  public put(path: string, headers: Headers, parameters: RequestParameters, customBaseUrl?: string, version?: string): Promise<any> {
+    return this.performRequest(HttpRequestType.PUT, path, headers, parameters, customBaseUrl, version);
   }
 
   public delete(path: string, headers: Headers): Promise<any> {
@@ -78,7 +78,7 @@ export class ApiService {
             });
   }
 
-  private getApiExtension(version: string = '1'): string {
+  private getApiExtension(version: string = '2'): string {
     return `/api/v${version}`;
   }
 

@@ -1,57 +1,40 @@
-import { RequestActionType } from "src/models/requests"
-import { Tab } from "src/models/tabs"
+import { Tab } from 'src/models/tabs';
 
-export const adminTabs = (): Tab[] => {
-    return [
+export const adminTabs = (): Tab[] => [
         {
-          id: RequestActionType.MOVIE,
-          label: 'Movies',
-          icon: 'videocam-outline'
-        },
-        {
-          id: RequestActionType.TV,
-          label: 'TV Shows',
-          icon: 'tv-outline'
+          id: 'search',
+          label: 'Search',
+          icon: 'search-outline'
         },
         {
           id: 'requests',
           label: 'Requests',
-          icon: 'git-pull-request-outline'
+          icon: 'download-outline'
         },
         {
           id: 'config',
           label: 'Config',
           icon: 'cog-outline'
         }
-      ]
-}
+      ];
 
-export const userTabs = (): Tab[] => {
-    return [
+export const userTabs = (): Tab[] => [
         {
-          id: RequestActionType.MOVIE,
-          label: 'Movies',
-          icon: 'videocam-outline'
-        },
-        {
-          id: RequestActionType.TV,
-          label: 'TV Shows',
-          icon: 'tv-outline'
+          id: 'search',
+          label: 'Search',
+          icon: 'search-outline'
         },
         {
           id: 'config',
           label: 'Config',
           icon: 'cog-outline'
         }
-      ]
-}
+      ];
 
-export const signedOutTabs = (): Tab[] => {
-    return [
+export const signedOutTabs = (): Tab[] => [
         {
           id: 'config',
           label: 'Config',
           icon: 'cog-outline'
         }
-      ]
-}
+      ];

@@ -5,6 +5,7 @@ import { Settings } from 'src/models/settings';
 import { ApiService } from './api.service';
 import { CredentialsService } from './credentials.service';
 import { SettingsService } from './settings.service';
+import { hasProtocol } from 'src/utils/credentials.utils';
 
 @Injectable({
   providedIn: 'root'
@@ -34,11 +35,13 @@ export class AuthService {
         password: this.credentials.password,
         rememberMe: true,
         usePlexOAuth: false,
-      }
+      },
+      null,
+      '1'
     ).then(t => this.credentials.token = t?.access_token)
     .then(() => {
       if(this.settings.get(Settings.IS_SIGNED_IN)) {
-        this.router.navigate([RequestActionType.MOVIE]);
+        this.router.navigate(['search']);
       } else {
         this.router.navigate(['config']);
       }
@@ -47,21 +50,58 @@ export class AuthService {
   }
 
   public updateAuthConfig(): void {
-    this.apiService.get(
-      '/Settings/Authentication',
-      {},
-      {},
-      undefined,
-      '1',
-      false
-    )
-      .then(res => {
-        this.settings.set(Settings.URL_IS_VALID, true);
-        this.settings.set(Settings.URL_HAS_OAUTH, res?.enableOAuth);
-      })
-      .catch(() => {
-        this.settings.set(Settings.URL_IS_VALID, false);
-      });
+    const originalBaseUrl = this.credentials.baseUrl;
+
+    if (!hasProtocol(originalBaseUrl)) {
+      this.credentials.baseUrl = `https://${originalBaseUrl}`;
+      this.apiService.get(
+        '/Settings/Authentication',
+        {},
+        {},
+        undefined,
+        '1',
+        false
+      )
+        .then(res => {
+          this.settings.set(Settings.URL_IS_VALID, true);
+          this.settings.set(Settings.URL_HAS_OAUTH, res?.enableOAuth);
+        })
+        .catch(() => {
+          this.credentials.baseUrl = `http://${originalBaseUrl}`;
+          this.apiService.get(
+            '/Settings/Authentication',
+            {},
+            {},
+            undefined,
+            '1',
+            false
+          )
+            .then(res => {
+              this.settings.set(Settings.URL_IS_VALID, true);
+              this.settings.set(Settings.URL_HAS_OAUTH, res?.enableOAuth);
+            })
+            .catch(() => {
+              this.settings.set(Settings.URL_IS_VALID, false);
+              this.credentials.baseUrl = originalBaseUrl;
+            });
+        });
+    } else {
+      this.apiService.get(
+        '/Settings/Authentication',
+        {},
+        {},
+        undefined,
+        '1',
+        false
+      )
+        .then(res => {
+          this.settings.set(Settings.URL_IS_VALID, true);
+          this.settings.set(Settings.URL_HAS_OAUTH, res?.enableOAuth);
+        })
+        .catch(() => {
+          this.settings.set(Settings.URL_IS_VALID, false);
+        });
+    }
   }
 
   public triggerPlexOauth(): Promise<any> {
@@ -91,7 +131,9 @@ export class AuthService {
               rememberMe: true,
               usePlexOauth: true,
               plexTvPin: pinResponse
-            }
+            },
+            null,
+            '1'
           ).then(tokenResponse => {
             windowReference.location = tokenResponse.url;
             let numAttempts = 0;
@@ -103,7 +145,9 @@ export class AuthService {
               this.apiService.get(
                 `/token/${tokenResponse.pinId}`,
                 {},
-                {}
+                {},
+                null,
+                '1',
               )
                 .then(accessTokenResponse => {
                   if(accessTokenResponse.access_token) {
@@ -112,7 +156,7 @@ export class AuthService {
                     resolve(true);
                     windowReference.close();
                     if(this.settings.get(Settings.IS_SIGNED_IN)) {
-                      this.router.navigate([RequestActionType.MOVIE]);
+                      this.router.navigate(['search']);
                     } else {
                       this.router.navigate(['config']);
                     }
