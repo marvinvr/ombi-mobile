@@ -1,4 +1,4 @@
-.poster-backdrop {
+:host .poster-backdrop {
     width: 100%;
     background-color: #424242;
     background-image: linear-gradient(rgba(32, 32, 32, 0.5), #5e5e5e);
@@ -26,18 +26,16 @@
         z-index: 10;
         position: relative;
         width: fit-content;
-        width: -moz-fit-content;
-        width: -webkit-fit-content;
-        
+
         box-shadow: -5px -5px 21px -5px rgba(0,0,0,0.75);
-        -webkit-box-shadow: -5px -5px 21px -5px rgba(0,0,0,0.75);
-        -moz-box-shadow: -5px -5px 21px -5px rgba(0,0,0,0.75);
+
+        &::part(image) {
+            width: auto;
+        }
     }
 }
 
 .badge {
     width: fit-content;
-    width: -moz-fit-content;
-    width: -webkit-fit-content;
     padding: 5px 20px;
 }
