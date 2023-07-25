@@ -1,12 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { RequestActionType } from 'src/models/requests';
 import { ConfigComponent } from './config/config.component';
 import { ContentComponent } from './content/content.component';
 import { RequestsComponent } from './requests/requests.component';
 import { SearchPageComponent } from './search/search-page.component';
 
 const routes: Routes = [
+    {
+        path: '',
+        redirectTo: 'search',
+    },
     {
         path: 'search',
         component: SearchPageComponent,
