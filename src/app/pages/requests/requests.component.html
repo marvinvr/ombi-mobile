@@ -13,13 +13,13 @@
           [disabled]="disableButtons(item)" 
           fill="clear" 
           color="danger"
-          (click)="deny(item.id, item.mediaType)"
+          (click)="deny(item)"
           >Deny</ion-button>
         <ion-button 
           [disabled]="disableButtons(item)" 
           fill="clear" 
           color="success"
-          (click)="approve(item.id, item.mediaType)"
+          (click)="approve(item)"
           >Approve</ion-button>
       </div>
     </app-content-row>
