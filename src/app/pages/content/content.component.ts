@@ -101,6 +101,8 @@ export class ContentComponent implements OnInit, OnDestroy {
 
   public request(): void {
     this.content.requested = true;
-    this.requests.request(this.content.type, this.content.id).then();
+    this.requests.request(this.content.type, this.content.id)
+      .then()
+      .catch(() => this.content.requested = false);
   }
 }
