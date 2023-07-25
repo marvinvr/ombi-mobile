@@ -47,7 +47,7 @@ export class RequestsService {
         id: r.id,
         title: r.title,
         description: type === RequestType.MOVIE ? r.overview : r.parentRequest?.overview,
-        posterUrl: type === RequestType.MOVIE ? getPoster(r.posterPath) : r?.parentRequest?.posterPath,
+        posterUrl: getPoster(type === RequestType.MOVIE ? r.posterPath : r?.parentRequest?.posterPath),
         date: new Date(r.requestedDate),
         request: this.parseRequest(r, type)
       }) as unknown as OverviewContentRequest);

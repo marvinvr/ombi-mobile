@@ -22,4 +22,8 @@ export class ContentRowComponent {
         return 'primary';
     }
   }
+
+  onError(e: any) {
+    e.target.src = '/assets/backdrop.png';
+  }
 }
