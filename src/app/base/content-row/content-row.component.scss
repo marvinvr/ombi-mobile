@@ -25,6 +25,9 @@
         margin-left: 60%;
         z-index: 10;
         position: relative;
+        width: fit-content;
+        width: -moz-fit-content;
+        width: -webkit-fit-content;
         
         box-shadow: -5px -5px 21px -5px rgba(0,0,0,0.75);
         -webkit-box-shadow: -5px -5px 21px -5px rgba(0,0,0,0.75);
@@ -34,5 +37,7 @@
 
 .badge {
     width: fit-content;
+    width: -moz-fit-content;
+    width: -webkit-fit-content;
     padding: 5px 20px;
 }

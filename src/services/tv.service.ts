@@ -19,12 +19,12 @@ export class TvService {
     return this.showCache;
   }
 
-  public getPopular(): Promise<Array<OverviewContent>> {
-    if(this.popularCache.length > 0) {
+  public getPopular(force: boolean = false): Promise<Array<OverviewContent>> {
+    if(this.popularCache.length > 0 && !force) {
       return Promise.resolve(this.popularCache);
     }
 
-    return this.api.get(`/search/Tv/popular/0/14`, {}, {})
+    return this.api.get(`/search/Tv/popular/0/20`, {}, {})
             .then(this.toOverviewContent)
             .then(res => this.cachePopular(res));
 

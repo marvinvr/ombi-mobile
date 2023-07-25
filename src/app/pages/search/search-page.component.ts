@@ -53,14 +53,14 @@ export class SearchPageComponent implements OnInit {
 
   public refresh(event, refresh = true) {
     (this.searchTerm === '' ?
-      this.fetchPopular()
+      this.fetchPopular(true)
       : this.search())
       .then(() => refresh ? event.target.complete(): null);
   }
 
-  private fetchPopular(): Promise<OverviewContent[]> {
+  private fetchPopular(force: boolean = false): Promise<OverviewContent[]> {
     this.isLoading = true;
-    return this.searchService.getPopular(this.segment).then((items) => {
+    return this.searchService.getPopular(this.segment, force).then((items) => {
       this.items = items;
       this.isLoading = false;
       return items;

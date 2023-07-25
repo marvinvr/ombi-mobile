@@ -22,13 +22,13 @@ export class MovieService {
       .then(res => this.cacheMovie(res));
   }
 
-  public getPopular(): Promise<OverviewContent[]> {
-    if (this.popularCache.length > 0) {
+  public getPopular(force: boolean = false): Promise<OverviewContent[]> {
+    if (this.popularCache.length > 0 && !force) {
       return Promise.resolve(this.popularCache);
     }
 
     return this.api
-      .get(`/search/Movie/popular/0/14`, {}, {})
+      .get(`/search/Movie/popular/0/20`, {}, {})
       .then(this.toOverviewContent)
       .then(res => this.cachePopular(res));
   }

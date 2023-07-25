@@ -22,12 +22,12 @@ export class SearchService {
             .then(this.toOverviewContent);
     }
 
-    public getPopular(type: 'all' | 'movie' | 'tv' = 'all'): Promise<OverviewContent[]> {
+    public getPopular(type: 'all' | 'movie' | 'tv' = 'all', force: boolean = false): Promise<OverviewContent[]> {
         return Promise.all([
-            type === 'all' || type === 'movie' ? this.movieService.getPopular() : Promise.resolve([]),
-            type === 'all' || type === 'tv' ? this.tvService.getPopular() : Promise.resolve([]),
+            type === 'all' || type === 'movie' ? this.movieService.getPopular(force) : Promise.resolve(Array<OverviewContent>()),
+            type === 'all' || type === 'tv' ? this.tvService.getPopular(force) : Promise.resolve(Array<OverviewContent>()),
         ]).then((result) => (
-            [...result[0], ...result[1]].sort((a, b) => b.rating - a.rating)
+            [...result[0], ...result[1]].sort( () => .5 - Math.random() )
         ));
     }
 
