@@ -44,7 +44,7 @@ export class RequestsService {
   private formatOverviewContent(results, type: RequestType): OverviewContentRequest[] {
     return results.map(r => ({
         mediaType: type as string,
-        id: r.id,
+        id: type === RequestType.MOVIE ? r.theMovieDbId : r.parentRequest?.externalProviderId,
         title: r.title,
         description: type === RequestType.MOVIE ? r.overview : r.parentRequest?.overview,
         posterUrl: getPoster(type === RequestType.MOVIE ? r.posterPath : r?.parentRequest?.posterPath),

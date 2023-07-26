@@ -37,6 +37,14 @@ export class MovieContent implements ContentClass {
         return this.movie.request?.approved;
     }
 
+    public set approved(approved: boolean) {
+      this.movie.request.approved = approved;
+    }
+
+    public get denied(): boolean {
+      return this.movie.request.denied;
+    }
+
     public get available(): boolean {
         return this.movie.available;
     }
