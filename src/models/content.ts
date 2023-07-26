@@ -122,6 +122,7 @@ export interface ContentClass {
     available: boolean;
     requested?: boolean;
     approved?: boolean;
+    denied?: boolean;
     requestId?: number;
     posterUrl: string;
     type: RequestType;

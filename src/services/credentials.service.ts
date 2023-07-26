@@ -111,11 +111,20 @@ export class CredentialsService {
     }
   }
 
+  public hasRole(role: string): boolean {
+    //@ts-ignore
+    return this.hasValidToken && this.tokenContents?.role?.indexOf(role) !== -1;
+  }
+
+  public hasAutoApprove(type: 'movie' | 'tv'): boolean {
+    return this.hasRole(`AutoApprove${type.charAt(0).toUpperCase() + type.slice(1)}`);
+  }
+
   public updatePermissions() {
     //@ts-ignore
-    this.settings.set(Settings.IS_ADMIN, this.hasValidToken && this.tokenContents?.role?.indexOf('Admin') !== -1);
+    this.settings.set(Settings.IS_ADMIN, this.hasRole('Admin'));
     //@ts-ignore
-    this.settings.set(Settings.CAN_APPROVE_REQUESTS, this.hasValidToken && this.tokenContents?.role?.indexOf('PowerUser') !== -1);
+    this.settings.set(Settings.CAN_APPROVE_REQUESTS, this.hasRole('PowerUser'));
     this.settings.set(Settings.IS_SIGNED_IN, this.hasValidToken);
   }
 }

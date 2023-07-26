@@ -37,6 +37,14 @@ export class TvContent implements ContentClass {
         return this.tvShow.request.approved;
       }
 
+      public set approved(approved: boolean) {
+        this.tvShow.request.approved = approved;
+      }
+
+      public get denied(): boolean {
+        return this.tvShow.request.denied;
+      }
+
       public get available(): boolean {
         return this.tvShow.available;
       }
