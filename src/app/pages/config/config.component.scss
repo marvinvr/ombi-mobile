@@ -9,6 +9,10 @@
     }
 }
 
+.hidden {
+    display: none;
+}
+
 .credentialsContainer {
     &.bordered {
         margin: 20px 10px 0 10px;

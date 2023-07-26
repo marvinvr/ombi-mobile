@@ -1,12 +1,12 @@
 <ion-item>
   <ion-input
     autocomplete='{{autocomplete}}'
-    type='{{type}}'
-    required='{{required}}'
-    disabled='{{disabled}}'
+    [type]='type'
+    [required]='required'
+    [disabled]='disabled'
     [label]="label"
     [value]='value'
     labelPlacement="floating"
-    (ionChange)='updateValue($event)'
+    (ionInput)='updateValue($event)'
   ></ion-input>
 </ion-item>

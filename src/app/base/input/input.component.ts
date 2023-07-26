@@ -12,7 +12,6 @@ export class InputComponent implements OnInit {
   @Input() type: InputType = InputType.TEXT;
   @Input() required = false;
   @Input() disabled = false;
-  @Input() placeholder = '';
 
   @Input() value = '';
   @Output() valueChange: EventEmitter<string> = new EventEmitter<string>();

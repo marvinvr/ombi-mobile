@@ -8,22 +8,19 @@
   <div class="form">
     <app-input
       label="Ombi Server URL"
-      placeholder="Ombi Server URL"
       [type]="inputType.URL"
       [(value)]="model.ombiUrl" 
       (change)="baseUrlChange()"
     ></app-input>
-    <div [ngClass]="{'credentialsContainer': true, 'bordered': hasOauth}" *ngIf="validUrl">
+    <div [ngClass]="{'credentialsContainer': true, 'bordered': hasOauth, 'hidden': !validUrl}">
       <app-input
         label="Username"
-        placeholder="Username"
         [(value)]="model.username"
         [disabled]="!hasBaseUrl"
       ></app-input>
       <app-input
         label="Password"
         [type]="inputType.PASSWORD"
-        placeholder="Password"
         [(value)]="model.password" 
         [disabled]="!hasBaseUrl"
       ></app-input>
