@@ -26,4 +26,11 @@ export class ContentRowComponent {
   onError(e: any) {
     e.target.src = '/assets/backdrop.png';
   }
+
+  public get description(): string {
+    if (this.content?.description.length == 0) {
+      return '<i>No description avaliable</i>';
+    } 
+    return this.content?.description;
+  } 
 }
