@@ -7,19 +7,19 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <ion-list lines="full">
-    <app-content-row *ngFor="let item of contentList" [content]="item">
+    <app-content-row *ngFor="let item of contentList" [content]="item" (click)="showContent(item)">
       <div class="buttons">
         <ion-button 
           [disabled]="disableButtons(item)" 
           fill="clear" 
           color="danger"
-          (click)="deny(item)"
+          (click)="deny(item, $event)"
           >Deny</ion-button>
         <ion-button 
           [disabled]="disableButtons(item)" 
           fill="clear" 
           color="success"
-          (click)="approve(item)"
+          (click)="approve(item, $event)"
           >Approve</ion-button>
       </div>
     </app-content-row>

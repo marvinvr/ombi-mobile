@@ -24,6 +24,10 @@ const routes: Routes = [
         component: ConfigComponent,
     },
     {
+        path: 'request/:type/:id',
+        component: ContentComponent
+    },
+    {
         path: ':type/:id',
         component: ContentComponent
     }

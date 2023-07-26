@@ -2,7 +2,7 @@ import { RequestAction, RequestType } from './requests';
 
 export interface OverviewContent {
     mediaType: 'movie' | 'tv';
-    id: string | number;
+    id: string;
     title: string;
     description: string;
     posterUrl?: string;

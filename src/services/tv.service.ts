@@ -34,7 +34,7 @@ export class TvService {
     if(this.showCache[id]) {
       return Promise.resolve(this.showCache[id]);
     }
-    return this.api.get(`/search/Tv/moviedb/${id}`, {}, {}, null, '2')
+    return this.api.get(`/search/Tv/${id}`, {}, {}, null, '2')
             .then(this.formatResult)
             .then(res => this.cacheShow(res));
   }

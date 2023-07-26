@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { OverviewContentRequest, RequestStatus } from 'src/models/content';
 import { RequestAction, RequestType } from 'src/models/requests';
 import { RequestsService } from 'src/services/requests.service';
@@ -15,7 +16,8 @@ export class RequestsComponent implements OnInit, OnDestroy {
   public isLoading = false;
 
   constructor(
-    public requestsService: RequestsService
+    public requestsService: RequestsService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -35,28 +37,34 @@ export class RequestsComponent implements OnInit, OnDestroy {
     return item.status !== RequestStatus.OPEN;
   }
 
-  public approve(item: OverviewContentRequest) {
+  public showContent(item: OverviewContentRequest): void {
+    this.router.navigate(['request', item.mediaType, item.id]);
+  }
+
+  public approve(item: OverviewContentRequest, event: Event) {
+    event?.stopPropagation();
     item.request.approved = true;
     item.status = RequestStatus.APPROVED;
 
     this.requestsService.performAction(
       RequestAction.APPROVE,
       item.mediaType as RequestType,
-      item.id
+      item.request.id
     ).catch(() => {
       item.status = RequestStatus.OPEN;
       item.request.approved = null;
     });
   }
 
-  public deny(item: OverviewContentRequest) {
+  public deny(item: OverviewContentRequest, event: Event) {
+    event?.stopPropagation();
     item.request.approved = false;
     item.status = RequestStatus.DENIED;
 
     this.requestsService.performAction(
       RequestAction.DENY,
       item.mediaType as RequestType,
-      item.id
+      item.request.id
     ).catch(() => {
       item.status = RequestStatus.OPEN;
       item.request.approved = null;

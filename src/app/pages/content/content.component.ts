@@ -19,6 +19,7 @@ export class ContentComponent implements OnInit, OnDestroy {
 
   public content: ContentClass;
   public isLoading = false;
+  public isRequest = false;
 
   private subscription: Subscription;
 
@@ -70,6 +71,7 @@ export class ContentComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.isLoading = true;
     this.subscription = this.route.paramMap.subscribe( params => {
+      this.isRequest = this.router.url.includes('request');
       const type = params.get('type');
       const id = params.get('id');
       switch (type) {
@@ -101,7 +103,11 @@ export class ContentComponent implements OnInit, OnDestroy {
   }
 
   public goBack() {
-    this.router.navigate(['search']);
+    if(this.isRequest) {
+      this.router.navigate(['requests']);
+    } else {
+      this.router.navigate(['search']);
+    }
   }
 
   public request(): void {
