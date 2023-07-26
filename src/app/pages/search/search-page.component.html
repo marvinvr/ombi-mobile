@@ -21,5 +21,5 @@
   <ion-list lines="full">
     <app-content-row *ngFor="let item of items" [content]="item" (click)="showContent(item)"></app-content-row>
   </ion-list>
-  <app-list-remark *ngIf="this.items.length == 0 && !isLoading">No Movies Found</app-list-remark>
+  <app-list-remark *ngIf="this.items.length == 0 && !isLoading">No Content Found</app-list-remark>
 </ion-content>
