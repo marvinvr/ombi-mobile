@@ -18,7 +18,7 @@ export class RequestsService {
 
   public list(
     type: RequestType = RequestType.MOVIE,
-    count: number = 20,
+    count: number = 100,
     position: number = 0,
     sort: string = 'requestedDate',
     order: string = 'desc'
