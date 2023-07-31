@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
 import { RequestParameters } from 'src/models/http';
-import { Content, OverviewContent } from 'src/models/content';
+import { OverviewContent } from 'src/models/content';
 import { MovieService } from './movie.service';
 import { TvService } from './tv.service';
 

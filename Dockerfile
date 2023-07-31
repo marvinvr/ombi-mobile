@@ -4,11 +4,14 @@ WORKDIR /opt/marvinvr/ombi-mobile
 
 RUN npm install -g serve
 
-EXPOSE 5000
+EXPOSE 3000
 
 COPY serve.json .
 COPY www www
+COPY scripts scripts
+
+RUN chown -R 1000:1000 www/
 
 USER 1000
 
-ENTRYPOINT ["serve"]
+ENTRYPOINT ["/bin/sh", "-c", "scripts/set-predefined-host.sh && serve"]

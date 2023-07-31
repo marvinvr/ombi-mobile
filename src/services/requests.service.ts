@@ -27,11 +27,18 @@ export class RequestsService {
             .then((requestResult) => this.formatOverviewContent(requestResult.collection, type));
   }
 
-  public request(type: RequestType, id: number) {
-    return this.api.post(`/Request/${type}`, {}, this.requestBody(type, id), null, '1')
+  public requestMovie(id: number) {
+    return this.api.post(`/Request/Movie`, {}, this.requestBody(RequestType.MOVIE, id), null, '1')
             .then((res) => this.toast.show(
               res.isError ? ToastType.ERROR : ToastType.SUCCESS,
-              res.isError? res?.errorMessage: `Successfully requested ${type}`));
+              res.isError? res?.errorMessage: `Successfully requested Movie`));
+  }
+
+  public requestTv(id: number) {
+    return this.api.post(`/Requests/TV`, {}, this.requestBody(RequestType.TV, id), null, '2')
+            .then((res) => this.toast.show(
+              res.isError ? ToastType.ERROR : ToastType.SUCCESS,
+              res.isError? res?.errorMessage: `Successfully requested TV Show`));
   }
 
   public performAction(action: RequestAction, type: RequestType, id: number | string = 0) {
@@ -103,7 +110,7 @@ export class RequestsService {
             firstSeason: false,
             latestSeason: false,
             requestAll: true,
-            tvDbId: id
+            theMovieDbId: id
           };
   }
 }

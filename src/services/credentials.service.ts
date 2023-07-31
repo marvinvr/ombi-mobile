@@ -2,23 +2,25 @@
 import { Injectable } from '@angular/core';
 import { CredentialsNames } from 'src/models/credentials';
 import jwt_decode from 'jwt-decode';
-import { Observable } from 'rxjs/internal/Observable';
 import { Subject } from 'rxjs';
-import { hasProtocol, removeTrailingSlash, replaceBackslashes } from 'src/utils/credentials.utils';
+import { removeTrailingSlash, replaceBackslashes } from 'src/utils/credentials.utils';
 import { SettingsService } from './settings.service';
-import { Settings } from 'src/models/settings';
+import { PredefinedSetting, Settings } from 'src/models/settings';
+import { isValidUrl } from 'src/utils/url.utils';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CredentialsService {
   private tokenChangeSubject = new Subject();
+  private baseUrlChangeSubject = new Subject();
 
   constructor(
     private settings: SettingsService
   ) {
     this.migrateLegacySettings();
     this.updatePermissions();
+    this.fetchPredefinedHost();
     this.tokenChange().subscribe(() => {
       this.updatePermissions();
     });
@@ -48,6 +50,28 @@ export class CredentialsService {
     url = replaceBackslashes(url);
     url = removeTrailingSlash(url);
     this.settings.set(Settings.BASE_URL, url);
+    this.baseUrlChangeSubject.next(null);
+  }
+
+  private fetchPredefinedHost(): void {
+    this.settings.fetchPredefinedSetting(PredefinedSetting.PREDEFINED_HOST)
+      .subscribe({
+        next: predefinedUrl => {
+          if(isValidUrl(predefinedUrl)) {
+            this.baseUrl = predefinedUrl;
+            this.settings.set(Settings.IS_PREDEFINED_URL, true)
+          } else {
+            this.settings.set(Settings.IS_PREDEFINED_URL, false)
+          }
+        },
+        error: () => {
+          this.settings.set(Settings.IS_PREDEFINED_URL, false)
+        }
+      });
+  }
+
+  public baseUrlChange(): Subject<any> {
+    return this.baseUrlChangeSubject;
   }
 
   /* Password */

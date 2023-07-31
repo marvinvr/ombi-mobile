@@ -46,6 +46,10 @@ export class ConfigComponent implements OnInit {
     return this.model.username !== '' && this.model.password !== '' && this.hasBaseUrl;
   }
 
+  public get isPredefinedUrl(): boolean {
+    return this.settings.get(Settings.IS_PREDEFINED_URL);
+  }
+
   ngOnInit() {
     this.model.ombiUrl = this.credentials.baseUrl;
     this.model.username = this.credentials.username;

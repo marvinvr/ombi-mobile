@@ -24,14 +24,14 @@ export class TvService {
       return Promise.resolve(this.popularCache);
     }
 
-    return this.api.get(`/search/Tv/popular/0/20`, {}, {})
+    return this.api.get(`/search/Tv/trending/0/15`, {}, {})
             .then(this.toOverviewContent)
             .then(res => this.cachePopular(res));
 
   }
 
-  public get(id: string): Promise<TvShow> {
-    if(this.showCache[id]) {
+  public get(id: string, force = false): Promise<TvShow> {
+    if(this.showCache[id] && !force) {
       return Promise.resolve(this.showCache[id]);
     }
     return this.api.get(`/search/Tv/${id}`, {}, {}, null, '2')

@@ -12,8 +12,8 @@ export class MovieService {
 
   constructor(private api: ApiService) { }
 
-  public get(id: string): Promise<Movie> {
-    if (this.movieCache[id]) {
+  public get(id: string, force = false): Promise<Movie> {
+    if (this.movieCache[id] && !force) {
       return Promise.resolve(this.movieCache[id]);
     }
     return this.api

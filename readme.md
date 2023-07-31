@@ -30,7 +30,7 @@ Enter the following credentials on the configuration page in the app
 `npm install -g @ionic/cli`
 
 #### Clone the repository
-`git clone https://github.com/MarvinvR/ombi-mobile`
+`git clone https://github.com/marvinvr/ombi-mobile`
 
 #### Install dependencies
 `npm install`
@@ -43,3 +43,12 @@ Enter the following credentials on the configuration page in the app
 ### Docker
 Pull the official Docker image here [https://hub.docker.com/r/marvinvr/ombi-mobile](https://hub.docker.com/r/marvinvr/ombi-mobile)
 - HTTP Port `3000`
+
+### Setting a predefined host for your users
+A predefined host can be set in one of two ways:
+
+#### Docker environment variable
+If you are using the Docker image, you can set the environment variable `PREDEFINED_HOST` to your Ombi URL (including (https | http)://). This will automatically set the host for your users.
+
+#### Running the app from source
+If you are running the app from source, you can set the host by creating the file 'src/assets/settings/predefined-host.txt' and adding your Ombi URL (including (https | http)://) to it. There is an example file in the same directory.

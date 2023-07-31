@@ -20,6 +20,10 @@
 </div>
 
 <ion-content class="ion-padding" *ngIf="!isLoading">
+  <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+    
   <h1>{{ content?.title }}</h1>&nbsp;<i *ngIf="content?.releaseYear">({{content?.releaseYear}})</i>
   
   <ion-badge

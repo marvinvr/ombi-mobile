@@ -11,6 +11,8 @@
       [type]="inputType.URL"
       [(value)]="model.ombiUrl" 
       (change)="baseUrlChange()"
+      [disabled]="isPredefinedUrl"
+      [hint]="isPredefinedUrl ? 'This URL has been pre-set by your Media Server Host.' : null"
     ></app-input>
     <div [ngClass]="{'credentialsContainer': true, 'bordered': hasOauth, 'hidden': !validUrl}">
       <app-input

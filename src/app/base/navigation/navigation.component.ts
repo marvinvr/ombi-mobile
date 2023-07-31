@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { RequestActionType } from 'src/models/requests';
 import { Tab } from 'src/models/tabs';
 import { Settings } from 'src/models/settings';
 import { SettingsService } from 'src/services/settings.service';

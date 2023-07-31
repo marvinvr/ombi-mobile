@@ -14,6 +14,7 @@ export class RequestsComponent implements OnInit, OnDestroy {
 
   public contentList: OverviewContentRequest[] = [];
   public isLoading = false;
+  public segment: 'all' | 'movie' | 'tv' = 'all';
 
   constructor(
     public requestsService: RequestsService,
@@ -28,9 +29,14 @@ export class RequestsComponent implements OnInit, OnDestroy {
     this.contentList = [];
   }
 
-  public refresh(event) {
+  public refresh(event, refresh = true) {
       this.fetchAllRequests()
-        .then(() => event.target.complete());
+        .then(() => refresh ? event.target.complete(): null);
+  }
+
+  segmentChange(e) {
+    this.segment = e.detail.value;
+    this.refresh(e, false);
   }
 
   public disableButtons(item: OverviewContentRequest) {
@@ -75,8 +81,8 @@ export class RequestsComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     return Promise.all(
         [
-          this.requestsService.list(RequestType.MOVIE),
-          this.requestsService.list(RequestType.TV)
+          this.segment === 'movie' || this.segment === 'all' ? this.requestsService.list(RequestType.MOVIE) : Promise.resolve([]),
+          this.segment === 'tv' || this.segment === 'all' ? this.requestsService.list(RequestType.TV) : Promise.resolve([])
         ]
     )
       .then(res => {

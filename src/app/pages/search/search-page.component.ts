@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { MovieContent } from 'src/app/base/content-row/content-types/movie-row';
-import { TvContent } from 'src/app/base/content-row/content-types/tv-row';
-import { Content, ContentClass, Movie, OverviewContent, TvShow } from 'src/models/content';
+import { OverviewContent } from 'src/models/content';
 import { SearchService } from 'src/services/search.service';
 
 @Component({

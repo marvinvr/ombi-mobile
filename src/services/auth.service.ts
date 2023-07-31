@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { RequestActionType } from 'src/models/requests';
 import { Settings } from 'src/models/settings';
 import { ApiService } from './api.service';
 import { CredentialsService } from './credentials.service';
@@ -19,6 +18,7 @@ export class AuthService {
     private router: Router
   ) {
     this.updateAuthConfig();
+    this.credentials.baseUrlChange().subscribe(() => this.updateAuthConfig());
   }
 
   public fetchToken(): Promise<any> {
@@ -54,28 +54,14 @@ export class AuthService {
 
     if (!hasProtocol(originalBaseUrl)) {
       this.credentials.baseUrl = `https://${originalBaseUrl}`;
-      this.apiService.get(
-        '/Settings/Authentication',
-        {},
-        {},
-        undefined,
-        '1',
-        false
-      )
+      this.tryUrl()
         .then(res => {
           this.settings.set(Settings.URL_IS_VALID, true);
           this.settings.set(Settings.URL_HAS_OAUTH, res?.enableOAuth);
         })
         .catch(() => {
           this.credentials.baseUrl = `http://${originalBaseUrl}`;
-          this.apiService.get(
-            '/Settings/Authentication',
-            {},
-            {},
-            undefined,
-            '1',
-            false
-          )
+          this.tryUrl()
             .then(res => {
               this.settings.set(Settings.URL_IS_VALID, true);
               this.settings.set(Settings.URL_HAS_OAUTH, res?.enableOAuth);
@@ -86,15 +72,7 @@ export class AuthService {
             });
         });
     } else {
-      this.apiService.get(
-        '/Settings/Authentication',
-        {},
-        {},
-        undefined,
-        '1',
-        false
-      )
-        .then(res => {
+      this.tryUrl().then(res => {
           this.settings.set(Settings.URL_IS_VALID, true);
           this.settings.set(Settings.URL_HAS_OAUTH, res?.enableOAuth);
         })
@@ -102,6 +80,17 @@ export class AuthService {
           this.settings.set(Settings.URL_IS_VALID, false);
         });
     }
+  }
+
+  private tryUrl(): Promise<any> {
+    return this.apiService.get(
+      '/Settings/Authentication',
+      {},
+      {},
+      undefined,
+      '1',
+      false
+    )
   }
 
   public triggerPlexOauth(): Promise<any> {
