@@ -9,5 +9,10 @@ export enum Settings {
     BASE_URL = 'af',
     USE_PLEX_OAUTH = 'ag',
     URL_IS_VALID = 'ah',
-    URL_HAS_OAUTH = 'ai'
+    URL_HAS_OAUTH = 'ai',
+    IS_PREDEFINED_URL = 'aj'
+}
+
+export enum PredefinedSetting {
+    PREDEFINED_HOST = 'predefined-host'
 }

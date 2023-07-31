@@ -30,3 +30,7 @@ npm-debug.log*
 /platforms
 /plugins
 /www
+
+
+/src/assets/settings/*.txt
+!/src/assets/settings/*.example.txt

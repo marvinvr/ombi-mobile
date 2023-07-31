@@ -1,6 +1,7 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
-import { Settings, SETTINGS_STORAGE_KEY } from 'src/models/settings';
+import { Observable, Subject } from 'rxjs';
+import { PredefinedSetting, Settings, SETTINGS_STORAGE_KEY } from 'src/models/settings';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ export class SettingsService {
   private settings = {};
   private settingsChange = new Subject();
 
-  constructor() {
+  constructor(private http: HttpClient) {
     this.init();
   }
 
@@ -25,6 +26,10 @@ export class SettingsService {
 
   public get(key: Settings): any {
     return this.settings[key];
+  }
+
+  public fetchPredefinedSetting(setting: PredefinedSetting): Observable<string> {
+    return this.http.get(`/assets/settings/${setting as string}.txt`, {responseType: 'text'});
   }
 
   private init() {

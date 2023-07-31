@@ -24,7 +24,11 @@ export class AppComponent {
   initializeApp() {
     this.platform.ready().then(() => {
       if(!this.settings.get(Settings.USE_PLEX_OAUTH)){
-        this.auth.fetchToken();
+        if(this.settings.get(Settings.IS_SIGNED_IN)) {
+          this.auth.fetchToken();
+        } else {
+          this.auth.updateAuthConfig();
+        }
       }
     });
   }
