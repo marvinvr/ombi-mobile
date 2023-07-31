@@ -6,7 +6,6 @@ import { Subject } from 'rxjs';
 import { removeTrailingSlash, replaceBackslashes } from 'src/utils/credentials.utils';
 import { SettingsService } from './settings.service';
 import { PredefinedSetting, Settings } from 'src/models/settings';
-import { AuthService } from './auth.service';
 import { isValidUrl } from 'src/utils/url.utils';
 
 @Injectable({

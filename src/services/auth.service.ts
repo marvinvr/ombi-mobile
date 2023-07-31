@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { RequestActionType } from 'src/models/requests';
 import { Settings } from 'src/models/settings';
 import { ApiService } from './api.service';
 import { CredentialsService } from './credentials.service';
