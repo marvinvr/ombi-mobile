@@ -24,7 +24,7 @@ export class TvService {
       return Promise.resolve(this.popularCache);
     }
 
-    return this.api.get(`/search/Tv/popular/0/20`, {}, {})
+    return this.api.get(`/search/Tv/trending/0/15`, {}, {})
             .then(this.toOverviewContent)
             .then(res => this.cachePopular(res));
 
