@@ -30,8 +30,8 @@ export class TvService {
 
   }
 
-  public get(id: string): Promise<TvShow> {
-    if(this.showCache[id]) {
+  public get(id: string, force = false): Promise<TvShow> {
+    if(this.showCache[id] && !force) {
       return Promise.resolve(this.showCache[id]);
     }
     return this.api.get(`/search/Tv/${id}`, {}, {}, null, '2')

@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { MovieContent } from 'src/app/base/content-row/content-types/movie-row';
 import { TvContent } from 'src/app/base/content-row/content-types/tv-row';
 import { ContentClass } from 'src/models/content';
-import { RequestActionType, RequestType } from 'src/models/requests';
+import { RequestType } from 'src/models/requests';
 import { CredentialsService } from 'src/services/credentials.service';
 import { MovieService } from 'src/services/movie.service';
 import { RequestsService } from 'src/services/requests.service';
@@ -70,36 +70,46 @@ export class ContentComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.isLoading = true;
+    this.refresh(null);
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
+  public refresh(event) {
     this.subscription = this.route.paramMap.subscribe( params => {
       this.isRequest = this.router.url.includes('request');
       const type = params.get('type');
       const id = params.get('id');
       switch (type) {
         case 'tv':
-          this.tvService.get(id)
+          this.tvService.get(id, event ? true : false)
             .then((show) => {
               if(!show) {
                 this.router.navigate(['/']);
               }
               this.content = new TvContent(show);
+              if (event) {
+                event.target.complete();
+              }
               this.isLoading = false;
             });
           break;
         case 'movie':
-          this.movieService.get(id)
+          this.movieService.get(id, event ? true : false)
             .then((movie) => {
               if(!movie) {
                 this.router.navigate(['/']);
               }
               this.content = new MovieContent(movie);
+              if (event) {
+                event.target.complete();
+              }
               this.isLoading = false;
             });
       }
     });
-  }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
   }
 
   public goBack() {
@@ -115,11 +125,20 @@ export class ContentComponent implements OnInit, OnDestroy {
     if(this.credentials.hasAutoApprove(this.content.type)) {
       this.content.approved = true;
     }
-    this.requests.request(this.content.type, this.content.id)
-      .then()
+    if(this.content.type === 'movie') {
+      this.requests.requestMovie(this.content.id)
+      .then(() => this.refresh(new Event('request')))
       .catch(() => {
         this.content.requested = false;
         this.content.approved = false;
       });
+    } else {
+      this.requests.requestTv(this.content.id)
+        .then(() => this.refresh(new Event('request')))
+        .catch(() => {
+          this.content.requested = false;
+          this.content.approved = false;
+        });
+      }
   }
 }
