@@ -7,6 +7,7 @@ import { removeTrailingSlash, replaceBackslashes } from 'src/utils/credentials.u
 import { SettingsService } from './settings.service';
 import { PredefinedSetting, Settings } from 'src/models/settings';
 import { AuthService } from './auth.service';
+import { isValidUrl } from 'src/utils/url.utils';
 
 @Injectable({
   providedIn: 'root'
@@ -57,7 +58,7 @@ export class CredentialsService {
     this.settings.fetchPredefinedSetting(PredefinedSetting.PREDEFINED_HOST)
       .subscribe({
         next: predefinedUrl => {
-          if(predefinedUrl?.indexOf('http') !== -1) {
+          if(isValidUrl(predefinedUrl)) {
             this.baseUrl = predefinedUrl;
             this.settings.set(Settings.IS_PREDEFINED_URL, true)
           } else {
@@ -67,7 +68,7 @@ export class CredentialsService {
         error: () => {
           this.settings.set(Settings.IS_PREDEFINED_URL, false)
         }
-      })
+      });
   }
 
   public baseUrlChange(): Subject<any> {
