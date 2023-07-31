@@ -1,3 +1,4 @@
+import { LocationStrategy } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -29,7 +30,8 @@ export class ContentComponent implements OnInit, OnDestroy {
     private router: Router,
     private movieService: MovieService,
     private tvService: TvService,
-    private credentials: CredentialsService
+    private credentials: CredentialsService,
+    private locationStrategy: LocationStrategy
   ) { }
 
   get type(): RequestType {
@@ -113,11 +115,7 @@ export class ContentComponent implements OnInit, OnDestroy {
   }
 
   public goBack() {
-    if(this.isRequest) {
-      this.router.navigate(['requests']);
-    } else {
-      this.router.navigate(['search']);
-    }
+    this.locationStrategy.back();
   }
 
   public request(): void {
