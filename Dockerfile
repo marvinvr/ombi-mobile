@@ -1,17 +1,23 @@
+# Stage 1: Build the Angular application
+FROM node:lts-alpine AS build
+
+WORKDIR /app
+
+COPY package.json package-lock.json ./
+RUN npm install
+
+COPY . .
+RUN npm run build --prod
+
+# Stage 2: Serve the application using "serve"
 FROM node:lts-alpine
 
-WORKDIR /opt/marvinvr/ombi-mobile
+WORKDIR /app
 
 RUN npm install -g serve
 
+COPY --from=build /app/www /app
+
 EXPOSE 3000
 
-COPY serve.json .
-COPY www www
-COPY scripts scripts
-
-RUN chown -R 1000:1000 www/
-
-USER 1000
-
-ENTRYPOINT ["/bin/sh", "-c", "scripts/set-predefined-host.sh && serve"]
+CMD ["serve", "-s", ".", "-l", "3000"]
