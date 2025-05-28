@@ -14,9 +14,9 @@
       [disabled]="isPredefinedUrl"
       [hint]="isPredefinedUrl ? 'This URL has been pre-set by your Media Server Host.' : null"
     ></app-input>
-    <div [ngClass]="{'invalidUrlHint': true, 'hidden': validUrl}">
-      <p>Ombi is not reachable at this URL. Please check the URL or use the Link below.</p>
-      <button (click)="openLink()">Open {{prettifyUrl(model.ombiUrl)}}</button>
+    <div [ngClass]="{'invalidUrlHint': true, 'hidden': validUrl || prettifyUrl(model.ombiUrl).length < 1}">
+      <p>Ombi is not reachable at this URL. Please check the URL or use the Link below to open it in your browser:</p>
+      <app-button (action)="openLink()" label="Open in Browser"></app-button>
     </div>
     <div [ngClass]="{'credentialsContainer': true, 'bordered': hasOauth, 'hidden': !validUrl}">
       <app-input
