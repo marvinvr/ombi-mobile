@@ -10,10 +10,14 @@
       label="Ombi Server URL"
       [type]="inputType.URL"
       [(value)]="model.ombiUrl" 
-      (change)="baseUrlChange()"
+      (valueChange)="baseUrlChange()"
       [disabled]="isPredefinedUrl"
       [hint]="isPredefinedUrl ? 'This URL has been pre-set by your Media Server Host.' : null"
     ></app-input>
+    <div [ngClass]="{'invalidUrlHint': true, 'hidden': validUrl}">
+      <p>Ombi is not reachable at this URL. Please check the URL or use the Link below.</p>
+      <button (click)="openLink()">Open {{prettifyUrl(model.ombiUrl)}}</button>
+    </div>
     <div [ngClass]="{'credentialsContainer': true, 'bordered': hasOauth, 'hidden': !validUrl}">
       <app-input
         label="Username"

@@ -50,6 +50,14 @@ export class ConfigComponent implements OnInit {
     return this.settings.get(Settings.IS_PREDEFINED_URL);
   }
 
+  public prettifyUrl(url: string): string {
+    return url.replace('https://', '').replace('http://', '');
+  }
+
+  public openLink(): void {
+    window.open(this.model.ombiUrl, '_blank');
+  }
+
   ngOnInit() {
     this.model.ombiUrl = this.credentials.baseUrl;
     this.model.username = this.credentials.username;
@@ -84,11 +92,13 @@ export class ConfigComponent implements OnInit {
   }
 
   public baseUrlChange(): void {
-    clearTimeout(this.baseUrlTimeout);
+    if (this.baseUrlTimeout) {
+      clearTimeout(this.baseUrlTimeout);
+    }
     this.baseUrlTimeout = setTimeout(() => {
       this.credentials.baseUrl = this.model.ombiUrl;
       this.auth.updateAuthConfig();
-    }, 500);
+    }, 300);
   }
 
   public openGithub(): void {
