@@ -50,7 +50,10 @@ export class ConfigComponent implements OnInit {
     return this.settings.get(Settings.IS_PREDEFINED_URL);
   }
 
-  public prettifyUrl(url: string): string {
+  public prettifyUrl(url: string | undefined): string {
+    if (!url) {
+      return '';
+    }
     return url.replace('https://', '').replace('http://', '');
   }
 
