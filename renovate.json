@@ -1,0 +1,13 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["github>marvinvr/renovate-config"],
+  "customManagers": [
+    {
+      "description": "serve installed globally in the Dockerfile runtime stage.",
+      "customType": "regex",
+      "managerFilePatterns": ["/^Dockerfile$/"],
+      "matchStrings": ["npm install -g [^\\n]*?(?<depName>serve)@(?<currentValue>[0-9][^\\s]*)"],
+      "datasourceTemplate": "npm"
+    }
+  ]
+}
