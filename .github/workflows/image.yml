@@ -1,0 +1,27 @@
+# Builds the image to ghcr.io via marvinvr/workflows; deploy only if repo variable PROD_AUTO_DEPLOY=true.
+name: image
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: image-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  image:
+    uses: marvinvr/workflows/.github/workflows/build-image.yml@main
+    with:
+      app: ombi-mobile
+      context: .
+      dockerfile: Dockerfile
+      deploy: ${{ vars.PROD_AUTO_DEPLOY == 'true' }}
+    secrets:
+      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+      PROD_DEPLOY_TOKEN: ${{ secrets.PROD_DEPLOY_TOKEN }}
