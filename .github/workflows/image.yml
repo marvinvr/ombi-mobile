@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   image:
-    uses: marvinvr/workflows/.github/workflows/build-image.yml@main
+    uses: marvinvr/workflows/.github/workflows/build-image.yml@634976858d93fdea84eca8e13aafb2516dab6c88 # main
     with:
       app: ombi-mobile
       context: .

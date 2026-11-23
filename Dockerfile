@@ -14,7 +14,7 @@ FROM node:24.22.3-alpine@sha256:116b800c3754b440ee0aa3ed2f20f5bf3d99a554bfd9adee
 
 WORKDIR /app
 
-RUN npm install -g --ignore-scripts serve@14.2.6
+RUN npm install -g --ignore-scripts serve@14.2.8
 
 COPY --from=build /app/www /app
 
