@@ -7,9 +7,10 @@ import { SettingsService } from 'src/services/settings.service';
 import { adminTabs, signedOutTabs, userTabs } from './tab.utils';
 
 @Component({
-  selector: 'app-navigation',
-  templateUrl: './navigation.component.html',
-  styleUrls: ['./navigation.component.scss'],
+    selector: 'app-navigation',
+    templateUrl: './navigation.component.html',
+    styleUrls: ['./navigation.component.scss'],
+    standalone: false
 })
 export class NavigationComponent implements OnInit, OnDestroy {
 

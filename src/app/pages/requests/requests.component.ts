@@ -6,9 +6,10 @@ import { RequestsService } from 'src/services/requests.service';
 import { sort } from 'src/utils/requests.utils';
 
 @Component({
-  selector: 'app-requests',
-  templateUrl: './requests.component.html',
-  styleUrls: ['./requests.component.scss'],
+    selector: 'app-requests',
+    templateUrl: './requests.component.html',
+    styleUrls: ['./requests.component.scss'],
+    standalone: false
 })
 export class RequestsComponent implements OnInit, OnDestroy {
 

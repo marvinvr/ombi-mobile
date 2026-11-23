@@ -12,9 +12,10 @@ import { RequestsService } from 'src/services/requests.service';
 import { TvService } from 'src/services/tv.service';
 
 @Component({
-  selector: 'app-content',
-  templateUrl: './content.component.html',
-  styleUrls: ['./content.component.scss'],
+    selector: 'app-content',
+    templateUrl: './content.component.html',
+    styleUrls: ['./content.component.scss'],
+    standalone: false
 })
 export class ContentComponent implements OnInit, OnDestroy {
 
