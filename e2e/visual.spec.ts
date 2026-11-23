@@ -207,3 +207,41 @@ test.describe('visual baselines', () => {
     await expect(page.locator('ion-toast')).toHaveScreenshot('toast-error.png', { timeout: 1000 });
   });
 });
+
+test.describe('visual baselines (dark mode)', () => {
+  test.use({ colorScheme: 'dark' });
+
+  test('dark: config', async ({ page, ombi }) => {
+    ombi.enableOAuth = true;
+    const app = new App(page);
+    await page.goto('/config');
+    await app.input('Ombi Server URL').fill(OMBI_HOST);
+    await expect(app.button('Sign in with Plex')).toBeVisible();
+    await app.input('Ombi Server URL').blur();
+    await snap(app, 'dark-config');
+  });
+
+  test('dark: search', async ({ page, seed }) => {
+    await seed({ user: 'admin', usePlexOauth: true });
+    const app = new App(page);
+    await page.goto('/search');
+    await expect(app.rows).toHaveCount(5);
+    await snap(app, 'dark-search');
+  });
+
+  test('dark: content', async ({ page, seed }) => {
+    await seed({ user: 'admin', usePlexOauth: true });
+    const app = new App(page);
+    await page.goto('/tv/1399');
+    await expect(app.contentTitle).toHaveText('Game of Thrones');
+    await snap(app, 'dark-content');
+  });
+
+  test('dark: requests', async ({ page, seed }) => {
+    await seed({ user: 'admin', usePlexOauth: true });
+    const app = new App(page);
+    await page.goto('/requests');
+    await expect(app.rows).toHaveCount(5);
+    await snap(app, 'dark-requests');
+  });
+});
