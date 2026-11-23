@@ -28,3 +28,15 @@
 html {
     height: auto !important;
 }
+
+/*
+ * Ionic 8 restyled the iOS-mode tab bar (24px icons, darker unselected colour).
+ * Keep the Ionic 7 look of this app (same values and colour step variable as Ionic 7).
+ */
+.ios ion-tab-bar {
+    --color: var(--ion-tab-bar-color, var(--ion-color-step-600, #999999));
+}
+
+.ios ion-tab-button ion-icon {
+    font-size: 30px;
+}
