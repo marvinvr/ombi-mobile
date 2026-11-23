@@ -34,3 +34,6 @@ npm-debug.log*
 
 /src/assets/settings/*.txt
 !/src/assets/settings/*.example.txt
+# Playwright
+/e2e-results
+/e2e-report
