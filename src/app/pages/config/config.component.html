@@ -1,15 +1,15 @@
 <ion-header>
   <app-header
     title="Config"
-    ></app-header>
+  ></app-header>
 </ion-header>
 
-<ion-content scrollY="false">  
+<ion-content scrollY="false">
   <div class="form">
     <app-input
       label="Ombi Server URL"
       [type]="inputType.URL"
-      [(value)]="model.ombiUrl" 
+      [(value)]="model.ombiUrl"
       (valueChange)="baseUrlChange()"
       [disabled]="isPredefinedUrl"
       [hint]="isPredefinedUrl ? 'This URL has been pre-set by your Media Server Host.' : null"
@@ -27,23 +27,26 @@
       <app-input
         label="Password"
         [type]="inputType.PASSWORD"
-        [(value)]="model.password" 
+        [(value)]="model.password"
         [disabled]="!hasBaseUrl"
       ></app-input>
-      <app-button 
-        label="Sign in" 
+      <app-button
+        label="Sign in"
         (action)="submit()"
         [disabled]="!hasCredentials"
+      ></app-button>
+      @if (hasOauth) {
+        <p>or</p>
+      }
+      @if (hasOauth) {
+        <app-button
+          class="plex"
+          color="light"
+          label="Sign in with Plex"
+          (action)="submitWithPlex()"
+          [disabled]="!hasBaseUrl"
         ></app-button>
-      <p *ngIf="hasOauth">or</p>
-      <app-button 
-        class="plex" 
-        color="light" 
-        label="Sign in with Plex" 
-        (action)="submitWithPlex()"
-        [disabled]="!hasBaseUrl"
-        *ngIf="hasOauth"
-        ></app-button>
+      }
     </div>
   </div>
   <img class="github light" (click)="openGithub()" src="assets/github-light.png" />

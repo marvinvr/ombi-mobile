@@ -2,20 +2,21 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
+    "esModuleInterop": true,
     "declaration": false,
-    "downlevelIteration": true,
     "experimentalDecorators": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "importHelpers": true,
     "target": "ES2022",
     "module": "es2020",
-    "lib": [
-      "es2018", 
-      "dom"
-    ],
+    // TypeScript 6 enables strict mode by default; this codebase has never been strict.
+    "strict": false,
+    // Replaces the deprecated "baseUrl": "./" for the absolute `src/...` imports.
+    "paths": {
+      "src/*": ["./src/*"]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

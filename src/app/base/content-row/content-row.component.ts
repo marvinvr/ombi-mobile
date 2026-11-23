@@ -1,10 +1,12 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { OverviewContent, RequestStatus } from 'src/models/content';
 
 @Component({
-  selector: 'app-content-row',
-  templateUrl: './content-row.component.html',
-  styleUrls: ['./content-row.component.scss'],
+    selector: 'app-content-row',
+    templateUrl: './content-row.component.html',
+    styleUrls: ['./content-row.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class ContentRowComponent {
 

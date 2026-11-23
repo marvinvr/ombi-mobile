@@ -38,6 +38,20 @@ Enter the following credentials on the configuration page in the app
 #### Start the project
 `ionic serve`
 
+## Tests
+
+One-time setup: `npx playwright install chromium webkit` (unit tests also use Playwright's Chromium, no local Chrome needed).
+
+- `npm test` – unit tests (Karma, headless Chromium): services via `HttpTestingController`, settings/credentials/JWT handling, utils and component logic.
+- `npm run e2e` – builds production into `www/` and runs the Playwright suite in `e2e/` against `serve -s www` (same as the Docker runtime) on an Android/Chromium and an iPhone/WebKit viewport. The Ombi API (and plex.tv, TMDB images, analytics) is fully mocked (`e2e/support/ombi-mock.ts`); any unmocked outbound request or any console error/warning fails a test.
+- Against a running instance, e.g. the Docker image:
+  ```
+  docker build -t ombi-mobile . && docker run --rm -p 3000:3000 ombi-mobile
+  E2E_BASE_URL=http://localhost:3000 npx playwright test
+  ```
+- Screenshot baselines live in `e2e/__screenshots__/` (recorded on macOS; fonts differ on other OSes). After an intentional UI change: `npx playwright test e2e/visual.spec.ts --update-snapshots`.
+- `npm run lint` – ESLint (angular-eslint).
+
 ## Self Hosting
 
 ### Docker

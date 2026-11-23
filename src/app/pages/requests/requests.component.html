@@ -18,22 +18,26 @@
     </ion-segment-button>
   </ion-segment>
   <ion-list lines="full">
-    <app-content-row *ngFor="let item of contentList" [content]="item" (click)="showContent(item)">
-      <div class="buttons">
-        <ion-button 
-          [disabled]="disableButtons(item)" 
-          fill="clear" 
-          color="danger"
-          (click)="deny(item, $event)"
+    @for (item of contentList; track item) {
+      <app-content-row [content]="item" (click)="showContent(item)">
+        <div class="buttons">
+          <ion-button
+            [disabled]="disableButtons(item)"
+            fill="clear"
+            color="danger"
+            (click)="deny(item, $event)"
           >Deny</ion-button>
-        <ion-button 
-          [disabled]="disableButtons(item)" 
-          fill="clear" 
-          color="success"
-          (click)="approve(item, $event)"
+          <ion-button
+            [disabled]="disableButtons(item)"
+            fill="clear"
+            color="success"
+            (click)="approve(item, $event)"
           >Approve</ion-button>
-      </div>
-    </app-content-row>
+        </div>
+      </app-content-row>
+    }
   </ion-list>
-  <app-list-remark *ngIf="this.contentList.length == 0 && !isLoading">No Requests Found</app-list-remark>
+  @if (this.contentList.length == 0 && !isLoading) {
+    <app-list-remark>No Requests Found</app-list-remark>
+  }
 </ion-content>

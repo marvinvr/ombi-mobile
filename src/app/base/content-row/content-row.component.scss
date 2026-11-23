@@ -20,18 +20,17 @@
         z-index: 1;
     }
 
+    // Native lazy <img> (ion-img is deprecated in Ionic 9); display/object-fit match ion-img.
     .poster {
+        display: block;
+        object-fit: contain;
         height: 190px;
+        width: auto;
         margin-left: 60%;
         z-index: 10;
         position: relative;
-        width: fit-content;
 
         box-shadow: -5px -5px 21px -5px rgba(0,0,0,0.75);
-
-        &::part(image) {
-            width: auto;
-        }
     }
 }
 
