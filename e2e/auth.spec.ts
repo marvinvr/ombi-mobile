@@ -8,7 +8,7 @@ test.describe('config page & sign in', () => {
     await page.goto('/');
     await expect(page).toHaveURL(/\/config$/);
     await app.expectHeader('Config');
-    expect(await app.tabLabels()).toEqual(['Config']);
+    await app.expectTabs(['Config']);
     await expect(app.inputHost('Ombi Server URL')).toBeVisible();
     await expect(app.input('Ombi Server URL')).toHaveValue('');
     await expect(app.input('Ombi Server URL')).toBeEnabled();
@@ -83,7 +83,7 @@ test.describe('config page & sign in', () => {
     await app.expectToast('Signed in as admin!');
     await expect(page).toHaveURL(/\/search$/);
     await app.expectHeader('Discover');
-    expect(await app.tabLabels()).toEqual(['Search', 'Requests', 'Config']);
+    await app.expectTabs(['Search', 'Requests', 'Config']);
 
     const [login] = ombi.callsTo('POST', /^\/api\/v1\/token$/);
     expect(login.origin).toBe(OMBI_ORIGIN);
@@ -106,7 +106,7 @@ test.describe('config page & sign in', () => {
     await app.button('Sign in').click();
     await app.expectToast('Signed in as bob!');
     await expect(page).toHaveURL(/\/search$/);
-    expect(await app.tabLabels()).toEqual(['Search', 'Config']);
+    await app.expectTabs(['Search', 'Config']);
   });
 
   test('power user (can approve) gets the Requests tab', async ({ page }) => {
@@ -117,7 +117,7 @@ test.describe('config page & sign in', () => {
     await app.input('Password').fill(USERS.poweruser.password);
     await app.button('Sign in').click();
     await app.expectToast('Signed in as paula!');
-    expect(await app.tabLabels()).toEqual(['Search', 'Requests', 'Config']);
+    await app.expectTabs(['Search', 'Requests', 'Config']);
   });
 
   test('wrong credentials show an error and keep the user signed out', async ({ page, ombi, allowConsole }) => {
@@ -134,7 +134,7 @@ test.describe('config page & sign in', () => {
     // ApiService treats any 401 as "session expired".
     await app.expectToast('You have been signed out.');
     await expect(page).toHaveURL(/\/config$/);
-    expect(await app.tabLabels()).toEqual(['Config']);
+    await app.expectTabs(['Config']);
     expect(await page.evaluate(() => localStorage.getItem('token'))).toBe('');
     expect(ombi.callsTo('POST', /^\/api\/v1\/token$/)).toHaveLength(1);
   });
@@ -199,6 +199,9 @@ test.describe('config page & sign in', () => {
 
   test('GitHub logo links to the repository', async ({ page }) => {
     await page.goto('/config');
+    // Leaving the page while lazy ES-module chunks are still loading makes WebKit log
+    // "Importing a module script failed"; a user can't click that fast.
+    await page.waitForLoadState('networkidle');
     await page.route('https://github.com/**', route => route.fulfill({ status: 200, contentType: 'text/html', body: '<h1>GitHub (mock)</h1>' }));
     await page.locator('app-config img.github.light').click();
     await expect(page).toHaveURL('https://github.com/marvinvr/ombi-mobile');
@@ -212,7 +215,7 @@ test.describe('returning user / session', () => {
     await page.goto('/');
     await expect(page).toHaveURL(/\/search$/);
     await app.expectHeader('Discover');
-    expect(await app.tabLabels()).toEqual(['Search', 'Requests', 'Config']);
+    await app.expectTabs(['Search', 'Requests', 'Config']);
     await expect.poll(() => ombi.callsTo('POST', /^\/api\/v1\/token$/).length).toBe(1);
     expect(ombi.callsTo('POST', /^\/api\/v1\/token$/)[0].body).toMatchObject({ username: 'admin', password: 'correct-horse' });
   });
@@ -252,7 +255,7 @@ test.describe('returning user / session', () => {
 
     await app.expectToast('You have been signed out.');
     await expect(page).toHaveURL(/\/config$/);
-    expect(await app.tabLabels()).toEqual(['Config']);
+    await app.expectTabs(['Config']);
     expect(await page.evaluate(() => localStorage.getItem('token'))).toBe('');
   });
 
@@ -265,6 +268,6 @@ test.describe('returning user / session', () => {
     await page.goto('/');
     await app.expectToast('You have been signed out.');
     await expect(page).toHaveURL(/\/config$/);
-    expect(await app.tabLabels()).toEqual(['Config']);
+    await app.expectTabs(['Config']);
   });
 });

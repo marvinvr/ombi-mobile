@@ -17,8 +17,9 @@ export class App {
     return this.page.locator('ion-tab-button').filter({ hasText: label });
   }
 
-  async tabLabels(): Promise<string[]> {
-    return (await this.page.locator('ion-tab-button ion-label').allInnerTexts()).map(t => t.trim());
+  /** Retrying assertion on the visible tab labels (in order). */
+  async expectTabs(labels: string[]): Promise<void> {
+    await expect(this.page.locator('ion-tab-button ion-label')).toHaveText(labels);
   }
 
   /** The currently active (visible) Ionic page inside the router outlet. */

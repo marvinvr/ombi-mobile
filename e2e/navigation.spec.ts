@@ -33,7 +33,7 @@ test.describe('navigation & tabs', () => {
     const app = new App(page);
     await page.goto('/');
     await expect(page).toHaveURL(/\/search$/);
-    expect(await app.tabLabels()).toEqual(['Search', 'Config']);
+    await app.expectTabs(['Search', 'Config']);
     await app.tab('Config').click();
     await app.expectHeader('Config');
   });
