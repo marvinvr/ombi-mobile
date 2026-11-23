@@ -9,5 +9,17 @@
       "matchStrings": ["npm install -g [^\\n]*?(?<depName>serve)@(?<currentValue>[0-9][^\\s]*)"],
       "datasourceTemplate": "npm"
     }
+  ],
+  "packageRules": [
+    {
+      "description": "Angular 15 peer range. Remove with the Angular major migration.",
+      "matchPackageNames": ["zone.js"],
+      "allowedVersions": "<0.14.0"
+    },
+    {
+      "description": "Angular 15 peer range. Remove with the Angular major migration.",
+      "matchPackageNames": ["typescript"],
+      "allowedVersions": "<5.0.0"
+    }
   ]
 }
