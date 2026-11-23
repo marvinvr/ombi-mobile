@@ -1,4 +1,4 @@
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { Settings } from 'src/models/settings';
@@ -9,6 +9,7 @@ import { AuthService } from './auth.service';
 import { CredentialsService } from './credentials.service';
 import { SettingsService } from './settings.service';
 import { ToastService } from './toast.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 class FakeCredentials {
   baseUrl = 'https://ombi.test';
@@ -26,11 +27,12 @@ describe('ApiService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
       providers: [
         { provide: CredentialsService, useClass: FakeCredentials },
         { provide: ToastService, useClass: FakeToastService },
         { provide: Router, useClass: FakeRouter },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     });
     api = TestBed.inject(ApiService);
@@ -131,10 +133,11 @@ describe('AuthService', () => {
     localStorage.clear();
     localStorage.setItem('settings', JSON.stringify(stored));
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
       providers: [
         { provide: ToastService, useClass: FakeToastService },
         { provide: Router, useClass: FakeRouter },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     });
     http = TestBed.inject(HttpTestingController);

@@ -1,9 +1,10 @@
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Settings, SETTINGS_STORAGE_KEY } from 'src/models/settings';
 import { makeJwt } from 'src/testing/test-helpers';
 import { CredentialsService } from './credentials.service';
 import { SettingsService } from './settings.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const PREDEFINED = '/assets/settings/predefined-host.txt';
 
@@ -12,7 +13,7 @@ describe('SettingsService', () => {
 
   beforeEach(() => {
     localStorage.clear();
-    TestBed.configureTestingModule({ imports: [HttpClientTestingModule] });
+    TestBed.configureTestingModule({ providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()] });
     http = TestBed.inject(HttpTestingController);
   });
 
@@ -69,7 +70,7 @@ describe('CredentialsService', () => {
 
   beforeEach(() => {
     localStorage.clear();
-    TestBed.configureTestingModule({ imports: [HttpClientTestingModule] });
+    TestBed.configureTestingModule({ providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()] });
     http = TestBed.inject(HttpTestingController);
     settings = TestBed.inject(SettingsService);
   });

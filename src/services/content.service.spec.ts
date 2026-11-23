@@ -1,4 +1,4 @@
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
@@ -11,6 +11,7 @@ import { RequestsService } from './requests.service';
 import { SearchService } from './search.service';
 import { ToastService } from './toast.service';
 import { TvService } from './tv.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const API = 'https://ombi.test/api';
 
@@ -20,11 +21,12 @@ describe('content services', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
       providers: [
         { provide: CredentialsService, useValue: { baseUrl: 'https://ombi.test', token: 'T' } },
         { provide: ToastService, useClass: FakeToastService },
         { provide: Router, useClass: FakeRouter },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     });
     http = TestBed.inject(HttpTestingController);

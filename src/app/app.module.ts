@@ -4,7 +4,7 @@ import { RouteReuseStrategy } from '@angular/router';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -44,7 +44,6 @@ import { SearchPageComponent } from './pages/search/search-page.component';
         CommonModule,
         IonicModule.forRoot(),
         AppRoutingModule,
-        HttpClientModule,
         ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
         ServiceWorkerModule.register('ngsw-worker.js', {
           enabled: !isDevMode(),
@@ -54,7 +53,8 @@ import { SearchPageComponent } from './pages/search/search-page.component';
         })
     ],
     providers: [
-        { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+        { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+        provideHttpClient(withInterceptorsFromDi())
     ],
     bootstrap: [AppComponent]
 })
