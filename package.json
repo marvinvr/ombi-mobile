@@ -25,7 +25,6 @@
     "@ionic/angular": "^9.0.11",
     "ionicons": "^8.1.0",
     "jwt-decode": "^3.1.2",
-    "pwa": "^1.9.7",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.1"
