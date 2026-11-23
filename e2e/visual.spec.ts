@@ -203,6 +203,7 @@ test.describe('visual baselines', () => {
     await app.waitForImages();
     await app.rowButton('The Matrix', 'Approve').click();
     await expect(app.toast('500 - Internal Server Error')).toBeVisible();
+    await app.waitForToastShown();
     // Snapshot only the toast itself; it disappears after 1.5s.
     await expect(page.locator('ion-toast')).toHaveScreenshot('toast-error.png', { timeout: 1000 });
   });

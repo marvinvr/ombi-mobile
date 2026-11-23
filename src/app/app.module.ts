@@ -2,7 +2,7 @@ import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
-import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular';
 
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
@@ -23,6 +23,7 @@ import { ContentComponent } from './pages/content/content.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { SearchPageComponent } from './pages/search/search-page.component';
+import { IONIC_COMPONENTS, provideIcons } from './ionic';
 
 @NgModule({
     declarations: [
@@ -42,7 +43,7 @@ import { SearchPageComponent } from './pages/search/search-page.component';
     imports: [
         BrowserModule,
         CommonModule,
-        IonicModule.forRoot(),
+        ...IONIC_COMPONENTS,
         AppRoutingModule,
         ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
         ServiceWorkerModule.register('ngsw-worker.js', {
@@ -53,6 +54,8 @@ import { SearchPageComponent } from './pages/search/search-page.component';
         })
     ],
     providers: [
+        provideIonicAngular(),
+        provideIcons(),
         { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
         provideHttpClient(withInterceptorsFromDi())
     ],

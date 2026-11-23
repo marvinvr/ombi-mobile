@@ -1,12 +1,13 @@
 <ion-card>
   <div class="poster-backdrop">
     <ion-icon class="icon" [name]="content.mediaType == 'movie' ? 'film' : 'tv-outline'"></ion-icon>
-    <ion-img 
-      class="poster" 
-      [alt]="content.title" 
+    <img
+      class="poster"
+      loading="lazy"
+      [alt]="content.title"
       [src]="content.posterUrl"
-      (ionError)="onError($event)"
-      ></ion-img>
+      (error)="onError($event)"
+    />
   </div>
   <ion-card-header>
     <ion-badge 

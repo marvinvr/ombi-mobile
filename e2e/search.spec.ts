@@ -29,9 +29,9 @@ test.describe('search page', () => {
     await expect(app.row('The Matrix').locator('.poster-backdrop ion-icon')).toHaveAttribute('name', 'film');
     await expect(app.row('Breaking Bad').locator('.poster-backdrop ion-icon')).toHaveAttribute('name', 'tv-outline');
     // Poster URLs: tmdb w300 for relative paths, absolute URLs untouched, fallback asset when missing.
-    await expect(app.row('The Matrix').locator('ion-img')).toHaveJSProperty('src', 'https://image.tmdb.org/t/p/w300//f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg');
-    await expect(app.row('Breaking Bad').locator('ion-img')).toHaveJSProperty('src', 'https://image.tmdb.org/t/p/w300/tsRy63Mu5cu8etL1X7ZLyf7UP1M.jpg');
-    await expect(app.row('Interstellar').locator('ion-img')).toHaveJSProperty('src', '/assets/backdrop.png');
+    await expect(app.rowPoster('The Matrix')).toHaveAttribute('src', 'https://image.tmdb.org/t/p/w300//f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg');
+    await expect(app.rowPoster('Breaking Bad')).toHaveAttribute('src', 'https://image.tmdb.org/t/p/w300/tsRy63Mu5cu8etL1X7ZLyf7UP1M.jpg');
+    await expect(app.rowPoster('Interstellar')).toHaveAttribute('src', '/assets/backdrop.png');
     await expect(app.remark).toHaveCount(0);
 
     expect(ombi.callsTo('GET', /^\/api\/v2\/search\/Movie\/popular\/0\/20\?$/)).toHaveLength(1);
@@ -67,8 +67,8 @@ test.describe('search page', () => {
     await expect(app.rows).toHaveCount(3);
     expect(await app.rowTitles()).toEqual(['The Matrix', 'The Matrix Reloaded', 'The Matrix: Animated']);
     await expect(app.rowSubtitle('The Matrix: Animated')).toHaveText('TV');
-    await expect(app.row('The Matrix').locator('ion-img')).toHaveJSProperty('src', 'https://image.tmdb.org/t/p/w300/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg');
-    await expect(app.row('The Matrix Reloaded').locator('ion-img')).toHaveJSProperty('src', '/assets/backdrop.png');
+    await expect(app.rowPoster('The Matrix')).toHaveAttribute('src', 'https://image.tmdb.org/t/p/w300/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg');
+    await expect(app.rowPoster('The Matrix Reloaded')).toHaveAttribute('src', '/assets/backdrop.png');
 
     const [call] = ombi.callsTo('POST', /^\/api\/v2\/search\/multi\/matrix$/);
     expect(call.body).toEqual({ music: false, people: false, movies: true, tvShows: true });

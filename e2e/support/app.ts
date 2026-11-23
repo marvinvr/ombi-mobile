@@ -44,7 +44,11 @@ export class App {
     await expect(this.toast(text)).toBeVisible();
   }
 
-  /** Wait until every <img> (including those in ion-img shadow roots) finished loading. */
+  /**
+   * Wait until every visible <img> (including shadow roots) finished loading. Off-screen
+   * lazy images are skipped: browsers don't fetch them (WebKit leaves them incomplete), just
+   * like ion-img (used before Ionic 9) didn't set their src.
+   */
   async waitForImages(): Promise<void> {
     await this.page.waitForFunction(() => {
       const imgs: HTMLImageElement[] = [];
@@ -53,8 +57,19 @@ export class App {
         root.querySelectorAll('*').forEach(el => el.shadowRoot && walk(el.shadowRoot));
       };
       walk(document);
-      return imgs.every(i => !i.src || (i.complete && i.naturalWidth > 0));
+      const offscreen = (i: HTMLImageElement) => {
+        const r = i.getBoundingClientRect();
+        const notRendered = r.width === 0 && r.height === 0; // e.g. inside a hidden cached page
+        return notRendered || r.bottom < 0 || r.top > innerHeight || r.right < 0 || r.left > innerWidth;
+      };
+      return imgs.every(i => !i.src || (i.loading === 'lazy' && offscreen(i)) || (i.complete && i.naturalWidth > 0));
     });
+  }
+
+  /** Wait until the toast finished its enter animation. */
+  async waitForToastShown(): Promise<void> {
+    await expect.poll(() => this.page.locator('ion-toast').evaluate(el =>
+      getComputedStyle(el.shadowRoot!.querySelector('.toast-wrapper')!).opacity)).toBe('1');
   }
 
   /** Wait for toasts to disappear (they last 1.5s) so screenshots are stable. */
@@ -114,6 +129,14 @@ export class App {
 
   rowBadge(title: string): Locator {
     return this.row(title).locator('ion-badge');
+  }
+
+  /**
+   * Poster image of a list row. Ionic 9: was <ion-img class="poster"> (deprecated), now a
+   * native <img class="poster" loading="lazy">.
+   */
+  rowPoster(title: string): Locator {
+    return this.row(title).locator('img.poster');
   }
 
   rowSubtitle(title: string): Locator {

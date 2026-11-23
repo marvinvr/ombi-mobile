@@ -38,8 +38,8 @@ test.describe('requests page (admin)', () => {
     // Falls back to the e-mail when the user name is empty.
     await expect(app.rowSubtitle('Fight Club')).toHaveText('MOVIE requested by carol@example.com');
     await expect(app.rowDescription('Breaking Bad')).toHaveText('A chemistry teacher turns to crime.');
-    await expect(app.row('Breaking Bad').locator('ion-img')).toHaveJSProperty('src', 'https://image.tmdb.org/t/p/w300//ggFHVNu6YYI5L9pCfOacjizRGt.jpg');
-    await expect(app.row('Fight Club').locator('ion-img')).toHaveJSProperty('src', '/assets/backdrop.png');
+    await expect(app.rowPoster('Breaking Bad')).toHaveAttribute('src', 'https://image.tmdb.org/t/p/w300//ggFHVNu6YYI5L9pCfOacjizRGt.jpg');
+    await expect(app.rowPoster('Fight Club')).toHaveAttribute('src', '/assets/backdrop.png');
 
     for (const title of ['Breaking Bad', 'The Matrix']) {
       await expect(app.rowButton(title, 'Approve')).not.toHaveClass(/button-disabled/);

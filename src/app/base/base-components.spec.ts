@@ -1,6 +1,7 @@
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { IonicModule } from '@ionic/angular';
+import { provideIonicAngular } from '@ionic/angular';
+import { IONIC_COMPONENTS, registerIcons } from '../ionic';
 import { Subject } from 'rxjs';
 import { RequestStatus } from 'src/models/content';
 import { Settings } from 'src/models/settings';
@@ -19,8 +20,10 @@ import { SearchComponent } from './search/search.component';
 
 describe('base components', () => {
   beforeEach(() => {
+    registerIcons();
     TestBed.configureTestingModule({
-      imports: [IonicModule.forRoot()],
+      imports: [...IONIC_COMPONENTS],
+      providers: [provideIonicAngular()],
       declarations: [ButtonComponent, ContentRowComponent, HeaderComponent, InputComponent, ListRemarkComponent, NavigationComponent, SearchComponent],
     });
   });
