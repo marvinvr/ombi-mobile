@@ -11,7 +11,7 @@ import { RequestsService } from './requests.service';
 import { SearchService } from './search.service';
 import { ToastService } from './toast.service';
 import { TvService } from './tv.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 const API = 'https://ombi.test/api';
 
@@ -25,7 +25,7 @@ describe('content services', () => {
         { provide: CredentialsService, useValue: { baseUrl: 'https://ombi.test', token: 'T' } },
         { provide: ToastService, useClass: FakeToastService },
         { provide: Router, useClass: FakeRouter },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
     });

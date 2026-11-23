@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { OverviewContentRequest, RequestStatus } from 'src/models/content';
 import { RequestAction, RequestType } from 'src/models/requests';
@@ -9,6 +9,7 @@ import { sort } from 'src/utils/requests.utils';
     selector: 'app-requests',
     templateUrl: './requests.component.html',
     styleUrls: ['./requests.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class RequestsComponent implements OnInit, OnDestroy {

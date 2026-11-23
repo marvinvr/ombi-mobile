@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Settings } from 'src/models/settings';
 import { ToastType } from 'src/models/toast';
 import { AuthService } from 'src/services/auth.service';
@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
     selector: 'app-config',
     templateUrl: './config.component.html',
     styleUrls: ['./config.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ConfigComponent implements OnInit {

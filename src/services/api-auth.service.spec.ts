@@ -9,7 +9,7 @@ import { AuthService } from './auth.service';
 import { CredentialsService } from './credentials.service';
 import { SettingsService } from './settings.service';
 import { ToastService } from './toast.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 class FakeCredentials {
   baseUrl = 'https://ombi.test';
@@ -31,7 +31,7 @@ describe('ApiService', () => {
         { provide: CredentialsService, useClass: FakeCredentials },
         { provide: ToastService, useClass: FakeToastService },
         { provide: Router, useClass: FakeRouter },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
     });
@@ -136,7 +136,7 @@ describe('AuthService', () => {
       providers: [
         { provide: ToastService, useClass: FakeToastService },
         { provide: Router, useClass: FakeRouter },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
     });
