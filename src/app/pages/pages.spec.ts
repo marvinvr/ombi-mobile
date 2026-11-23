@@ -1,5 +1,4 @@
 import { LocationStrategy } from '@angular/common';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
 import { BehaviorSubject, Subject } from 'rxjs';
@@ -21,6 +20,13 @@ import { ContentComponent } from './content/content.component';
 import { RequestsComponent } from './requests/requests.component';
 import { SearchPageComponent } from './search/search-page.component';
 
+/**
+ * Page logic is tested on plain instances (dependencies from TestBed): lifecycle hooks are
+ * called explicitly, independent of the TestBed change detection mode. Rendering and
+ * integration are covered by the e2e suite.
+ */
+const construct = <T>(factory: () => T): T => TestBed.runInInjectionContext(factory);
+
 const rawMovie = (over: object = {}) => ({
   mediaType: 'movie', id: 603, title: 'M', description: 'd', posterUrl: 'p', genres: [], available: false,
   releaseDate: new Date('1999-01-01T00:00:00'), request: { id: 0, requested: false, approved: false, denied: false }, ...over,
@@ -39,8 +45,6 @@ describe('ContentComponent', () => {
     requests = { requestMovie: spyFn(() => Promise.resolve()), requestTv: spyFn(() => Promise.resolve()) };
     router = new FakeRouter();
     TestBed.configureTestingModule({
-      declarations: [ContentComponent],
-      schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: ActivatedRoute, useValue: { paramMap: params } },
         { provide: Router, useValue: router },
@@ -51,9 +55,11 @@ describe('ContentComponent', () => {
         { provide: LocationStrategy, useValue: { back: spyFn() } },
       ],
     });
-    const fixture = TestBed.createComponent(ContentComponent);
-    fixture.componentInstance.ngOnInit();
-    return fixture.componentInstance;
+    const c = construct(() => new ContentComponent(
+      TestBed.inject(RequestsService), TestBed.inject(ActivatedRoute), TestBed.inject(Router), TestBed.inject(MovieService),
+      TestBed.inject(TvService), TestBed.inject(CredentialsService), TestBed.inject(LocationStrategy)));
+    c.ngOnInit();
+    return c;
   };
 
   it('loads the content from the route and derives label/colour/icons', async () => {
@@ -110,14 +116,12 @@ describe('RequestsComponent', () => {
         ? [raw(1, 'movie', {}), raw(2, 'movie', { approved: true }, { name: '', email: 'e@x' })]
         : [raw(3, 'tv', { denied: true }), raw(4, 'tv', { available: true })]));
     TestBed.configureTestingModule({
-      declarations: [RequestsComponent],
-      schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: RequestsService, useValue: { list, performAction } },
         { provide: Router, useClass: FakeRouter },
       ],
     });
-    const c = TestBed.createComponent(RequestsComponent).componentInstance;
+    const c = construct(() => new RequestsComponent(TestBed.inject(RequestsService), TestBed.inject(Router)));
     return { c, list, performAction };
   };
 
@@ -175,11 +179,9 @@ describe('SearchPageComponent', () => {
       search: spyFn((term: string, type: string) => Promise.resolve([{ title: `${term}-${type}` }])),
     };
     TestBed.configureTestingModule({
-      declarations: [SearchPageComponent],
-      schemas: [NO_ERRORS_SCHEMA],
       providers: [{ provide: SearchService, useValue: search }, { provide: Router, useClass: FakeRouter }],
     });
-    return { c: TestBed.createComponent(SearchPageComponent).componentInstance, search };
+    return { c: construct(() => new SearchPageComponent(TestBed.inject(SearchService), TestBed.inject(Router))), search };
   };
 
   it('shows popular content, searches on input and goes back to popular when cleared', async () => {
@@ -231,8 +233,6 @@ describe('ConfigComponent', () => {
     toast = new FakeToastService();
     router = new FakeRouter();
     TestBed.configureTestingModule({
-      declarations: [ConfigComponent],
-      schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: CredentialsService, useValue: creds },
         { provide: SettingsService, useValue: settings },
@@ -241,7 +241,8 @@ describe('ConfigComponent', () => {
         { provide: Router, useValue: router },
       ],
     });
-    const c = TestBed.createComponent(ConfigComponent).componentInstance;
+    const c = construct(() => new ConfigComponent(
+      TestBed.inject(CredentialsService), TestBed.inject(AuthService), TestBed.inject(ToastService), TestBed.inject(SettingsService), TestBed.inject(Router)));
     c.ngOnInit();
     return c;
   };

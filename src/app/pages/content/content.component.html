@@ -1,12 +1,16 @@
 <ion-breadcrumbs>
-  <ion-breadcrumb (click)="goBack()" *ngIf="isRequest">
-    <ion-icon slot="start" name="download-outline"></ion-icon>
-    Requests
-  </ion-breadcrumb>
-  <ion-breadcrumb (click)="goBack()" *ngIf="!isRequest">
-    <ion-icon slot="start" name="search-outline"></ion-icon>
-    Search
-  </ion-breadcrumb>
+  @if (isRequest) {
+    <ion-breadcrumb (click)="goBack()">
+      <ion-icon slot="start" name="download-outline"></ion-icon>
+      Requests
+    </ion-breadcrumb>
+  }
+  @if (!isRequest) {
+    <ion-breadcrumb (click)="goBack()">
+      <ion-icon slot="start" name="search-outline"></ion-icon>
+      Search
+    </ion-breadcrumb>
+  }
   <ion-breadcrumb href="#">
     <ion-icon slot="start" [name]="icon"></ion-icon>
     {{ contentName }}
@@ -14,37 +18,40 @@
 </ion-breadcrumbs>
 
 
-<div class="poster-backdrop" *ngIf="!isLoading">
-  <ion-icon class="play-icon" [name]="icon"></ion-icon>
-  <img class="poster" [alt]="content?.title" [src]="content?.posterUrl" />
-</div>
+@if (!isLoading) {
+  <div class="poster-backdrop">
+    <ion-icon class="play-icon" [name]="icon"></ion-icon>
+    <img class="poster" [alt]="content?.title" [src]="content?.posterUrl" />
+  </div>
+}
 
-<ion-content class="ion-padding" *ngIf="!isLoading">
-  <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
-    <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>
-    
-  <h1>{{ content?.title }}</h1>&nbsp;<i *ngIf="content?.releaseYear">({{content?.releaseYear}})</i>
-  
-  <ion-badge
-    *ngIf="content?.requested || content?.available" 
-    class="badge" 
-    [color]="color"
-    >{{ label }}</ion-badge>
-  <br />
-  <br />
-  <ion-chip class="genres" *ngFor="let genre of content?.genres">
-    <ion-label disabled="true">{{genre}}</ion-label>
-  </ion-chip>
-
-  <p>{{content?.description}}</p>
-
-  <ion-fab class="single-action" horizontal="end">
-    <ion-fab-button 
-      [disabled]="content?.requested || content?.available"
-      [color]="color"
-      (click)="request()">
-      <ion-icon [name]="fabIcon"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
-</ion-content>
+@if (!isLoading) {
+  <ion-content class="ion-padding">
+    <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+    <h1>{{ content?.title }}</h1>&nbsp;@if (content?.releaseYear) {<i>({{content?.releaseYear}})</i>}
+    @if (content?.requested || content?.available) {
+      <ion-badge
+        class="badge"
+        [color]="color"
+      >{{ label }}</ion-badge>
+    }
+    <br />
+    <br />
+    @for (genre of content?.genres; track genre) {
+      <ion-chip class="genres">
+        <ion-label disabled="true">{{genre}}</ion-label>
+      </ion-chip>
+    }
+    <p>{{content?.description}}</p>
+    <ion-fab class="single-action" horizontal="end">
+      <ion-fab-button
+        [disabled]="content?.requested || content?.available"
+        [color]="color"
+        (click)="request()">
+        <ion-icon [name]="fabIcon"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </ion-content>
+}

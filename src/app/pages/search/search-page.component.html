@@ -19,7 +19,11 @@
     </ion-segment-button>
   </ion-segment>
   <ion-list lines="full">
-    <app-content-row *ngFor="let item of items" [content]="item" (click)="showContent(item)"></app-content-row>
+    @for (item of items; track item) {
+      <app-content-row [content]="item" (click)="showContent(item)"></app-content-row>
+    }
   </ion-list>
-  <app-list-remark *ngIf="this.items.length == 0 && !isLoading">No Content Found</app-list-remark>
+  @if (this.items.length == 0 && !isLoading) {
+    <app-list-remark>No Content Found</app-list-remark>
+  }
 </ion-content>

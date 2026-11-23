@@ -7,15 +7,17 @@
       [alt]="content.title"
       [src]="content.posterUrl"
       (error)="onError($event)"
-    />
+      />
   </div>
   <ion-card-header>
-    <ion-badge 
-      class="badge" 
+    <ion-badge
+      class="badge"
       [color]="color"
-      >{{ content.status }}</ion-badge>
+    >{{ content.status }}</ion-badge>
     <ion-card-title>{{content.title}}</ion-card-title>
-    <ion-card-subtitle>{{content.mediaType?.toUpperCase()}}<span *ngIf="content?.requestedBy"> requested by {{content?.requestedBy}}</span></ion-card-subtitle>
+    <ion-card-subtitle>{{content.mediaType?.toUpperCase()}}@if (content?.requestedBy) {
+      <span> requested by {{content?.requestedBy}}</span>
+    }</ion-card-subtitle>
   </ion-card-header>
 
   <ion-card-content>
