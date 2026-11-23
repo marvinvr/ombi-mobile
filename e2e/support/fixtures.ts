@@ -10,7 +10,9 @@ export { expect };
  * so zone.js logs an unhandled rejection whenever the API fails. Only allowed in tests
  * that deliberately make the API fail.
  */
-export const UNHANDLED_API_REJECTION = /^ERROR Error: Uncaught \(in promise\): Error: \[object Object\]/;
+// Angular <= 16 logs "ERROR Error: Uncaught (in promise): Error: ...", Angular >= 17 logs the
+// rejection reason directly ("ERROR Error: ..."). Same error, different log format.
+export const UNHANDLED_API_REJECTION = /^ERROR (Error: Uncaught \(in promise\): )?Error: \[object Object\]/;
 /**
  * Pre-existing app bug: after a successful request ContentComponent calls
  * `refresh(new Event('request'))` and then `event.target.complete()` on an event that was
@@ -19,7 +21,7 @@ export const UNHANDLED_API_REJECTION = /^ERROR Error: Uncaught \(in promise\): E
  * changes in the migration); allowed only in the tests that perform a request.
  */
 export const KNOWN_BUG_REQUEST_REFRESH =
-  /^ERROR Error: Uncaught \(in promise\): TypeError: (Cannot read properties of null \(reading 'complete'\)|null is not an object \(evaluating '\w+\.target\.complete'\))/;
+  /^ERROR (Error: Uncaught \(in promise\): )?TypeError: (Cannot read properties of null \(reading 'complete'\)|null is not an object \(evaluating '\w+\.target\.complete'\))/;
 
 export const networkLog = (status: number) => new RegExp(`Failed to load resource: the server responded with a status of ${status}`);
 
