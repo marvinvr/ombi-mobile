@@ -86,13 +86,11 @@ export const test = base.extend<Fixtures>({
       return route.abort('blockedbyclient');
     });
 
-    // Deterministic Math.random: SearchService shuffles popular results with it.
+    // Deterministic Math.random: SearchService shuffles the popular list with
+    // `sort(() => .5 - Math.random())`. A constant 0.5 makes that comparator return 0, so
+    // the order is stable and does not depend on how often framework code calls Math.random.
     await context.addInitScript(() => {
-      let seed = 42;
-      Math.random = () => {
-        seed = (seed * 16807) % 2147483647;
-        return (seed - 1) / 2147483646;
-      };
+      Math.random = () => 0.5;
     });
 
     const attach = (page: Page) => {
